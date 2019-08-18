@@ -1,5 +1,5 @@
 <template>
-  <div class="h-100">
+  <div class="h-100 dflex-center">
     <div class="w-65 mt-3">
       <div class="columns">
         <div class="column is-8">
@@ -72,7 +72,7 @@
         <div class="column">
           <section>
             <b-field label="School Code">
-              <b-numberinput icon-pack="fas" v-model="number"></b-numberinput>
+              <b-input icon-pack="fas" v-model="number" disabled></b-input>
             </b-field>
           </section>
         </div>
