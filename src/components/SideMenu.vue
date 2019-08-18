@@ -1,7 +1,7 @@
 <template>
 	<div class="side-menu-root">
 		<b-menu>
-			<b-menu-list>
+			<b-menu-list class="side-menu-list">
 				<template slot="label">
 					<div style="padding: 20px">
 						<div class="columns">
@@ -43,5 +43,14 @@ export default {
 .side-menu-root {
   margin-top: 20px;
   margin-left: 2px;
+}
+</style>
+<style>
+/* to have no padding right in sidemenu options */
+.menu-list li ul {
+  border-left: 1px solid #dbdbdb;
+  margin: 0.75em 0px 0.75em 0.75em;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 </style>
