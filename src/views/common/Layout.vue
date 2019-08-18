@@ -1,20 +1,83 @@
 <template>
-	<div class="root-container">
-		<div class="columns">
-			<div class="column is-2 side-menu-container" v-show="menuOpen">
-				<side-menu></side-menu>
-			</div>
-			<div class="column">
-				<app-header @toggleMenu="toggleMenu" />
-				<router-view></router-view>
-			</div>
-		</div>
-	</div>
+  <div class="root-container">
+    <div class="columns">
+      <div class="column is-2 side-menu-container" v-show="menuOpen">
+        <side-menu :config="sideMenuConfig"></side-menu>
+      </div>
+      <div class="column">
+        <app-header @toggleMenu="toggleMenu" />
+        <div style="padding: 20px">
+          <router-view></router-view>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import SideMenu from '@/components/SideMenu';
 import AppHeader from '@/components/Header';
+
+const SideMenuConfig = {
+  title: 'MENU',
+  icon: 'school',
+  options: [
+    {
+      title: 'Setup',
+      icon: 'cog',
+      children: [
+        {
+          icon: 'chalkboard-teacher',
+          label: 'Classrooms',
+        },
+        {
+          icon: 'folder',
+          label: 'Students',
+        },
+        {
+          icon: 'chess-rook',
+          label: 'Teachers',
+        },
+        {
+          icon: 'user-graduate',
+          label: 'Students',
+        },
+      ],
+    },
+    {
+      title: 'Account',
+      icon: 'cog',
+      children: [
+        {
+          icon: 'chalkboard-teacher',
+          label: 'Classrooms',
+        },
+        {
+          icon: 'folder',
+          label: 'Students',
+        },
+        {
+          icon: 'chess-rook',
+          label: 'Teachers',
+        },
+        {
+          icon: 'user-graduate',
+          label: 'Students',
+        },
+      ],
+    },
+    {
+      title: 'Actions',
+      icon: 'cog',
+      children: [
+        {
+          icon: 'sign-out-alt',
+          label: 'Logout',
+        },
+      ],
+    },
+  ],
+};
 
 export default {
   components: {
@@ -24,6 +87,7 @@ export default {
   data() {
     return {
       menuOpen: true,
+      sideMenuConfig: SideMenuConfig,
     };
   },
   methods: {

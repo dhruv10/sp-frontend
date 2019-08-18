@@ -6,8 +6,8 @@
 			</a>
 		</template>
 		<template slot="start">
-			<b-navbar-item>
-				Rajnikaant Public School
+			<b-navbar-item class="is-primary">
+				<p class="is-primary">Rajnikaant Public School</p>
 			</b-navbar-item>
 		</template>
 
