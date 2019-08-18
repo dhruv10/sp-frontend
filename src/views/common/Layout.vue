@@ -4,7 +4,7 @@
       <div class="column is-2 side-menu-container" v-show="menuOpen">
         <side-menu :config="sideMenuConfig"></side-menu>
       </div>
-      <div class="column">
+      <div class="column body">
         <app-header @toggleMenu="toggleMenu" />
         <div style="padding: 20px">
           <router-view></router-view>
@@ -105,5 +105,9 @@ export default {
 }
 .side-menu-container {
   transition: width 1s;
+  box-shadow: black 1px 1px 12px -5px;
+}
+.body {
+  padding-left: 0px;
 }
 </style>
