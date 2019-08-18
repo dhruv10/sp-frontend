@@ -1,23 +1,24 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import AddSchool from './views/master-admin/AddSchool.vue';
 
 Vue.use(Router);
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home,
+      path: '/login',
+      component: () => import(/* webpackChunkName: "login" */ './views/common/Login.vue'),
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      path: '/master-admin',
+      component: () => import(/* webpackChunkName: "layout" */ './views/common/Layout.vue'),
+      children: [
+        {
+          path: 'add-school',
+          component: AddSchool,
+        },
+      ],
     },
   ],
 });
