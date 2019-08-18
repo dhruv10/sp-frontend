@@ -35,20 +35,9 @@
 export default {
   data() {
     return {
-      name: "John Silver"
+      name: 'John Silver',
     };
-  }
-};
-</script>
-      </div>
-      <div class="column is-5">Second column</div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: "AddSchool"
+  },
 };
 </script>
 
