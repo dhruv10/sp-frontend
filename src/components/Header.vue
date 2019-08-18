@@ -40,5 +40,8 @@ export default {
 <style scoped>
 .header-root {
   box-shadow: 3px 2px 8px -5px;
+  position: fixed;
+  z-index: 10;
+  width: 84%;
 }
 </style>
