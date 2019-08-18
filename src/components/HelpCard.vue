@@ -40,14 +40,13 @@
 export default {
   methods: {
     closeCard() {
-      console.log('here');
       this.$emit('closeCard');
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../styles/app.global.scss';
 .help-card-title {
   background: $primary-color

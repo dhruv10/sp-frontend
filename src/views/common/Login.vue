@@ -61,7 +61,6 @@ export default {
       this.helpCard = true;
     },
     closeHelpCard() {
-      console.log('in parent');
       this.helpCard = false;
     },
   },
