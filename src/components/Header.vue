@@ -8,7 +8,9 @@
 			</template>
 			<template slot="start">
 				<b-navbar-item class="is-primary">
-					<p class="is-primary">Rajnikaant Public School</p>
+					<p class="is-primary">
+						<b>Rajnikaant Public School</b>
+					</p>
 				</b-navbar-item>
 			</template>
 
