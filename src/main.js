@@ -6,7 +6,9 @@ import store from './store';
 import 'buefy/dist/buefy.css';
 import './registerServiceWorker';
 
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: 'fas',
+});
 
 Vue.config.productionTip = false;
 
