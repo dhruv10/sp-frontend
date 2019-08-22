@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import AddSchool from './views/master-admin/AddSchool.vue';
 import Classrooms from './views/school/Classrooms.vue';
+import Subjects from './views/school/Subjects.vue';
 
 Vue.use(Router);
 
@@ -28,6 +29,10 @@ export default new Router({
         {
           path: 'classrooms',
           component: Classrooms,
+        },
+        {
+          path: 'subjects',
+          component: Subjects,
         },
       ],
     },
