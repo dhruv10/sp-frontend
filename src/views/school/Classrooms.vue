@@ -15,7 +15,7 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <classroom-form :formType="formType" />
+      <classroom-form :formType="formType" @closeModal="closeModal" />
     </b-modal>
   </div>
 </template>
@@ -86,6 +86,9 @@ export default {
       this.openModal = true;
       console.log('add');
     },
+    closeModal() {
+      this.openModal = false;
+    },
     bulkUpload() {
       console.log('bulk');
     },
@@ -93,7 +96,25 @@ export default {
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteClassroom() {},
+    deleteClassroom() {
+      const { dialog, snackbar } = this.$buefy;
+      dialog.confirm({
+        title: 'Deleting Class',
+        message: 'Are you sure you want to <b>delete</b> your class? This action cannot be undone.',
+        confirmText: 'Delete Class',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve({ error: false });
+            }, 1000);
+          }).then(() => {
+            snackbar.open('Class deleted!');
+          });
+        },
+      });
+    },
   },
 };
 </script>
