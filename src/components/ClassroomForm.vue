@@ -3,7 +3,7 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title header">
-          {{ formType == 'add' ? 'Add Classroom' : 'Edit Classroom' }}
+          {{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}
         </p>
       </header>
     </div>
@@ -30,7 +30,7 @@
   </div>
   <div class="footer-buttons">
     <b-button outlined type="is-primary">Cancel</b-button>
-    <b-button type="is-primary" class="submit">{{ formType == 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
+    <b-button type="is-primary" class="submit">{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
   </div>
 </div>
 </template>
