@@ -38,10 +38,6 @@
 <script>
 export default {
   name: 'ClassroomForm',
-  data() {
-    return {
-    };
-  },
   props: {
     formType: {
       type: String,
