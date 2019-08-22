@@ -108,4 +108,11 @@ div.column.is-2.side-menu-container
   > span.icon.is-small {
   margin-right: 20px;
 }
+/* to have no padding right in sidemenu options */
+.menu-list li ul {
+  border-left: 1px solid #dbdbdb;
+  margin: 0.75em 0px 0.75em 0.75em;
+  padding-left: 0px;
+  padding-right: 0px;
+}
 </style>

@@ -118,6 +118,7 @@ export default {
   position: relative;
   transition: width 1s;
   box-shadow: black 1px 1px 12px -5px;
+  padding-right: 0px;
 }
 .body {
   padding-left: 0px;

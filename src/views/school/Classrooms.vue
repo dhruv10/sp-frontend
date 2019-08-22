@@ -14,33 +14,39 @@
         </data-table>
       </div>
     </div>
+    <b-modal :active.sync="openModal" :width="640" scroll="keep">
+      <classroom-form :formType="formType" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import DataTable from '../../components/DataTableLayout';
+import ClassroomForm from '../../components/ClassroomForm';
 
 const generateMockData = length => Array(length)
   .fill(null)
-  .map((_, i) => ({
-    id: i + 1,
+  .map(() => ({
+    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
     number: Math.floor(Math.random() * 12),
     section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Array(Math.floor(Math.random() * 50)).fill(null),
-    subjects: Array(Math.floor((Math.random() + 1) * 10)).fill(null),
+    students: Math.floor(Math.random() * 50),
+    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
   }));
 
 export default {
   components: {
     DataTable,
+    ClassroomForm,
   },
   data() {
     return {
+      openModal: false,
+      formType: 'add',
       tableConfig: [
         {
-          label: 'ID',
-          field: 'id',
-          width: '46',
+          label: 'Class Name',
+          field: 'name',
           sortable: true,
           numeric: true,
           centered: true,
@@ -59,8 +65,14 @@ export default {
           centered: true,
         },
         {
-          label: 'Students',
-          field: 'students.length',
+          label: 'Total Students',
+          field: 'students',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Class Teacher',
+          field: 'teacher',
           sortable: true,
           centered: true,
         },
@@ -70,12 +82,17 @@ export default {
   },
   methods: {
     openAddModal() {
+      this.formType = 'add';
+      this.openModal = true;
       console.log('add');
     },
     bulkUpload() {
       console.log('bulk');
     },
-    editClassroom() {},
+    editClassroom() {
+      this.formType = 'edit';
+      this.openModal = true;
+    },
     deleteClassroom() {},
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="help-card-title">
-      <header class="card-header" card-header-color="red">
+      <header class="card-header">
         <p class="card-header-title header-color">
           Leave us a message
         </p>
@@ -30,8 +30,8 @@
     </div>
   </div>
   <div class="footer-buttons">
-    <b-button outlined type="is-primary" class="cancel-button">Cancel</b-button>
-    <b-button type="is-primary">Send</b-button>
+    <b-button outlined type="is-primary">Cancel</b-button>
+    <b-button type="is-primary" class="send-button">Send</b-button>
   </div>
 </div>
 </template>
@@ -56,10 +56,11 @@ export default {
 }
 .footer-buttons {
   position: absolute;
-  right: 10px;
+  right: 20px;
   bottom:10px;
-  .cancel-button {
-    margin-right: 20px;
+  .send-button {
+    margin-left: 15px;
+    padding: 0px 10px
   }
 }
 .header-color {
