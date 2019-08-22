@@ -80,6 +80,7 @@ export default {
 
 <style lang="scss">
 .side-menu-root {
+  position: fixed;
   margin-top: 20px;
   margin-left: 2px;
 }

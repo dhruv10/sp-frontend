@@ -8,7 +8,10 @@
         <side-menu :config="sideMenuConfig"></side-menu>
       </div>
       <div class="column body">
-        <app-header @toggleMenu="toggleMenu" />
+        <app-header
+          :expanded="!menuOpen"
+          @toggleMenu="toggleMenu"
+        />
         <div style="padding: 20px">
           <router-view></router-view>
         </div>
@@ -112,6 +115,7 @@ export default {
   width: 100%;
 }
 .side-menu-container {
+  position: relative;
   transition: width 1s;
   box-shadow: black 1px 1px 12px -5px;
 }
