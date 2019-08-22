@@ -1,11 +1,17 @@
 <template>
   <div class="root-container">
     <div class="columns">
-      <div class="column is-2 side-menu-container" v-show="menuOpen">
+      <div
+        class="column is-2 side-menu-container"
+        v-show="menuOpen"
+      >
         <side-menu :config="sideMenuConfig"></side-menu>
       </div>
       <div class="column body">
-        <app-header @toggleMenu="toggleMenu" />
+        <app-header
+          :expanded="!menuOpen"
+          @toggleMenu="toggleMenu"
+        />
         <div style="padding: 20px">
           <router-view></router-view>
         </div>
@@ -25,22 +31,27 @@ const SideMenuConfig = {
     {
       title: 'Setup',
       icon: 'cog',
+      route: '/school',
       children: [
         {
           icon: 'chalkboard-teacher',
           label: 'Classrooms',
+          route: '/classrooms',
         },
         {
           icon: 'folder',
-          label: 'Students',
+          label: 'Subjects',
+          route: '/subjects',
         },
         {
           icon: 'chess-rook',
           label: 'Teachers',
+          route: '/teachers',
         },
         {
           icon: 'user-graduate',
           label: 'Students',
+          route: '/students',
         },
       ],
     },
@@ -104,6 +115,7 @@ export default {
   width: 100%;
 }
 .side-menu-container {
+  position: relative;
   transition: width 1s;
   box-shadow: black 1px 1px 12px -5px;
   padding-right: 0px;
