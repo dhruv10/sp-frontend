@@ -1,7 +1,10 @@
 <template>
   <div class="root-container">
     <div class="columns">
-      <div class="column is-2 side-menu-container" v-show="menuOpen">
+      <div
+        class="column is-2 side-menu-container"
+        v-show="menuOpen"
+      >
         <side-menu :config="sideMenuConfig"></side-menu>
       </div>
       <div class="column body">
@@ -25,22 +28,27 @@ const SideMenuConfig = {
     {
       title: 'Setup',
       icon: 'cog',
+      route: '/school',
       children: [
         {
           icon: 'chalkboard-teacher',
           label: 'Classrooms',
+          route: '/classrooms',
         },
         {
           icon: 'folder',
-          label: 'Students',
+          label: 'Subjects',
+          route: '/subjects',
         },
         {
           icon: 'chess-rook',
           label: 'Teachers',
+          route: '/teachers',
         },
         {
           icon: 'user-graduate',
           label: 'Students',
+          route: '/students',
         },
       ],
     },
