@@ -14,11 +14,15 @@
         </data-table>
       </div>
     </div>
+    <b-modal :active.sync="openModal" :width="640" scroll="keep">
+      <classroom-form :formType="formType" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import DataTable from '../../components/DataTableLayout';
+import ClassroomForm from '../../components/ClassroomForm';
 
 const generateMockData = length => Array(length)
   .fill(null)
@@ -33,9 +37,12 @@ const generateMockData = length => Array(length)
 export default {
   components: {
     DataTable,
+    ClassroomForm,
   },
   data() {
     return {
+      openModal: false,
+      formType: 'add',
       tableConfig: [
         {
           label: 'Class Name',
@@ -75,12 +82,17 @@ export default {
   },
   methods: {
     openAddModal() {
+      this.formType = 'add';
+      this.openModal = true;
       console.log('add');
     },
     bulkUpload() {
       console.log('bulk');
     },
-    editClassroom() {},
+    editClassroom() {
+      this.formType = 'edit';
+      this.openModal = true;
+    },
     deleteClassroom() {},
   },
 };

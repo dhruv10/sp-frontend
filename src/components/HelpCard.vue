@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="help-card-title">
-      <header class="card-header" card-header-color="red">
+      <header class="card-header">
         <p class="card-header-title header-color">
           Leave us a message
         </p>
