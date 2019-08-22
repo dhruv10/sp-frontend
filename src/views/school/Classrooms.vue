@@ -22,12 +22,12 @@ import DataTable from '../../components/DataTableLayout';
 
 const generateMockData = length => Array(length)
   .fill(null)
-  .map((_, i) => ({
-    id: i + 1,
+  .map(() => ({
+    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
     number: Math.floor(Math.random() * 12),
     section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Array(Math.floor(Math.random() * 50)).fill(null),
-    subjects: Array(Math.floor((Math.random() + 1) * 10)).fill(null),
+    students: Math.floor(Math.random() * 50),
+    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
   }));
 
 export default {
@@ -38,9 +38,8 @@ export default {
     return {
       tableConfig: [
         {
-          label: 'ID',
-          field: 'id',
-          width: '46',
+          label: 'Class Name',
+          field: 'name',
           sortable: true,
           numeric: true,
           centered: true,
@@ -59,8 +58,14 @@ export default {
           centered: true,
         },
         {
-          label: 'Students',
-          field: 'students.length',
+          label: 'Total Students',
+          field: 'students',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Class Teacher',
+          field: 'teacher',
           sortable: true,
           centered: true,
         },
