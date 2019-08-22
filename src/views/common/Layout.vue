@@ -44,6 +44,11 @@ const SideMenuConfig = {
           route: '/subjects',
         },
         {
+          icon: 'table',
+          label: 'Salary Grade',
+          route: '/salary-grade',
+        },
+        {
           icon: 'chess-rook',
           label: 'Teachers',
           route: '/teachers',
@@ -52,6 +57,11 @@ const SideMenuConfig = {
           icon: 'user-graduate',
           label: 'Students',
           route: '/students',
+        },
+        {
+          icon: 'box',
+          label: 'Department',
+          route: '/department',
         },
       ],
     },
