@@ -29,8 +29,8 @@
     </div>
   </div>
   <div class="footer-buttons">
-    <b-button outlined type="is-primary">Cancel</b-button>
-    <b-button type="is-primary" class="submit">{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
+    <b-button outlined type="is-primary" @click="closeModal()">Cancel</b-button>
+    <b-button :type="startLoading ? 'is-loading is-primary' : 'is-primary'" class="submit" @click="formType === 'add' ? addClass() : editClass()">{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
   </div>
 </div>
 </template>
@@ -44,7 +44,41 @@ export default {
       default: 'add',
     },
   },
+  data() {
+    return {
+      startLoading: false,
+    };
+  },
   methods: {
+    closeModal() {
+      this.$emit('closeModal');
+    },
+    addClass() {
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ error: false });
+        }, 1000);
+      }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Class added!');
+      });
+    },
+    editClass() {
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ error: false });
+        }, 1000);
+      }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Class edited!');
+      });
+    },
   },
 };
 </script>
