@@ -10,11 +10,10 @@
           @bulkUploadClick="bulkUpload"
           @editClick="editClassroom"
           @deleteClick="deleteClassroom"
-        >
-        </data-table>
+        ></data-table>
       </div>
     </div>
-    <b-modal :active.sync="openModal" :width="640" scroll="keep">
+    <b-modal :active.sync="openModal" :width="440" scroll="keep">
       <classroom-form :formType="formType" />
     </b-modal>
   </div>
@@ -43,6 +42,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      post: null,
       tableConfig: [
         {
           label: 'Class Name',

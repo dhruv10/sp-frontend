@@ -2,37 +2,41 @@
   <div class="main-container">
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title header">
-          {{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}
-        </p>
+        <p
+          class="card-header-title header"
+        >{{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}</p>
       </header>
     </div>
-  <div class="card-content">
-    <div class="content card-area">
-      <b-field label="Class Name">
-        <b-input></b-input>
-      </b-field>
-      <div class="line">
-        <b-field label="Class Number">
+    <div class="card-content">
+      <div class="content card-area">
+        <b-field label="Class Name">
           <b-input></b-input>
         </b-field>
-        <b-field label="Section" class="mid">
+        <div class="line">
+          <b-field label="Class Number">
+            <b-input></b-input>
+          </b-field>
+          <b-field label="Section" class="mid">
+            <b-input></b-input>
+          </b-field>
+          <b-field label="Total Students">
+            <b-input></b-input>
+          </b-field>
+        </div>
+        <b-field label="Class Teacher">
           <b-input></b-input>
         </b-field>
-        <b-field label="Total Students">
-          <b-input></b-input>
-        </b-field>
+        <div class="submit">
+          <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
+          <b-button
+            icon-right="arrow-circle-right"
+            type="is-primary"
+            class="submit"
+          >{{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}</b-button>
+        </div>
       </div>
-      <b-field label="Class Teacher">
-        <b-input></b-input>
-      </b-field>
     </div>
   </div>
-  <div class="footer-buttons">
-    <b-button outlined type="is-primary">Cancel</b-button>
-    <b-button type="is-primary" class="submit">{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
-  </div>
-</div>
 </template>
 
 <script>
@@ -43,8 +47,6 @@ export default {
       type: String,
       default: 'add',
     },
-  },
-  methods: {
   },
 };
 </script>
@@ -72,13 +74,12 @@ export default {
       margin: 0px 20px;
     }
   }
-  .footer-buttons {
-    position: absolute;
-    right: 30px;
-    bottom: 20px;
-    .submit {
-      margin-left: 20px;
-    }
-  }
+}
+.submit {
+  display: flex;
+  justify-content: flex-end;
+}
+.mr-1 {
+  margin-right: 1rem;
 }
 </style>
