@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import AddSchool from './views/master-admin/AddSchool.vue';
+import Classrooms from './views/school/Classrooms.vue';
 
 Vue.use(Router);
 
@@ -17,6 +18,16 @@ export default new Router({
         {
           path: 'add-school',
           component: AddSchool,
+        },
+      ],
+    },
+    {
+      path: '/school',
+      component: () => import(/* webpackChunkName: "layout" */ './views/common/Layout.vue'),
+      children: [
+        {
+          path: 'classrooms',
+          component: Classrooms,
         },
       ],
     },
