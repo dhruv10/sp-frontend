@@ -4,6 +4,7 @@ import AddSchool from './views/master-admin/AddSchool.vue';
 import Classrooms from './views/school/Classrooms.vue';
 import SalaryGrade from './views/school/SalaryGrade.vue';
 import Department from './views/school/Department.vue';
+import Student from './views/school/Student.vue';
 
 Vue.use(Router);
 
@@ -38,6 +39,10 @@ export default new Router({
         {
           path: 'department',
           component: Department,
+        },
+        {
+          path: 'student',
+          component: Student,
         },
       ],
     },

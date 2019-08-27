@@ -39,6 +39,11 @@ const SideMenuConfig = {
           route: '/classrooms',
         },
         {
+          icon: 'user-graduate',
+          label: 'Student',
+          route: '/student',
+        },
+        {
           icon: 'folder',
           label: 'Subjects',
           route: '/subjects',
