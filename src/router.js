@@ -49,6 +49,8 @@ export default new Router({
         {
           path: 'syllabus',
           component: Syllabus,
+        },
+        {
           path: 'subjects',
           component: Subjects,
         },

@@ -9,13 +9,55 @@
     </div>
     <div class="card-content">
       <div class="content card-area">
-        <div class="mt-3">
+        <div class="mt-1">
           <div class="columns">
-            <div class="column">
+            <div class="column p0">
               <section>
-                <b-field label="Student Name">
-                  <b-input icon-pack="fas" icon="user-graduate"></b-input>
-                </b-field>
+                <h2>Student Details</h2>
+                <div class="columns">
+                  <div class="column is-8">
+                    <b-field label="Student Name">
+                      <b-input icon-pack="fas" icon="user-graduate"></b-input>
+                    </b-field>
+                    <div class="columns">
+                      <div class="column">
+                        <b-field label="Date of birth">
+                          <b-input type="date"></b-input>
+                        </b-field>
+                      </div>
+                      <div class="column">
+                        <b-field label="Nationality">
+                          <b-input icon-pack="fas"></b-input>
+                        </b-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column is-4 mt-2">
+                    <b-field>
+                      <b-upload v-model="dropFiles" multiple drag-drop>
+                        <section class="uploadsection">
+                          <div class="content has-text-centered">
+                            <p>
+                              <b-icon icon="upload" size="is-large"></b-icon>
+                            </p>
+                            <p>Upload photo less than 2MB</p>
+                          </div>
+                        </section>
+                      </b-upload>
+                    </b-field>
+
+                    <div class="tags">
+                      <span v-for="(file, index) in dropFiles" :key="index" class="tag is-primary">
+                        {{file.name}}
+                        <button
+                          class="delete is-small"
+                          type="button"
+                          @click="deleteDropFile(index)"
+                        ></button>
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Roll Number">
@@ -34,8 +76,70 @@
                     </b-field>
                   </div>
                 </div>
+                <div class="columns">
+                  <!-- <div class="column">
+                    <b-field label="Blood Group">
+                      <b-input icon-pack="fas"></b-input>
+                    </b-field>
+                  </div>-->
+                  <div class="column is-half">
+                    <div class="columns">
+                      <div class="column">
+                        <b-field label="Blood Group">
+                          <b-input icon-pack="fas"></b-input>
+                        </b-field>
+                      </div>
+                      <div class="column">
+                        <b-field label="Link Class">
+                          <b-select placeholder="Select a class">
+                            <option
+                              v-for="option in classes"
+                              :value="option"
+                              :key="option"
+                            >{{ option }}</option>
+                          </b-select>
+                        </b-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column is-half mt-2">
+                    <div class="block">
+                      <b-checkbox v-model="checkboxGroup" native-value="Science">Science</b-checkbox>
+                      <b-checkbox v-model="checkboxGroup" native-value="Maths">Maths</b-checkbox>
+                      <b-checkbox v-model="checkboxGroup" native-value="English">English</b-checkbox>
+                      <br />
+                      <b-checkbox
+                        v-model="checkboxGroup"
+                        native-value="Social Science"
+                      >Social Science</b-checkbox>
+                      <b-checkbox v-model="checkboxGroup" native-value="Sports">Sports</b-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column is-8">
+                    <b-field label="Health Disorder Note (if any)">
+                      <b-input class="notearea" maxlength="200" type="textarea"></b-input>
+                    </b-field>
+                  </div>
+                  <div class="column is-4 mt-2">
+                    <b-field>
+                      <b-upload class="dropfile" v-model="dropFiles" multiple drag-drop>
+                        <section class="uploadsection">
+                          <div class="content has-text-centered">
+                            <p>
+                              <b-icon icon-pack="fas" icon="envelope" size="is-large"></b-icon>
+                            </p>
+                            <p>Drop related documents here</p>
+                          </div>
+                        </section>
+                      </b-upload>
+                    </b-field>
+                  </div>
+                </div>
                 <hr />
                 <section>
+                  <h2>Father Details</h2>
                   <div class="columns">
                     <div class="column is-8">
                       <b-field label="Father's Name">
@@ -53,7 +157,7 @@
                               <p>
                                 <b-icon icon="upload" size="is-large"></b-icon>
                               </p>
-                              <p>Upload Father's Photo</p>
+                              <p>Upload photo less than 2MB</p>
                             </div>
                           </section>
                         </b-upload>
@@ -78,8 +182,8 @@
                   <div class="columns samesection">
                     <div class="column is-half">
                       <b-field label="Date of birth">
-                      <b-input type="date"></b-input>
-                    </b-field>
+                        <b-input type="date"></b-input>
+                      </b-field>
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
@@ -103,6 +207,7 @@
                 </section>
                 <hr />
                 <section>
+                  <h2>Mother Details</h2>
                   <div class="columns">
                     <div class="column is-8">
                       <b-field label="Mother's Name">
@@ -120,7 +225,7 @@
                               <p>
                                 <b-icon icon="upload" size="is-large"></b-icon>
                               </p>
-                              <p>Upload Mother's Photo</p>
+                              <p>Upload photo less than 2MB</p>
                             </div>
                           </section>
                         </b-upload>
@@ -145,8 +250,8 @@
                   <div class="columns samesection">
                     <div class="column is-half">
                       <b-field label="Date of birth">
-                      <b-input type="date"></b-input>
-                    </b-field>
+                        <b-input type="date"></b-input>
+                      </b-field>
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
@@ -168,33 +273,51 @@
                     </div>
                   </div>
                 </section>
-                <hr>
-                <div class="columns">
-                  <div class="column is-8">
-                    <b-field label="Health Disorder Note (if any)">
+                <hr />
+                <section>
+                  <h2>Common Details</h2>
+                  <div class="columns">
+                    <div class="column is-8">
+                      <b-field label="Address">
                       <b-input class="notearea" maxlength="200" type="textarea"></b-input>
                     </b-field>
+                    </div>
+                    <div class="column is-4 mt-2">
+                      <b-field>
+                        <b-upload v-model="dropFiles" multiple drag-drop>
+                          <section class="uploadsection">
+                            <div class="content has-text-centered">
+                              <p>
+                                <b-icon icon="upload" size="is-large"></b-icon>
+                              </p>
+                              <p>Upload relevant files which makes you happy !</p>
+                            </div>
+                          </section>
+                        </b-upload>
+                      </b-field>
+
+                      <div class="tags">
+                        <span
+                          v-for="(file, index) in dropFiles"
+                          :key="index"
+                          class="tag is-primary"
+                        >
+                          {{file.name}}
+                          <button
+                            class="delete is-small"
+                            type="button"
+                            @click="deleteDropFile(index)"
+                          ></button>
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="column is-4 mt-2">
-                    <b-field>
-                      <b-upload class="dropfile" v-model="dropFiles" multiple drag-drop>
-                        <section class="uploadsection">
-                          <div class="content has-text-centered">
-                            <p>
-                              <b-icon icon-pack="fas" icon="envelope" size="is-large"></b-icon>
-                            </p>
-                            <p>Drop related documents here</p>
-                          </div>
-                        </section>
-                      </b-upload>
-                    </b-field>
-                  </div>
-                </div>
+                </section>
               </section>
             </div>
           </div>
         </div>
-        <div class="submit">
+        <div class="submit mt-2">
           <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
           <b-button
             icon-right="arrow-circle-right"
@@ -220,6 +343,8 @@ export default {
   data() {
     return {
       dropFiles: [],
+      checkboxGroup: ['Maths', 'Science'],
+      classes: ['X-A', 'X-B', 'XI-A', 'XII-A', 'XI-C'],
     };
   },
   mounted() {
@@ -264,16 +389,17 @@ export default {
 .mr-1 {
   margin-right: 1rem;
 }
-
 .notearea {
   min-height: 7rem !important;
 }
-
 .uploadsection {
   padding: 0.1rem;
 }
 .samesection {
   padding: 0;
   margin-top: -1rem;
+}
+.p0 {
+  padding: 0;
 }
 </style>
