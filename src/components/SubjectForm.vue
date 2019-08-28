@@ -42,17 +42,17 @@
 
 <script>
 export default {
-  name: 'ClassroomForm',
+  name: 'SubjectForm',
   props: {
     formType: {
       type: String,
       default: 'add',
-      radio: 'Mandatory',
     },
   },
   data() {
     return {
       startLoading: false,
+      radio: 'Mandatory',
     };
   },
   methods: {
