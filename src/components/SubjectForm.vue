@@ -2,42 +2,47 @@
   <div class="main-container">
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title header">
-          {{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}
-        </p>
+        <p
+          class="card-header-title header"
+        >{{ formType === 'add' ? 'Add Subject' : 'Edit Subject' }}</p>
       </header>
     </div>
-  <div class="card-content">
-    <div class="content card-area">
-      <b-field label="Class Name">
-        <b-input></b-input>
-      </b-field>
-      <div class="line">
-        <b-field label="Class Number">
-          <b-input></b-input>
-        </b-field>
-        <b-field label="Section" class="mid">
-          <b-input></b-input>
-        </b-field>
-        <b-field label="Total Students">
-          <b-input></b-input>
+    <div class="card-content">
+      <div class="content card-area">
+        <div class="line">
+          <b-field label="Subject Code">
+            <b-input></b-input>
+          </b-field>
+          <b-field label="Subject Name" class="mid">
+            <b-input></b-input>
+          </b-field>
+        </div>
+        <b-field label="Type">
+          <div>
+            <div class="field">
+              <b-radio v-model="radio" native-value="Mandatory">Mandatory</b-radio>
+            </div>
+            <div class="field">
+              <b-radio v-model="radio" native-value="Optional">Optional</b-radio>
+            </div>
+          </div>
         </b-field>
       </div>
-      <b-field label="Class Teacher">
-        <b-input></b-input>
-      </b-field>
+    </div>
+    <div class="footer-buttons">
+      <b-button outlined type="is-primary" @click="closeModal()">Cancel</b-button>
+      <b-button
+        :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
+        class="submit"
+        @click="formType === 'add' ? addSubject() : editSubject()"
+      >{{ formType === 'add' ? 'Add Subject' : 'Apply Changes' }}</b-button>
     </div>
   </div>
-  <div class="footer-buttons">
-    <b-button outlined type="is-primary" @click="closeModal()">Cancel</b-button>
-    <b-button :type="startLoading ? 'is-loading is-primary' : 'is-primary'" class="submit" @click="formType === 'add' ? addClass() : editClass()">{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
-  </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: 'ClassroomForm',
+  name: 'SubjectForm',
   props: {
     formType: {
       type: String,
@@ -47,13 +52,14 @@ export default {
   data() {
     return {
       startLoading: false,
+      radio: 'Mandatory',
     };
   },
   methods: {
     closeModal() {
       this.$emit('closeModal');
     },
-    addClass() {
+    addSubject() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       new Promise((resolve) => {
@@ -63,10 +69,10 @@ export default {
       }).then(() => {
         this.startLoading = false;
         this.$emit('closeModal');
-        snackbar.open('Class added!');
+        snackbar.open('Subject added!');
       });
     },
-    editClass() {
+    editSubject() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       new Promise((resolve) => {
@@ -76,7 +82,7 @@ export default {
       }).then(() => {
         this.startLoading = false;
         this.$emit('closeModal');
-        snackbar.open('Class edited!');
+        snackbar.open('Subject edited!');
       });
     },
   },
@@ -103,7 +109,8 @@ export default {
   .line {
     display: flex;
     .mid {
-      margin: 0px 20px;
+      margin-left: 25px;
+      width: 100%;
     }
   }
   .footer-buttons {
