@@ -2,7 +2,7 @@
   <div>
     <div class="tile is-ancestor">
       <div class="tile is-8 is-vertical is-parent">
-        <h1 class="title">{{ `${title}s` }}</h1>
+        <h1 class="title">{{ `${title}` }}</h1>
       </div>
       <div class="tile is-4 is-vertical is-parent">
         <div class="columns">
