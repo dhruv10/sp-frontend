@@ -6,6 +6,7 @@ import SalaryGrade from './views/school/SalaryGrade.vue';
 import Department from './views/school/Department.vue';
 import Student from './views/school/Student.vue';
 import Syllabus from './views/school/Syllabus.vue';
+import Subjects from './views/school/Subjects.vue';
 
 Vue.use(Router);
 
@@ -48,6 +49,8 @@ export default new Router({
         {
           path: 'syllabus',
           component: Syllabus,
+          path: 'subjects',
+          component: Subjects,
         },
       ],
     },
