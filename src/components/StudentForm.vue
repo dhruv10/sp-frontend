@@ -34,14 +34,141 @@
                     </b-field>
                   </div>
                 </div>
+                <hr />
                 <section>
-                  <b-field label="Father's Name">
-                    <b-input icon-pack="fas"></b-input>
-                  </b-field>
-                  <b-field label="Mother's Name">
-                    <b-input icon-pack="fas"></b-input>
-                  </b-field>
+                  <div class="columns">
+                    <div class="column is-8">
+                      <b-field label="Father's Name">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                      <b-field label="Mobile Number">
+                        <b-input icon-pack="fas" type="number"></b-input>
+                      </b-field>
+                    </div>
+                    <div class="column is-4 mt-2">
+                      <b-field>
+                        <b-upload v-model="dropFiles" multiple drag-drop>
+                          <section class="uploadsection">
+                            <div class="content has-text-centered">
+                              <p>
+                                <b-icon icon="upload" size="is-large"></b-icon>
+                              </p>
+                              <p>Upload Father's Photo</p>
+                            </div>
+                          </section>
+                        </b-upload>
+                      </b-field>
+
+                      <div class="tags">
+                        <span
+                          v-for="(file, index) in dropFiles"
+                          :key="index"
+                          class="tag is-primary"
+                        >
+                          {{file.name}}
+                          <button
+                            class="delete is-small"
+                            type="button"
+                            @click="deleteDropFile(index)"
+                          ></button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns samesection">
+                    <div class="column is-half">
+                      <b-field label="Date of birth">
+                      <b-input type="date"></b-input>
+                    </b-field>
+                    </div>
+                    <div class="column is-half">
+                      <b-field label="Blood Group">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                    </div>
+                  </div>
+                  <div class="columns samesection">
+                    <div class="column">
+                      <b-field label="Father's Education">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                      <b-field label="Father's Profession">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                      <b-field label="Father's Designation">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                    </div>
+                  </div>
                 </section>
+                <hr />
+                <section>
+                  <div class="columns">
+                    <div class="column is-8">
+                      <b-field label="Mother's Name">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                      <b-field label="Mobile Number">
+                        <b-input icon-pack="fas" type="number"></b-input>
+                      </b-field>
+                    </div>
+                    <div class="column is-4 mt-2">
+                      <b-field>
+                        <b-upload v-model="dropFiles" multiple drag-drop>
+                          <section class="uploadsection">
+                            <div class="content has-text-centered">
+                              <p>
+                                <b-icon icon="upload" size="is-large"></b-icon>
+                              </p>
+                              <p>Upload Mother's Photo</p>
+                            </div>
+                          </section>
+                        </b-upload>
+                      </b-field>
+
+                      <div class="tags">
+                        <span
+                          v-for="(file, index) in dropFiles"
+                          :key="index"
+                          class="tag is-primary"
+                        >
+                          {{file.name}}
+                          <button
+                            class="delete is-small"
+                            type="button"
+                            @click="deleteDropFile(index)"
+                          ></button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns samesection">
+                    <div class="column is-half">
+                      <b-field label="Date of birth">
+                      <b-input type="date"></b-input>
+                    </b-field>
+                    </div>
+                    <div class="column is-half">
+                      <b-field label="Blood Group">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                    </div>
+                  </div>
+                  <div class="columns samesection">
+                    <div class="column">
+                      <b-field label="Mother's Education">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                      <b-field label="Mother's Profession">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                      <b-field label="Mother's Designation">
+                        <b-input icon-pack="fas"></b-input>
+                      </b-field>
+                    </div>
+                  </div>
+                </section>
+                <hr>
                 <div class="columns">
                   <div class="column is-8">
                     <b-field label="Health Disorder Note (if any)">
@@ -51,7 +178,7 @@
                   <div class="column is-4 mt-2">
                     <b-field>
                       <b-upload class="dropfile" v-model="dropFiles" multiple drag-drop>
-                        <section>
+                        <section class="uploadsection">
                           <div class="content has-text-centered">
                             <p>
                               <b-icon icon-pack="fas" icon="envelope" size="is-large"></b-icon>
@@ -90,10 +217,19 @@ export default {
     },
     post: Object,
   },
+  data() {
+    return {
+      dropFiles: [],
+    };
+  },
   mounted() {
     console.log('post pppp ', this.$props.post);
   },
-  methods: {},
+  methods: {
+    deleteDropFile(index) {
+      this.dropFiles.splice(index, 1);
+    },
+  },
 };
 </script>
 
@@ -131,5 +267,13 @@ export default {
 
 .notearea {
   min-height: 7rem !important;
+}
+
+.uploadsection {
+  padding: 0.1rem;
+}
+.samesection {
+  padding: 0;
+  margin-top: -1rem;
 }
 </style>

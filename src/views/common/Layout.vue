@@ -60,8 +60,8 @@ const SideMenuConfig = {
         },
         {
           icon: 'user-graduate',
-          label: 'Students',
-          route: '/students',
+          label: 'Syllabus',
+          route: '/syllabus',
         },
         {
           icon: 'box',
