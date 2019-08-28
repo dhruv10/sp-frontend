@@ -3,25 +3,25 @@
     <div class="card">
       <div class="card-content">
         <data-table
-          title="Classroom"
+          title="Student"
           :table-data="data"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
-          @editClick="editClassroom"
-          @deleteClick="deleteClassroom"
+          @editClick="editStudent"
+          @deleteClick="deleteStudent"
         ></data-table>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <classroom-form :formType="formType" @closeModal="closeModal" />
+      <student-form :formType="formType" />
     </b-modal>
   </div>
 </template>
 
 <script>
 import DataTable from '../../components/DataTableLayout';
-import ClassroomForm from '../../components/ClassroomForm';
+import StudentForm from '../../components/StudentForm';
 
 const generateMockData = length => Array(length)
   .fill(null)
@@ -36,7 +36,7 @@ const generateMockData = length => Array(length)
 export default {
   components: {
     DataTable,
-    ClassroomForm,
+    StudentForm,
   },
   data() {
     return {
@@ -45,34 +45,22 @@ export default {
       post: null,
       tableConfig: [
         {
-          label: 'Class Name',
+          label: 'Department Name',
           field: 'name',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Class Number',
+          label: 'Code',
           field: 'number',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Class Section',
+          label: 'Note',
           field: 'section',
-          sortable: true,
-          centered: true,
-        },
-        {
-          label: 'Total Students',
-          field: 'students',
-          sortable: true,
-          centered: true,
-        },
-        {
-          label: 'Class Teacher',
-          field: 'teacher',
           sortable: true,
           centered: true,
         },
@@ -86,35 +74,14 @@ export default {
       this.openModal = true;
       console.log('add');
     },
-    closeModal() {
-      this.openModal = false;
-    },
     bulkUpload() {
       console.log('bulk');
     },
-    editClassroom() {
+    editStudent() {
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteClassroom() {
-      const { dialog, snackbar } = this.$buefy;
-      dialog.confirm({
-        title: 'Deleting Class',
-        message: 'Are you sure you want to <b>delete</b> your class? This action cannot be undone.',
-        confirmText: 'Delete Class',
-        type: 'is-danger',
-        hasIcon: true,
-        onConfirm: () => {
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({ error: false });
-            }, 1000);
-          }).then(() => {
-            snackbar.open('Class deleted!');
-          });
-        },
-      });
-    },
+    deleteStudent() {},
   },
 };
 </script>
