@@ -88,20 +88,17 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$http);
-    this.$http.get('/users/me').then(console.log);
+    // this.$http.get('/class').then(console.log);
   },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
     closeModal() {
       this.openModal = false;
     },
     bulkUpload() {
-      console.log('bulk');
     },
     editClassroom() {
       this.formType = 'edit';

@@ -14,6 +14,7 @@
             type="email"
             class="input-box"
             placeholder="name@domain.com"
+            v-model="email"
           ></b-input>
         </b-field>
         <b-field message class="input-container">
@@ -23,9 +24,10 @@
             class="input-box"
             password-reveal
             placeholder="**********"
+            v-model="password"
           ></b-input>
         </b-field>
-        <b-button class="next-button" type="is-primary is-medium">
+        <b-button class="next-button" type="is-primary is-medium" @click="login()">
           <span class="button-text">Login</span>
           <b-icon icon="arrow-right" size="is-small"></b-icon>
         </b-button>
@@ -51,12 +53,28 @@ export default {
   data() {
     return {
       helpCard: false,
+      email: '',
+      password: '',
     };
   },
   components: {
     HelpCard,
   },
   methods: {
+    login() {
+      const { snackbar } = this.$buefy;
+      if (this.email === '' || this.password === '') {
+        snackbar.open('Something is missing!');
+        return;
+      }
+      this.$http.post('/auth/signin', {
+        email: this.email,
+        password: this.password,
+      }).then(() => {
+        snackbar.open('Logged in succesfully!');
+      })
+        .catch(e => console.log(e));
+    },
     openHelpCard() {
       this.helpCard = true;
     },
