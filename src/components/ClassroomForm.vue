@@ -38,14 +38,14 @@
         </div>
       </div>
     </div>
-    <div class="footer-buttons">
+    <!-- <div class="footer-buttons">
       <b-button outlined type="is-primary" @click="closeModal()">Cancel</b-button>
       <b-button
         :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
         class="submit"
         @click="formType === 'add' ? addClass() : editClass()"
-      >{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button>
-    </div>
+      >{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button> -->
+    <!-- </div> -->
   </div>
 </template>
 
