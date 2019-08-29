@@ -1,126 +1,130 @@
 <template>
-  <div class="h-100 dflex-center">
-    <div class="w-65 mt-3">
-      <div class="columns">
-        <div class="column is-8">
-          <section>
-            <b-field label="School Name">
-              <b-input v-model="name"></b-input>
-            </b-field>
-
-            <b-field label="Address">
-              <b-input class="address" maxlength="200" type="textarea"></b-input>
-            </b-field>
-          </section>
-        </div>
-        <div class="column mt-2">
-          <section>
-            <b-field>
-              <b-upload class="dropfile" v-model="dropFiles" multiple drag-drop>
-                <section class="section">
-                  <div class="content has-text-centered">
-                    <p>
-                      <b-icon icon-pack="fas" icon="envelope" size="is-large"></b-icon>
-                    </p>
-                    <p>Drop your files here or click to upload</p>
-                  </div>
-                </section>
-              </b-upload>
-            </b-field>
-
-            <div class="tags">
-              <span v-for="(file, index) in dropFiles" :key="index" class="tag is-primary">
-                {{file.name}}
-                <button class="delete" type="button" @click="deleteDropFile(index)"></button>
-              </span>
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <div class="columns">
-        <div class="column is-8">
-          <section>
-            <b-field label="Email">
-              <b-input type="email" maxlength="30"></b-input>
-            </b-field>
-
-            <div class="columns">
-              <div class="column">
-                <section>
-                  <b-field label="Phone Number">
-                    <b-input v-model="name"></b-input>
-                  </b-field>
-                  <b-field label="Registration Date">
-                    <b-datepicker placeholder="Type or select a date..." icon="calendar-today" editable></b-datepicker>
-                  </b-field>
-                </section>
-              </div>
-              <div class="column">
-                <section>
-                  <b-field label="Fax">
-                    <b-input v-model="name"></b-input>
-                  </b-field>
-                  <b-field label="Subscription Date">
-                    <b-datepicker placeholder="Type or select a date..." icon="calendar-today" editable></b-datepicker>
-                  </b-field>
-                </section>
-              </div>
-            </div>
-          </section>
-        </div>
-        <div class="column">
-          <section>
-            <b-field label="School Code">
-              <b-input icon-pack="fas" v-model="number" disabled></b-input>
-            </b-field>
-          </section>
-        </div>
-      </div>
-
-      <div class="columns">
-        <div class="column is-8">
-          <b-field label="Facebook">
-            <b-input v-model="name"></b-input>
-          </b-field>
-
-          <b-field label="Twitter">
-            <b-input v-model="name"></b-input>
-          </b-field>
-        </div>
+  <div class="classroom-root-container">
+    <div class="card">
+      <div class="card-content">
+        <data-table
+          title="Add School"
+          :table-data="data"
+          :columns-info="tableConfig"
+          @addClick="openAddModal"
+          @bulkUploadClick="bulkUpload"
+          @editClick="editSchool"
+          @deleteClick="deleteSchool"
+        ></data-table>
       </div>
     </div>
+    <b-modal :active.sync="openModal" :width="740" scroll="keep">
+      <school-form :formType="formType" />
+    </b-modal>
   </div>
 </template>
 
 <script>
+import DataTable from '../../components/DataTableLayout';
+import SchoolForm from '../../components/SchoolForm';
+
+const generateMockData = length => Array(length)
+  .fill(null)
+  .map(() => ({
+    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
+    number: Math.floor(Math.random() * 12),
+    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
+    students: Math.floor(Math.random() * 50),
+    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
+  }));
+
 export default {
-  name: 'AddSchool',
+  components: {
+    DataTable,
+    SchoolForm,
+  },
   data() {
     return {
-      dropFiles: [],
+      openModal: false,
+      formType: 'add',
+      post: null,
+      tableConfig: [
+        {
+          label: 'School Name',
+          field: 'name',
+          sortable: true,
+          numeric: true,
+          centered: true,
+        },
+        {
+          label: 'Address',
+          field: 'number',
+          sortable: true,
+          numeric: true,
+          centered: true,
+        },
+        {
+          label: 'Code',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Email',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Phone',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Registration Date',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Fax',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Facebook',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Twitter',
+          field: 'section',
+          sortable: true,
+          centered: true,
+        },
+      ],
+      data: generateMockData(Math.floor(Math.random() * 50)),
     };
   },
   methods: {
-    deleteDropFile(index) {
-      this.dropFiles.splice(index, 1);
+    openAddModal() {
+      this.formType = 'add';
+      this.openModal = true;
+      console.log('add');
     },
+    bulkUpload() {
+      console.log('bulk');
+    },
+    editSchool() {
+      this.formType = 'edit';
+      this.openModal = true;
+    },
+    deleteSchool() {},
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.w-65 {
-  width: 65%;
-}
-.w-25 {
-  width: 25%;
-}
-.dropfile {
-  width: 16rem;
-  height: 12rem;
-}
-.address {
-  min-height: 7rem !important;
+.classroom-root-container {
+  margin-top: 50px;
+  height: 100%;
 }
 </style>

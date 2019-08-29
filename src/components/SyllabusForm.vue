@@ -14,12 +14,12 @@
             <div class="column is-8">
               <section>
                 <b-field label="Document Title">
-                  <b-input icon-pack="fas" icon="credit-card"></b-input>
+                  <b-input icon-pack="fas" v-model="syllabus.docTitle" icon="credit-card"></b-input>
                 </b-field>
                 <b-field label="Link Class">
-                  <b-select placeholder="Select a class">
+                  <b-select v-model="syllabus.selectedClass" placeholder="Select a class">
                     <option
-                      v-for="option in data"
+                      v-for="option in syllabus.class"
                       :value="option"
                       :key="option"
                     >{{ option }}</option>
@@ -29,7 +29,7 @@
             </div>
             <div class="column is-4 mt-2">
               <b-field>
-                <b-upload v-model="dropFiles" multiple drag-drop>
+                <b-upload v-model="syllabus.docFile" multiple drag-drop>
                   <section class="uploadsection">
                     <div class="content has-text-centered">
                       <p>
@@ -42,7 +42,7 @@
               </b-field>
 
               <div class="tags">
-                <span v-for="(file, index) in dropFiles" :key="index" class="tag is-primary">
+                <span v-for="(file, index) in syllabus.docFile" :key="index" class="tag is-primary">
                   {{file.name}}
                   <button
                     class="delete is-small"
@@ -60,6 +60,7 @@
             icon-right="arrow-circle-right"
             type="is-primary"
             class="submit"
+            @click="submitFormData()"
           >{{ formType === 'add' ? 'Add Syllabus' : 'Edit Syllabus' }}</b-button>
         </div>
       </div>
@@ -80,13 +81,20 @@ export default {
   data() {
     return {
       dropFiles: [],
-      data: ['asd', 'fgh'],
+      syllabus: {
+        docTitle: '',
+        class: '',
+        docFile: [],
+      },
     };
   },
   mounted() {},
   methods: {
     deleteDropFile(index) {
-      this.dropFiles.splice(index, 1);
+      this.syllabus.docFile.splice(index, 1);
+    },
+    submitFormData() {
+      console.log('syllabus form object: ', this.syllabus);
     },
   },
 };
