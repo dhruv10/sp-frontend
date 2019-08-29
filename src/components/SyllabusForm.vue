@@ -58,8 +58,8 @@
           <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
           <b-button
             icon-right="arrow-circle-right"
-            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
             class="submit"
+            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
             @click="formType === 'add' ? addSyllabus() : editSyllabus()"
           >{{ formType === 'add' ? 'Add Syllabus' : 'Edit Syllabus' }}</b-button>
         </div>
@@ -76,7 +76,6 @@ export default {
       type: String,
       default: 'add',
     },
-    post: Object,
   },
   data() {
     return {

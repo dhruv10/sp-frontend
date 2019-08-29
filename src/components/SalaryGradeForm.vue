@@ -68,12 +68,12 @@
                 </b-field>
 
                 <div class="submit">
-                  <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
+                  <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
                   <b-button
-                    @click="submitFormData()"
+                    @click="formType === 'add' ? addSyllabus() : editSyllabus()"
                     icon-right="arrow-circle-right"
-                    type="is-primary"
                     class="submit"
+                    :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
                   >{{ formType === 'add' ? 'Add Salary Grade' : 'Edit Salary Grade' }}</b-button>
                 </div>
               </section>
@@ -96,6 +96,7 @@ export default {
   },
   data() {
     return {
+      startLoading: false,
       salaryGrade: {
         name: '',
         basicSalary: Math.floor(Math.random() * 3000),
@@ -114,8 +115,31 @@ export default {
     };
   },
   methods: {
-    submitFormData() {
-      console.log('salary grade form object: ', this.salaryGrade);
+    closeModal() {
+      this.$emit('closeModal');
+    },
+    addSyllabus() {
+      console.log(this.salaryGrade);
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      this.$http.post('/salary-grade', { ...this.salaryGrade }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Salary Grade added!');
+      });
+    },
+    editSyllabus() {
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ error: false });
+        }, 1000);
+      }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Salary Grade edited!');
+      });
     },
   },
 };
