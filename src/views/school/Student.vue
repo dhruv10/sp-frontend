@@ -4,7 +4,7 @@
       <div class="card-content">
         <data-table
           title="Student"
-          :table-data="data"
+          :table-data="studentDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -23,16 +23,6 @@
 import DataTable from '../../components/DataTableLayout';
 import StudentForm from '../../components/StudentForm';
 
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Math.floor(Math.random() * 50),
-    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
-  }));
-
 export default {
   components: {
     DataTable,
@@ -42,7 +32,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
-      post: null,
+      studentDetails: [],
       tableConfig: [
         {
           label: 'Student Name',
@@ -77,14 +67,22 @@ export default {
           centered: true,
         },
         {
-          label: 'Father\'s Name',
+          label: "Father's Name",
           field: 'name',
           sortable: true,
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
+  },
+  mounted() {
+    this.$http
+      .get('/student')
+      .then((res) => {
+        this.studentDetails = res.data.results;
+        console.log(this.studentDetails);
+      })
+      .catch(e => console.log(e));
   },
   methods: {
     openAddModal() {
@@ -92,14 +90,34 @@ export default {
       this.openModal = true;
       console.log('add');
     },
-    bulkUpload() {
-      console.log('bulk');
+    closeModal() {
+      this.openModal = false;
     },
+    bulkUpload() {},
     editStudent() {
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteStudent() {},
+    deleteStudent() {
+      const { dialog, snackbar } = this.$buefy;
+      dialog.confirm({
+        title: 'Deleting Student',
+        message:
+          'Are you sure you want to <b>delete</b> your student? This action cannot be undone.',
+        confirmText: 'Delete Student',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$http
+            .delete('/student')
+            .then((res) => {
+              console.log(res);
+              snackbar.open('Student deleted!');
+            })
+            .catch(e => console.log(e));
+        },
+      });
+    },
   },
 };
 </script>
