@@ -25,10 +25,6 @@ export default new Router({
           path: 'add-school',
           component: AddSchool,
         },
-        {
-          path: 'receptionist',
-          component: Receptionist,
-        },
       ],
     },
     {
@@ -58,6 +54,10 @@ export default new Router({
         {
           path: 'subjects',
           component: Subjects,
+        },
+        {
+          path: 'receptionist',
+          component: Receptionist,
         },
       ],
     },

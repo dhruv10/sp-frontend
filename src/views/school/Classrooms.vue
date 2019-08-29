@@ -13,8 +13,15 @@
         ></data-table>
       </div>
     </div>
-    <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <classroom-form :formType="formType" @closeModal="closeModal" />
+    <b-modal
+      :active.sync="openModal"
+      :width="640"
+      scroll="keep"
+    >
+      <classroom-form
+        :formType="formType"
+        @closeModal="closeModal"
+      />
     </b-modal>
   </div>
 </template>
@@ -80,6 +87,10 @@ export default {
       data: generateMockData(Math.floor(Math.random() * 50)),
     };
   },
+  mounted() {
+    console.log(this.$http);
+    this.$http.get('/users/me').then(console.log);
+  },
   methods: {
     openAddModal() {
       this.formType = 'add';
@@ -100,7 +111,8 @@ export default {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Class',
-        message: 'Are you sure you want to <b>delete</b> your class? This action cannot be undone.',
+        message:
+          'Are you sure you want to <b>delete</b> your class? This action cannot be undone.',
         confirmText: 'Delete Class',
         type: 'is-danger',
         hasIcon: true,
