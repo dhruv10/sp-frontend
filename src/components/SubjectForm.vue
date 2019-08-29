@@ -11,19 +11,19 @@
       <div class="content card-area">
         <div class="line">
           <b-field label="Subject Code">
-            <b-input></b-input>
+            <b-input v-model="subject.code"></b-input>
           </b-field>
           <b-field label="Subject Name" class="mid">
-            <b-input></b-input>
+            <b-input v-model="subject.name"></b-input>
           </b-field>
         </div>
         <b-field label="Type">
           <div>
             <div class="field">
-              <b-radio v-model="radio" native-value="Mandatory">Mandatory</b-radio>
+              <b-radio v-model="subject.radio" native-value="Mandatory">Mandatory</b-radio>
             </div>
             <div class="field">
-              <b-radio v-model="radio" native-value="Optional">Optional</b-radio>
+              <b-radio v-model="subject.radio" native-value="Optional">Optional</b-radio>
             </div>
           </div>
         </b-field>
@@ -53,6 +53,7 @@ export default {
     return {
       startLoading: false,
       radio: 'Mandatory',
+      subject: {},
     };
   },
   methods: {
@@ -60,13 +61,10 @@ export default {
       this.$emit('closeModal');
     },
     addSubject() {
+      console.log(this.subject);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
+      this.$http.post('/subject', { ...this.subject }).then(() => {
         this.startLoading = false;
         this.$emit('closeModal');
         snackbar.open('Subject added!');

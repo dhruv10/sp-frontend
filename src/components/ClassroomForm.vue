@@ -11,28 +11,29 @@
       <div class="card-content">
         <div class="content card-area">
           <b-field label="Class Name">
-            <b-input></b-input>
+            <b-input v-model="classroom.name"></b-input>
           </b-field>
           <div class="line">
             <b-field label="Class Number">
-              <b-input></b-input>
+              <b-input v-model="classroom.number"></b-input>
             </b-field>
             <b-field label="Section" class="mid">
-              <b-input></b-input>
+              <b-input v-model="classroom.section"></b-input>
             </b-field>
             <b-field label="Total Students">
-              <b-input></b-input>
+              <b-input v-model="classroom.totalStudent"></b-input>
             </b-field>
           </div>
           <b-field label="Class Teacher">
-            <b-input></b-input>
+            <b-input v-model="classroom.classTeacher"></b-input>
           </b-field>
           <div class="submit">
-            <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
+            <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
             <b-button
               icon-right="arrow-circle-right"
               type="is-primary"
               class="submit"
+              @click="addClass()"
             >{{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}</b-button>
           </div>
         </div>
@@ -61,6 +62,7 @@ export default {
   data() {
     return {
       startLoading: false,
+      classroom: {},
     };
   },
   methods: {
@@ -68,6 +70,7 @@ export default {
       this.$emit('closeModal');
     },
     addClass() {
+      console.log(this.classroom);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       new Promise((resolve) => {
