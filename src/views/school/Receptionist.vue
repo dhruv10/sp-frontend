@@ -3,32 +3,25 @@
     <div class="card">
       <div class="card-content">
         <data-table
-          title="Classroom"
+          title="Admission Query"
           :table-data="data"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
-          @editClick="editClassroom"
-          @deleteClick="deleteClassroom"
+          @editClick="editAdmissionQuery"
+          @deleteClick="deleteAdmissionQuery"
         ></data-table>
       </div>
     </div>
-    <b-modal
-      :active.sync="openModal"
-      :width="640"
-      scroll="keep"
-    >
-      <classroom-form
-        :formType="formType"
-        @closeModal="closeModal"
-      />
+    <b-modal :active.sync="openModal" :width="640" scroll="keep">
+      <admission-form :formType="formType" />
     </b-modal>
   </div>
 </template>
 
 <script>
 import DataTable from '../../components/DataTableLayout';
-import ClassroomForm from '../../components/ClassroomForm';
+import AdmissionForm from '../../components/AdmissionForm';
 
 const generateMockData = length => Array(length)
   .fill(null)
@@ -43,7 +36,7 @@ const generateMockData = length => Array(length)
 export default {
   components: {
     DataTable,
-    ClassroomForm,
+    AdmissionForm,
   },
   data() {
     return {
@@ -52,34 +45,40 @@ export default {
       post: null,
       tableConfig: [
         {
-          label: 'Class Name',
+          label: 'Student Name',
           field: 'name',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Class Number',
+          label: 'Enrollment No',
           field: 'number',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Class Section',
+          label: 'Class',
           field: 'section',
           sortable: true,
           centered: true,
         },
         {
-          label: 'Total Students',
-          field: 'students',
+          label: 'Admission Slot',
+          field: 'section',
           sortable: true,
           centered: true,
         },
         {
-          label: 'Class Teacher',
+          label: 'Guardian\'s name',
           field: 'teacher',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Guardian\'s number',
+          field: 'number',
           sortable: true,
           centered: true,
         },
@@ -87,46 +86,20 @@ export default {
       data: generateMockData(Math.floor(Math.random() * 50)),
     };
   },
-  mounted() {
-    console.log(this.$http);
-    this.$http.get('/users/me').then(console.log);
-  },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
       console.log('add');
     },
-    closeModal() {
-      this.openModal = false;
-    },
     bulkUpload() {
       console.log('bulk');
     },
-    editClassroom() {
+    editAdmissionQuery() {
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteClassroom() {
-      const { dialog, snackbar } = this.$buefy;
-      dialog.confirm({
-        title: 'Deleting Class',
-        message:
-          'Are you sure you want to <b>delete</b> your class? This action cannot be undone.',
-        confirmText: 'Delete Class',
-        type: 'is-danger',
-        hasIcon: true,
-        onConfirm: () => {
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({ error: false });
-            }, 1000);
-          }).then(() => {
-            snackbar.open('Class deleted!');
-          });
-        },
-      });
-    },
+    deleteAdmissionQuery() {},
   },
 };
 </script>

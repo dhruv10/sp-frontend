@@ -13,7 +13,7 @@
         ></data-table>
       </div>
     </div>
-    <b-modal :active.sync="openModal" :width="640" scroll="keep">
+    <b-modal :active.sync="openModal" :width="720" scroll="keep">
       <student-form :formType="formType" />
     </b-modal>
   </div>
@@ -45,22 +45,40 @@ export default {
       post: null,
       tableConfig: [
         {
-          label: 'Department Name',
+          label: 'Student Name',
           field: 'name',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Code',
+          label: 'Roll No',
           field: 'number',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Note',
-          field: 'section',
+          label: 'Admission No',
+          field: 'number',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Enrollment No',
+          field: 'number',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Admission Date',
+          field: 'date',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Father\'s Name',
+          field: 'name',
           sortable: true,
           centered: true,
         },
