@@ -59,8 +59,8 @@ export default new Router({
         {
           path: 'teachers',
           component: Teachers,
-},
-                          {
+        },
+        {
           path: 'receptionist',
           component: Receptionist,
         },
