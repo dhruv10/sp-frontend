@@ -103,6 +103,13 @@ export default {
       columns: this.columnsInfo,
     };
   },
+  watch: {
+    tableData: {
+      handler() {
+        this.data = this.tableData;
+      },
+    },
+  },
   methods: {
     onButtonClick(type, payload) {
       if (type === 'add') {

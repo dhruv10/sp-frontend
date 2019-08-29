@@ -12,12 +12,12 @@
         <p>BASIC INFO</p>
         <div class="line">
           <b-field label="Name" class="name">
-            <b-input></b-input>
+            <b-input v-model="teacher.name"></b-input>
           </b-field>
         </div>
         <div class="line">
           <b-field label="Gender" class="gender">
-            <b-dropdown aria-role="list">
+            <b-dropdown aria-role="list" v-model="teacher.gender">
               <button class="button is-outline" slot="trigger">
                 <span class="gender-label"></span>
                 <b-icon icon="menu-down"></b-icon>
@@ -29,29 +29,29 @@
             </b-dropdown>
           </b-field>
           <b-field label="Biometric Code" class="code">
-            <b-input></b-input>
+            <b-input v-model="teacher.code"></b-input>
           </b-field>
           <b-field label="Contact Number" class="phone">
-            <b-input></b-input>
+            <b-input v-model="teacher.number"></b-input>
           </b-field>
         </div>
         <div class="line">
           <b-field label="Blood Group" class="blood">
-            <b-input></b-input>
+            <b-input v-model="teacher.group"></b-input>
           </b-field>
           <b-field label="Nationality" class="nation ml-2">
-            <b-input></b-input>
+            <b-input v-model="teacher.nationality"></b-input>
           </b-field>
           <b-field label="Date of Birth" class="dob ml-2">
-            <b-input type="date"></b-input>
+            <b-input type="date" v-model="teacher.dob"></b-input>
           </b-field>
         </div>
         <div class="line mt-1">
           <b-field label="Email" class="email">
-            <b-input type="email"></b-input>
+            <b-input type="email" v-model="teacher.email"></b-input>
           </b-field>
           <b-field label="Marital Status">
-            <b-dropdown aria-role="list" v-mdodel="martial">
+            <b-dropdown aria-role="list" v-model="martial">
               <button class="button is-outline" slot="trigger">
                 <span class="subject-label"></span>
                 <b-icon icon="menu-down"></b-icon>
@@ -63,7 +63,7 @@
         </div>
         <div>
           <b-field label="Permanent Address">
-            <b-input maxlength="200" type="textarea"></b-input>
+            <b-input maxlength="200" type="textarea" v-model="teacher.address"></b-input>
           </b-field>
         </div>
       </div>
@@ -73,10 +73,10 @@
         <div class="columns">
           <div class="column is-6">
             <b-field label="Spouse Name">
-              <b-input icon-pack="fas"></b-input>
+              <b-input icon-pack="fas" v-model="teacher.spouseName"></b-input>
             </b-field>
             <b-field label="Mobile Number">
-              <b-input icon-pack="fas" type="number"></b-input>
+              <b-input icon-pack="fas" type="number" v-model="teacher.spouseNumber"></b-input>
             </b-field>
           </div>
           <div class="column is-6">
@@ -109,7 +109,7 @@
 
       <div class="line mt-1">
         <b-field label="Joining Date">
-          <b-input type="date"></b-input>
+          <b-input type="date" v-model="teacher.joiningDate"></b-input>
         </b-field>
         <!-- <div class="class-teacher">
           <b-field label="Is Class Teacher">
@@ -120,7 +120,7 @@
         </div>-->
         <div class="ml-2">
           <b-field label="Subject">
-            <b-dropdown aria-role="list">
+            <b-dropdown aria-role="list" v-model="teacher.subject">
               <button class="button is-outline" slot="trigger">
                 <span class="subject-label"></span>
                 <b-icon icon="menu-down"></b-icon>
@@ -146,7 +146,7 @@
         </div>
         <div class="ml-2">
           <b-field label="Department">
-            <b-dropdown aria-role="list">
+            <b-dropdown aria-role="list" v-model="teacher.dept">
               <button class="button is-outline" slot="trigger">
                 <span class="department-label"></span>
                 <b-icon icon="menu-down"></b-icon>
@@ -176,41 +176,41 @@
         <div class="line">
           <div class="bank">
             <b-field label="Bank Name">
-              <b-input></b-input>
+              <b-input v-model="teacher.bankName"></b-input>
             </b-field>
           </div>
           <div class="branchh ml-2">
             <b-field label="Branch">
-              <b-input></b-input>
+              <b-input v-model="teacher.bankBranch"></b-input>
             </b-field>
           </div>
           <div class="grade ml-2">
             <b-field label="Grade">
-              <b-input></b-input>
+              <b-input v-model="teacher.bankGrade"></b-input>
             </b-field>
           </div>
         </div>
         <div class="line mt-1">
           <div class="bank">
             <b-field label="Account No">
-              <b-input></b-input>
+              <b-input v-model="teacher.accountNo"></b-input>
             </b-field>
           </div>
           <div class="branch ml-2">
             <b-field label="ESI No">
-              <b-input></b-input>
+              <b-input v-model="teacher.esiNo"></b-input>
             </b-field>
           </div>
         </div>
         <div class="line mt-1">
           <div class="bank">
             <b-field label="PF No">
-              <b-input></b-input>
+              <b-input v-model="teacher.pfNo"></b-input>
             </b-field>
           </div>
           <div class="branch ml-2">
             <b-field label="Payment Type">
-              <b-dropdown aria-role="list">
+              <b-dropdown aria-role="list" v-model="teacher.paymentType">
                 <button class="button is-outline" slot="trigger">
                   <span class="payment-label"></span>
                   <b-icon icon="menu-down"></b-icon>
@@ -287,6 +287,7 @@ export default {
       startLoading: false,
       married: true,
       martial: null,
+      teacher: {},
     };
   },
   watch: {
@@ -302,6 +303,7 @@ export default {
       this.$emit('closeModal');
     },
     addTeacher() {
+      console.log(this.teacher);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       new Promise((resolve) => {

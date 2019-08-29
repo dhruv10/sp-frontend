@@ -4,7 +4,7 @@
       <div class="card-content">
         <data-table
           title="Subject"
-          :table-data="data"
+          :table-data="subjectDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -24,14 +24,6 @@
 import DataTable from '../../components/DataTableLayout';
 import SubjectForm from '../../components/SubjectForm';
 
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Maths', 'English', 'Hindi'][Math.floor(Math.random() * 3)],
-    code: Math.floor(Math.random() * 12),
-    type: ['Mandatory', 'Optional'][Math.floor(Math.random() * 2)],
-  }));
-
 export default {
   components: {
     DataTable,
@@ -41,6 +33,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      subjectDetails: [],
       tableConfig: [
         {
           label: 'Subject Code',
@@ -58,25 +51,30 @@ export default {
         },
         {
           label: 'Type',
-          field: 'type',
+          field: 'optional',
           sortable: true,
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
+  },
+  mounted() {
+    this.$http.get('/subject').then((res) => {
+      this.subjectDetails = res.data.results.map(sub => ({
+        ...sub, optional: sub.optional ? 'Optional' : 'Mandatory',
+      }));
+      console.log(this.subjectDetails);
+    }).catch(e => console.log(e));
   },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
     closeModal() {
       this.openModal = false;
     },
     bulkUpload() {
-      console.log('bulk');
     },
     editSubject() {
       this.formType = 'edit';
@@ -91,13 +89,11 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({ error: false });
-            }, 1000);
-          }).then(() => {
+          this.$http.delete('/subject').then((res) => {
+            // this.subjectDetails = res
+            console.log(res);
             snackbar.open('Subject deleted!');
-          });
+          }).catch(e => console.log(e));
         },
       });
     },
