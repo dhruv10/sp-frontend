@@ -4,7 +4,7 @@
       <div class="card-content">
         <data-table
           title="Salary Grade"
-          :table-data="data"
+          :table-data="salaryGradeDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -14,7 +14,7 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <salary-grade-form :formType="formType" />
+      <salary-grade-form :formType="formType" @closeModal="closeModal" />
     </b-modal>
   </div>
 </template>
@@ -22,16 +22,6 @@
 <script>
 import DataTable from '../../components/DataTableLayout';
 import SalaryGradeForm from '../../components/SalaryGradeForm.vue';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map((_, i) => ({
-    id: i + 1,
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Array(Math.floor(Math.random() * 50)).fill(null),
-    subjects: Array(Math.floor((Math.random() + 1) * 10)).fill(null),
-  }));
 
 export default {
   components: {
@@ -42,6 +32,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      salaryGradeDetails: [],
       tableConfig: [
         {
           label: 'ID',
@@ -143,8 +134,13 @@ export default {
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
+  },
+  mounted() {
+    this.$http.get('/salary-grade').then((res) => {
+      this.salaryGradeDetails = res.data.results;
+      console.log(this.salaryGradeDetails);
+    }).catch(e => console.log(e));
   },
   methods: {
     openAddModal() {
@@ -152,15 +148,31 @@ export default {
       this.openModal = true;
       console.log('add');
     },
-    bulkUpload() {
-      console.log('bulk');
+    closeModal() {
+      this.openModal = false;
     },
+    bulkUpload() {},
     editSalaryGrade(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
       console.log('row info :', rowinfo);
     },
-    deleteSalaryGrade() {},
+    deleteSalaryGrade() {
+      const { dialog, snackbar } = this.$buefy;
+      dialog.confirm({
+        title: 'Deleting Salary Grade',
+        message: 'Are you sure you want to <b>delete</b> your salary grade? This action cannot be undone.',
+        confirmText: 'Delete Salary Grade',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$http.delete('/salary-grade').then((res) => {
+            console.log(res);
+            snackbar.open('Salary Grade deleted!');
+          }).catch(e => console.log(e));
+        },
+      });
+    },
   },
 };
 </script>
