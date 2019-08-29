@@ -52,10 +52,13 @@ export default {
     };
   },
   mounted() {
-    this.$http.get('/syllabus').then((res) => {
-      this.syllabusDetails = res.data.results;
-      console.log(this.syllabusDetails);
-    }).catch(e => console.log(e));
+    this.$http
+      .get('/syllabus')
+      .then((res) => {
+        this.syllabusDetails = res.data.results;
+        console.log(this.syllabusDetails);
+      })
+      .catch(e => console.log(e));
   },
   methods: {
     openAddModal() {
@@ -74,15 +77,19 @@ export default {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Syllabus',
-        message: 'Are you sure you want to <b>delete</b> your syllabus? This action cannot be undone.',
+        message:
+          'Are you sure you want to <b>delete</b> your syllabus? This action cannot be undone.',
         confirmText: 'Delete Syllabus',
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          this.$http.delete('/syllabus').then((res) => {
-            console.log(res);
-            snackbar.open('Syllabus deleted!');
-          }).catch(e => console.log(e));
+          this.$http
+            .delete('/syllabus')
+            .then((res) => {
+              console.log(res);
+              snackbar.open('Syllabus deleted!');
+            })
+            .catch(e => console.log(e));
         },
       });
     },

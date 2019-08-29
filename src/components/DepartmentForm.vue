@@ -33,12 +33,12 @@
           </div>
         </div>
         <div class="submit">
-          <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
+          <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
           <b-button
-            @click="submitFormData()"
+            @click="formType === 'add' ? addDepartment() : editDepartment()"
             icon-right="arrow-circle-right"
-            type="is-primary"
             class="submit"
+            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
           >{{ formType === 'add' ? 'Add Department' : 'Edit Department' }}</b-button>
         </div>
       </div>
@@ -54,10 +54,10 @@ export default {
       type: String,
       default: 'add',
     },
-    post: Object,
   },
   data() {
     return {
+      startLoading: false,
       department: {
         name: '',
         code: Math.floor(Math.random() * 3000),
@@ -67,8 +67,31 @@ export default {
   },
   mounted() {},
   methods: {
-    submitFormData() {
-      console.log('department form object: ', this.department);
+    closeModal() {
+      this.$emit('closeModal');
+    },
+    addDepartment() {
+      console.log(this.department);
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      this.$http.post('/department', { ...this.department }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Department added!');
+      });
+    },
+    editDepartment() {
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ error: false });
+        }, 1000);
+      }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Department edited!');
+      });
     },
   },
 };

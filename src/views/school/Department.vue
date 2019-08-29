@@ -4,7 +4,7 @@
       <div class="card-content">
         <data-table
           title="Department"
-          :table-data="data"
+          :table-data="departmentDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -14,7 +14,7 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="440" scroll="keep">
-      <department-form :formType="formType" />
+      <department-form :formType="formType" @closeModal="closeModal" />
     </b-modal>
   </div>
 </template>
@@ -22,16 +22,6 @@
 <script>
 import DataTable from '../../components/DataTableLayout';
 import DepartmentForm from '../../components/DepartmentForm';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Math.floor(Math.random() * 50),
-    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
-  }));
 
 export default {
   components: {
@@ -42,7 +32,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
-      post: null,
+      departmentDetails: [],
       tableConfig: [
         {
           label: 'Department Name',
@@ -65,8 +55,17 @@ export default {
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
+  },
+
+  mounted() {
+    this.$http
+      .get('/department')
+      .then((res) => {
+        this.departmentDetails = res.data.results;
+        console.log(this.departmentDetails);
+      })
+      .catch(e => console.log(e));
   },
   methods: {
     openAddModal() {
@@ -74,14 +73,34 @@ export default {
       this.openModal = true;
       console.log('add');
     },
-    bulkUpload() {
-      console.log('bulk');
+    closeModal() {
+      this.openModal = false;
     },
+    bulkUpload() {},
     editDepartment() {
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteDepartment() {},
+    deleteDepartment() {
+      const { dialog, snackbar } = this.$buefy;
+      dialog.confirm({
+        title: 'Deleting Department',
+        message:
+          'Are you sure you want to <b>delete</b> your department? This action cannot be undone.',
+        confirmText: 'Delete Department',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$http
+            .delete('/department')
+            .then((res) => {
+              console.log(res);
+              snackbar.open('Department deleted!');
+            })
+            .catch(e => console.log(e));
+        },
+      });
+    },
   },
 };
 </script>
