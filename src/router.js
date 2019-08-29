@@ -7,6 +7,7 @@ import Department from './views/school/Department.vue';
 import Student from './views/school/Student.vue';
 import Syllabus from './views/school/Syllabus.vue';
 import Subjects from './views/school/Subjects.vue';
+import Teachers from './views/school/Teachers.vue';
 import Receptionist from './views/school/Receptionist.vue';
 
 Vue.use(Router);
@@ -56,6 +57,10 @@ export default new Router({
           component: Subjects,
         },
         {
+          path: 'teachers',
+          component: Teachers,
+},
+                          {
           path: 'receptionist',
           component: Receptionist,
         },
