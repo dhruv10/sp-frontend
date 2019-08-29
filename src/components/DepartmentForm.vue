@@ -14,20 +14,20 @@
             <div class="column is-8">
               <section>
                 <b-field label="Department Name">
-                  <b-input icon-pack="fas" icon="credit-card"></b-input>
+                  <b-input icon-pack="fas" v-model="department.name" icon="credit-card"></b-input>
                 </b-field>
               </section>
             </div>
             <div class="column is-4">
               <b-field label="Code ">
-                <b-input type="number" disabled></b-input>
+                <b-input type="number" v-model="department.code" disabled></b-input>
               </b-field>
             </div>
           </div>
           <div class="columns">
             <div class="column is-12">
               <b-field label="Note">
-                <b-input class="notearea" maxlength="200" type="textarea"></b-input>
+                <b-input class="notearea" v-model="department.note" maxlength="200" type="textarea"></b-input>
               </b-field>
             </div>
           </div>
@@ -35,6 +35,7 @@
         <div class="submit">
           <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
           <b-button
+            @click="submitFormData()"
             icon-right="arrow-circle-right"
             type="is-primary"
             class="submit"
@@ -55,10 +56,21 @@ export default {
     },
     post: Object,
   },
-  mounted() {
-    console.log('post pppp ', this.$props.post);
+  data() {
+    return {
+      department: {
+        name: '',
+        code: Math.floor(Math.random() * 3000),
+        note: '',
+      },
+    };
   },
-  methods: {},
+  mounted() {},
+  methods: {
+    submitFormData() {
+      console.log('department form object: ', this.department);
+    },
+  },
 };
 </script>
 
