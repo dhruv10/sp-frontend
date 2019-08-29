@@ -55,12 +55,12 @@
           </div>
         </div>
         <div class="submit">
-          <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
+          <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
           <b-button
             icon-right="arrow-circle-right"
-            type="is-primary"
+            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
             class="submit"
-            @click="submitFormData()"
+            @click="formType === 'add' ? addSyllabus() : editSyllabus()"
           >{{ formType === 'add' ? 'Add Syllabus' : 'Edit Syllabus' }}</b-button>
         </div>
       </div>
@@ -80,10 +80,11 @@ export default {
   },
   data() {
     return {
+      startLoading: false,
       dropFiles: [],
       syllabus: {
         docTitle: '',
-        class: '',
+        class: [],
         docFile: [],
       },
     };
@@ -93,8 +94,31 @@ export default {
     deleteDropFile(index) {
       this.syllabus.docFile.splice(index, 1);
     },
-    submitFormData() {
-      console.log('syllabus form object: ', this.syllabus);
+    closeModal() {
+      this.$emit('closeModal');
+    },
+    addSyllabus() {
+      console.log(this.syllabus);
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      this.$http.post('/syllabus', { ...this.syllabus }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Syllabus added!');
+      });
+    },
+    editSyllabus() {
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ error: false });
+        }, 1000);
+      }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Syllabus edited!');
+      });
     },
   },
 };

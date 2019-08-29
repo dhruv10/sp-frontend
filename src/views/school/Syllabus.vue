@@ -4,7 +4,7 @@
       <div class="card-content">
         <data-table
           title="Syllabus"
-          :table-data="data"
+          :table-data="syllabusDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -13,8 +13,8 @@
         ></data-table>
       </div>
     </div>
-    <b-modal :active.sync="openModal" :width="540" scroll="keep">
-      <syllabus-form :formType="formType" />
+    <b-modal :active.sync="openModal" :width="640" scroll="keep">
+      <syllabus-form :formType="formType" @closeModal="closeModal" />
     </b-modal>
   </div>
 </template>
@@ -22,16 +22,6 @@
 <script>
 import DataTable from '../../components/DataTableLayout';
 import SyllabusForm from '../../components/SyllabusForm';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Math.floor(Math.random() * 50),
-    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
-  }));
 
 export default {
   components: {
@@ -42,7 +32,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
-      post: null,
+      syllabusDetails: [],
       tableConfig: [
         {
           label: 'Document Name',
@@ -59,23 +49,43 @@ export default {
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
+  },
+  mounted() {
+    this.$http.get('/syllabus').then((res) => {
+      this.syllabusDetails = res.data.results;
+      console.log(this.syllabusDetails);
+    }).catch(e => console.log(e));
   },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
-    bulkUpload() {
-      console.log('bulk');
+    closeModal() {
+      this.openModal = false;
     },
+    bulkUpload() {},
     editSyllabus() {
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteSyllabus() {},
+    deleteSyllabus() {
+      const { dialog, snackbar } = this.$buefy;
+      dialog.confirm({
+        title: 'Deleting Syllabus',
+        message: 'Are you sure you want to <b>delete</b> your syllabus? This action cannot be undone.',
+        confirmText: 'Delete Syllabus',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$http.delete('/syllabus').then((res) => {
+            console.log(res);
+            snackbar.open('Syllabus deleted!');
+          }).catch(e => console.log(e));
+        },
+      });
+    },
   },
 };
 </script>
