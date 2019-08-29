@@ -327,10 +327,10 @@
           </div>
         </div>
         <div class="submit mt-2">
-          <b-button outlined type="is-primary" class="mr-1">Cancel</b-button>
+          <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
           <b-button
-            @click="submitFormData()"
             :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
+            @click="formType === 'add' ? addStudent() : editStudent()"
             icon-right="arrow-circle-right"
             class="submit"
           >{{ formType === 'add' ? 'Add Student' : 'Edit Student' }}</b-button>
@@ -348,7 +348,6 @@ export default {
       type: String,
       default: 'add',
     },
-    post: Object,
   },
   data() {
     return {
@@ -388,15 +387,36 @@ export default {
       },
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1);
     },
-    submitFormData() {
-      console.log('student grade form object: ', this.student);
+    closeModal() {
+      this.$emit('closeModal');
+    },
+    addStudent() {
+      console.log(this.student);
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      this.$http.post('/student', { ...this.student }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Student Added!');
+      });
+    },
+    editStudent() {
+      const { snackbar } = this.$buefy;
+      this.startLoading = true;
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ error: false });
+        }, 1000);
+      }).then(() => {
+        this.startLoading = false;
+        this.$emit('closeModal');
+        snackbar.open('Student edited!');
+      });
     },
   },
 };
