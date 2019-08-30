@@ -77,7 +77,7 @@ export default {
         this.startLoading = false;
         localStorage.setItem('auth_token', res.data.token);
         snackbar.open('Logged in succesfully!');
-        this.$router.push('/master-admin');
+        this.$router.push('/school');
       })
         .catch(() => {
           this.startLoading = false;

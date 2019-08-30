@@ -1,7 +1,7 @@
 <template>
   <div
     class="header-root"
-    :style="{ width: expanded ? '100%' : '84%' }"
+    :style="{ width: expanded ? '100%' : '84%', 'margin-left': expanded ? '12px' : null }"
   >
     <b-navbar>
       <template slot="brand">
