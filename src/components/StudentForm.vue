@@ -348,13 +348,15 @@ export default {
       type: String,
       default: 'add',
     },
+    formData: {
+      type: Object,
+    },
   },
   data() {
     return {
       startLoading: false,
       student: {
         name: '',
-        basicSalary: Math.floor(Math.random() * 3000),
         date: '',
         nationality: '',
         photo: [],
@@ -387,7 +389,9 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    if (this.formType === 'edit') this.student = this.formData;
+  },
   methods: {
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1);
@@ -399,24 +403,28 @@ export default {
       console.log(this.student);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      this.$http.post('/student', { ...this.student }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Student Added!');
-      });
+      this.$http
+        .post('/student', { ...this.student })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('Student Added!');
+        })
+        .catch(e => console.log(e));
     },
     editStudent() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Student edited!');
-      });
+      this.$http
+        .put(`/student/${this.formData._id}`, { ...this.student })
+        .then((res) => {
+          console.log('Edited Response: ', res);
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Student edited!');
+        })
+        .catch(e => console.log(e));
     },
   },
 };

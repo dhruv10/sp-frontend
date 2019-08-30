@@ -14,7 +14,12 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="720" scroll="keep">
-      <student-form :formType="formType" />
+      <student-form
+        :formData="formData"
+        :formType="formType"
+        @closeModal="closeModal"
+        @getTableData="getTableData"
+      />
     </b-modal>
   </div>
 </template>
@@ -32,6 +37,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      formData: {},
       studentDetails: [],
       tableConfig: [
         {
@@ -42,33 +48,149 @@ export default {
           centered: true,
         },
         {
+          label: 'Date',
+          field: 'date',
+          sortable: true,
+          numeric: true,
+          centered: true,
+        },
+        {
+          label: 'Nationality',
+          field: 'nationality',
+          sortable: true,
+          numeric: true,
+          centered: true,
+        },
+        {
           label: 'Roll No',
-          field: 'number',
+          field: 'rollno',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Admission No',
-          field: 'number',
+          field: 'admissionno',
           sortable: true,
           centered: true,
         },
         {
           label: 'Enrollment No',
-          field: 'number',
+          field: 'enrollmentno',
           sortable: true,
           centered: true,
         },
         {
           label: 'Admission Date',
-          field: 'date',
+          field: 'admissiondate',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Blood Group',
+          field: 'bloodgroup',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Class',
+          field: 'classes',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Subjects',
+          field: 'checkboxGroup',
           sortable: true,
           centered: true,
         },
         {
           label: "Father's Name",
-          field: 'name',
+          field: 'fatherName',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Father's Mobile",
+          field: 'fatherMobileNo',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Father's DOB",
+          field: 'fatherDOB',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Father's Blood Group",
+          field: 'fatherBloodGroup',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Father's Education",
+          field: 'fatherEducation',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Father's Profession",
+          field: 'fatherProfession',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Father's Designation",
+          field: 'fatherDesignation',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's Name",
+          field: 'motherName',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's Mobile",
+          field: 'motherMobileNo',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's DOB",
+          field: 'motherDOB',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's Blood Group",
+          field: 'motherBloodGroup',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's Education",
+          field: 'motherEducation',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's Profession",
+          field: 'motherProfession',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: "Mother's Designation",
+          field: 'motherDesignation',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Address',
+          field: 'address',
           sortable: true,
           centered: true,
         },
@@ -76,29 +198,31 @@ export default {
     };
   },
   mounted() {
-    this.$http
-      .get('/student')
-      .then((res) => {
-        this.studentDetails = res.data.results;
-        console.log(this.studentDetails);
-      })
-      .catch(e => console.log(e));
+    this.getTableData();
   },
   methods: {
+    getTableData() {
+      this.$http
+        .get('/student')
+        .then((res) => {
+          this.studentDetails = res.data.results;
+        })
+        .catch(e => console.log(e));
+    },
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
     closeModal() {
       this.openModal = false;
     },
     bulkUpload() {},
-    editStudent() {
+    editStudent(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
+      this.formData = rowinfo;
     },
-    deleteStudent() {
+    deleteStudent(rowinfo) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Student',
@@ -109,10 +233,10 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.$http
-            .delete('/student')
-            .then((res) => {
-              console.log(res);
+            .delete(`/student/${rowinfo._id}`)
+            .then(() => {
               snackbar.open('Student deleted!');
+              this.getTableData();
             })
             .catch(e => console.log(e));
         },
