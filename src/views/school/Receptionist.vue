@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-content">
         <data-table
-          title="Admission Query"
+          title="GatePass Records"
           :table-data="data"
           :columns-info="tableConfig"
           @addClick="openAddModal"
@@ -14,29 +14,19 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <admission-form :formType="formType" />
+      <generate-gate-pass-form :formType="formType" />
     </b-modal>
   </div>
 </template>
 
 <script>
 import DataTable from '../../components/DataTableLayout';
-import AdmissionForm from '../../components/AdmissionForm';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Math.floor(Math.random() * 50),
-    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
-  }));
+import GenerateGatePassForm from '../../components/GenerateGatePassForm';
 
 export default {
   components: {
     DataTable,
-    AdmissionForm,
+    GenerateGatePassForm,
   },
   data() {
     return {
@@ -83,7 +73,6 @@ export default {
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
   },
   methods: {

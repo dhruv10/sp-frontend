@@ -71,6 +71,17 @@ const SideMenuConfig = {
       ],
     },
     {
+      title: 'Receptionist',
+      icon: 'cog',
+      route: '/school',
+      children: [
+        {
+          icon: '',
+          label: 'Gatepass Generator',
+        },
+      ],
+    },
+    {
       title: 'Account',
       icon: 'cog',
       children: [
