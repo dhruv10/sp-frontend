@@ -1,10 +1,11 @@
 <template>
   <div class="classroom-root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="card-content">
         <data-table
           title="Classroom"
-          :table-data="data"
+          :loading="loading"
+          :table-data="classDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -21,6 +22,9 @@
       <classroom-form
         :formType="formType"
         @closeModal="closeModal"
+        :classData="classData"
+        @getTableData="getTableData"
+        :teachers="teachers"
       />
     </b-modal>
   </div>
@@ -29,16 +33,6 @@
 <script>
 import DataTable from '../../components/DataTableLayout';
 import ClassroomForm from '../../components/ClassroomForm';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Math.floor(Math.random() * 50),
-    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
-  }));
 
 export default {
   components: {
@@ -50,6 +44,10 @@ export default {
       openModal: false,
       formType: 'add',
       post: null,
+      teachers: [],
+      classDetails: [],
+      classData: {},
+      loading: false,
       tableConfig: [
         {
           label: 'Class Name',
@@ -60,20 +58,20 @@ export default {
         },
         {
           label: 'Class Number',
-          field: 'number',
+          field: 'classNumber',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Class Section',
-          field: 'section',
+          field: 'classSection',
           sortable: true,
           centered: true,
         },
         {
           label: 'Total Students',
-          field: 'students',
+          field: 'totalStudents',
           sortable: true,
           centered: true,
         },
@@ -84,11 +82,11 @@ export default {
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
   },
   mounted() {
-    // this.$http.get('/class').then(console.log);
+    this.getTableData();
+    this.getTeachers();
   },
   methods: {
     openAddModal() {
@@ -98,13 +96,30 @@ export default {
     closeModal() {
       this.openModal = false;
     },
+    getTeachers() {
+      this.$http.get('/teacher').then((res) => {
+        this.teachers = res.data.results;
+      }).catch(e => console.log(e));
+    },
     bulkUpload() {
     },
-    editClassroom() {
+    editClassroom(data) {
+      this.classData = data;
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteClassroom() {
+    getTableData() {
+      this.loading = true;
+      this.$http.get('/classroom').then((res) => {
+        this.classDetails = res.data.results;
+        console.log(res);
+        this.loading = false;
+      }).catch((e) => {
+        console.log(e);
+        this.loading = false;
+      });
+    },
+    deleteClassroom(data) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Class',
@@ -114,12 +129,14 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({ error: false });
-            }, 1000);
-          }).then(() => {
+          this.loading = true;
+          this.$http.delete(`/classroom/${data._id}`).then(() => {
+            this.getTableData();
+            this.loading = false;
             snackbar.open('Class deleted!');
+          }).catch(() => {
+            this.loading = false;
+            snackbar.open('Something went wrong. Please try again later!');
           });
         },
       });
@@ -132,5 +149,8 @@ export default {
 .classroom-root-container {
   margin-top: 50px;
   height: 100%;
+}
+.table-card {
+  height: 90vh;
 }
 </style>

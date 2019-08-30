@@ -15,17 +15,24 @@
           </b-field>
           <div class="line">
             <b-field label="Class Number">
-              <b-input v-model="classroom.number"></b-input>
+              <b-input v-model="classroom.classNumber"></b-input>
             </b-field>
             <b-field label="Section" class="mid">
-              <b-input v-model="classroom.section"></b-input>
+              <b-input v-model="classroom.classSection"></b-input>
             </b-field>
-            <b-field label="Total Students">
-              <b-input v-model="classroom.totalStudent"></b-input>
-            </b-field>
+            <!-- <b-field label="Total Students">
+              <b-input v-model="classroom.totalStudents"></b-input>
+            </b-field> -->
           </div>
           <b-field label="Class Teacher">
-            <b-input v-model="classroom.classTeacher"></b-input>
+               <b-dropdown aria-role="list" v-model="classroom.classTeacher">
+              <button class="button is-outline" slot="trigger">
+                <span class="teacher-label">{{classroom.basicInfo && classroom.basicInfo.classTeacher}}</span>
+                <b-icon icon="menu-down"></b-icon>
+              </button>
+              <b-dropdown-item aria-role="listitem" v-for="(teacher, key) in teachers" :key="key" :value="teacher">{{ teacher.name }}</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem" v-if="!teachers.length">No teacher added</b-dropdown-item>
+            </b-dropdown>
           </b-field>
           <div class="submit">
             <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
@@ -33,20 +40,12 @@
               icon-right="arrow-circle-right"
               type="is-primary"
               class="submit"
-              @click="addClass()"
+              @click="formType === 'add' ? addClass() : editClass()"
             >{{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}</b-button>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="footer-buttons">
-      <b-button outlined type="is-primary" @click="closeModal()">Cancel</b-button>
-      <b-button
-        :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
-        class="submit"
-        @click="formType === 'add' ? addClass() : editClass()"
-      >{{ formType === 'add' ? 'Add Classroom' : 'Apply Changes' }}</b-button> -->
-    <!-- </div> -->
   </div>
 </template>
 
@@ -58,12 +57,30 @@ export default {
       type: String,
       default: 'add',
     },
+    teachers: {
+      type: Array,
+      default: () => [],
+    },
+    classData: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
       startLoading: false,
-      classroom: {},
+      classroom: {
+        classTeacher: {
+          basicInfo: {},
+        },
+      },
     };
+  },
+  mounted() {
+    if (this.formType === 'edit') {
+      this.classroom = this.classData;
+    }
+    console.log(this.classroom);
   },
   methods: {
     closeModal() {
@@ -73,28 +90,35 @@ export default {
       console.log(this.classroom);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Class added!');
-      });
+      this.$http
+        .post('/classroom', { ...this.classroom })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Class added!');
+        })
+        .catch(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Something went wrong. Please try again later!');
+        });
     },
     editClass() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Class edited!');
-      });
+      this.$http
+        .put(`/classroom/${this.classData._id}`, this.classroom)
+        .then(() => {
+          this.$emit('getTableData');
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Classroom edited!');
+        })
+        .catch(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Something went wrong. Please try again later!');
+        });
     },
   },
 };
@@ -127,6 +151,9 @@ export default {
 .submit {
   display: flex;
   justify-content: flex-end;
+}
+.teacher-label {
+  width: 33rem
 }
 .mr-1 {
   margin-right: 1rem;
