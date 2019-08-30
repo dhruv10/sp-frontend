@@ -15,7 +15,7 @@
       <template slot="start">
         <b-navbar-item class="is-primary">
           <p class="is-primary">
-            <b>Rajnikaant Public School</b>
+            <b>{{ schoolName }}</b>
           </p>
         </b-navbar-item>
       </template>
@@ -28,7 +28,7 @@
               icon-left="user"
               outlined
             >
-              <strong>Welcome, Shikhar Seth</strong>
+              <strong>Welcome, {{ userEmail }}</strong>
             </b-button>
           </div>
         </b-navbar-item>
@@ -45,10 +45,20 @@ export default {
       default: false,
     },
   },
+  data() {
+    return {
+      schoolName: '',
+      userEmail: '',
+    };
+  },
   methods: {
     toggleMenu() {
       this.$emit('toggleMenu');
     },
+  },
+  mounted() {
+    this.schoolName = localStorage.getItem('schoolName');
+    this.userEmail = localStorage.getItem('userEmail');
   },
 };
 </script>
