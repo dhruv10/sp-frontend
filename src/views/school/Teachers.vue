@@ -1,21 +1,26 @@
 <template>
   <div class="teacher-root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="card-content">
         <data-table
           title="Teacher"
-          :table-data="data"
+          :loading="loading"
+          :table-data="teacherDetail"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
           @editClick="editTeacher"
           @deleteClick="deleteTeacher"
-        >
-        </data-table>
+        ></data-table>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <teacher-form :formType="formType" @closeModal="closeModal" />
+      <teacher-form
+        :formType="formType"
+        @closeModal="closeModal"
+        :teacherData="teacherData"
+        @getTableData="getTableData"
+      />
     </b-modal>
   </div>
 </template>
@@ -23,20 +28,6 @@
 <script>
 import DataTable from '../../components/DataTableLayout';
 import TeacherForm from '../../components/TeacherForm';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Rekha Jain', 'Ria Malhotra', 'Veena'][Math.floor(Math.random() * 3)],
-    code: Math.floor(Math.random() * 12),
-    gender: ['Female', 'Male'][Math.floor(Math.random() * 2)],
-    number: ['1212121212', '3232323223'][Math.floor(Math.random() * 2)],
-    blood: ['A', 'B', '+B'][Math.floor(Math.random() * 3)],
-    naitionality: ['Indian', 'English'][Math.floor(Math.random() * 2)],
-    dob: ['01/02/1998', '23/12/1987'][Math.floor(Math.random() * 2)],
-    email: ['sakshisrivastava413@gmail.com', 'abc@gmail.com'][Math.floor(Math.random() * 2)],
-    address: ['CD 199 Pitampura delhi', '1222 rohini sector 12 delhi'][Math.floor(Math.random() * 2)],
-  }));
 
 export default {
   components: {
@@ -47,6 +38,9 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      teacherDetail: [],
+      teacherData: {},
+      loading: false,
       tableConfig: [
         {
           label: 'Biometric Code',
@@ -101,41 +95,61 @@ export default {
           field: 'address',
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
+  },
+  mounted() {
+    this.getTableData();
   },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
+    },
+    getTableData() {
+      this.loading = true;
+      this.$http
+        .get('/teacher')
+        .then((res) => {
+          console.log('teacher', res.data.results);
+          this.teacherDetail = res.data.results;
+          this.loading = false;
+        })
+        .catch((e) => {
+          console.log(e);
+          this.loading = false;
+        });
     },
     closeModal() {
       this.openModal = false;
     },
-    bulkUpload() {
-      console.log('bulk');
-    },
-    editTeacher() {
+    bulkUpload() {},
+    editTeacher(data) {
       this.formType = 'edit';
+      this.teacherData = data;
       this.openModal = true;
     },
-    deleteTeacher() {
+    deleteTeacher(data) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Teacher',
-        message: 'Are you sure you want to <b>delete</b> your teacher? This action cannot be undone.',
+        message:
+          'Are you sure you want to <b>delete</b> your teacher? This action cannot be undone.',
         confirmText: 'Delete Teacher',
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({ error: false });
-            }, 1000);
-          }).then(() => {
-            snackbar.open('Teacher deleted!');
-          });
+          this.loading = true;
+          this.$http
+            .delete(`/teacher/${data._id}`)
+            .then(() => {
+              this.getTableData();
+              this.loading = false;
+              snackbar.open('Teacher deleted!');
+            })
+            .catch(() => {
+              this.loading = false;
+              snackbar.open('Something went wrong. Please try again later!');
+            });
         },
       });
     },
@@ -146,6 +160,8 @@ export default {
 <style lang="scss" scoped>
 .teacher-root-container {
   margin-top: 50px;
-  height: 100%;
+}
+.table-card {
+  height: 90vh
 }
 </style>
