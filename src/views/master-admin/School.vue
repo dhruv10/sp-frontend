@@ -4,7 +4,7 @@
       <div class="card-content">
         <data-table
           title="Add School"
-          :table-data="data"
+          :table-data="schoolDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
@@ -14,7 +14,12 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="740" scroll="keep">
-      <school-form :formType="formType" />
+      <school-form
+        :formData="formData"
+        :formType="formType"
+        @closeModal="closeModal"
+        @getTableData="getTableData"
+      />
     </b-modal>
   </div>
 </template>
@@ -22,16 +27,6 @@
 <script>
 import DataTable from '../../components/DataTableLayout';
 import SchoolForm from '../../components/SchoolForm';
-
-const generateMockData = length => Array(length)
-  .fill(null)
-  .map(() => ({
-    name: ['Daffodils', 'Lotus', 'Sunflower'][Math.floor(Math.random() * 3)],
-    number: Math.floor(Math.random() * 12),
-    section: ['A', 'B', 'C'][Math.floor(Math.random() * 3)],
-    students: Math.floor(Math.random() * 50),
-    teacher: ['Rekha', 'Seema', 'Payal'][Math.floor(Math.random() * 3)],
-  }));
 
 export default {
   components: {
@@ -42,7 +37,8 @@ export default {
     return {
       openModal: false,
       formType: 'add',
-      post: null,
+      formData: {},
+      schoolDetails: [],
       tableConfig: [
         {
           label: 'School Name',
@@ -53,7 +49,7 @@ export default {
         },
         {
           label: 'Address',
-          field: 'number',
+          field: 'address',
           sortable: true,
           numeric: true,
           centered: true,
@@ -66,58 +62,94 @@ export default {
         },
         {
           label: 'Email',
-          field: 'section',
+          field: 'email',
           sortable: true,
           centered: true,
         },
         {
           label: 'Phone',
-          field: 'section',
+          field: 'phone',
           sortable: true,
           centered: true,
         },
         {
           label: 'Registration Date',
-          field: 'section',
+          field: 'registrationDate',
+          sortable: true,
+          centered: true,
+        },
+        {
+          label: 'Subscription Date',
+          field: 'subscriptionDate',
           sortable: true,
           centered: true,
         },
         {
           label: 'Fax',
-          field: 'section',
+          field: 'fax',
           sortable: true,
           centered: true,
         },
         {
           label: 'Facebook',
-          field: 'section',
+          field: 'fb',
           sortable: true,
           centered: true,
         },
         {
           label: 'Twitter',
-          field: 'section',
+          field: 'twitter',
           sortable: true,
           centered: true,
         },
       ],
-      data: generateMockData(Math.floor(Math.random() * 50)),
     };
   },
+  mounted() {
+    this.getTableData();
+  },
   methods: {
+    getTableData() {
+      this.$http
+        .get('/school')
+        .then((res) => {
+          this.schoolDetails = res.data.results;
+        })
+        .catch(e => console.log(e));
+    },
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
-    bulkUpload() {
-      console.log('bulk');
+    closeModal() {
+      this.openModal = false;
     },
-    editSchool() {
+    bulkUpload() {},
+    editSchool(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
+      this.formData = rowinfo;
     },
-    deleteSchool() {},
+    deleteSchool(rowinfo) {
+      const { dialog, snackbar } = this.$buefy;
+      dialog.confirm({
+        title: 'Deleting School',
+        message:
+          'Are you sure you want to <b>delete</b> your school? This action cannot be undone.',
+        confirmText: 'Delete School',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$http
+            .delete(`/school/${rowinfo._id}`)
+            .then(() => {
+              snackbar.open('School deleted!');
+              this.getTableData();
+            })
+            .catch(e => console.log(e));
+        },
+      });
+    },
   },
 };
 </script>
