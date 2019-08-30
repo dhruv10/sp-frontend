@@ -27,7 +27,7 @@
             v-model="password"
           ></b-input>
         </b-field>
-        <b-button class="next-button" type="is-primary is-medium" @click="login()">
+        <b-button class="next-button" :type="startLoading ? 'is-loading is-primary is-medium' : 'is-primary is-medium'" @click="login()">
           <span class="button-text">Login</span>
           <b-icon icon="arrow-right" size="is-small"></b-icon>
         </b-button>
@@ -55,6 +55,7 @@ export default {
       helpCard: false,
       email: '',
       password: '',
+      startLoading: false,
     };
   },
   components: {
@@ -63,17 +64,25 @@ export default {
   methods: {
     login() {
       const { snackbar } = this.$buefy;
+      this.startLoading = true;
       if (this.email === '' || this.password === '') {
+        this.startLoading = false;
         snackbar.open('Something is missing!');
         return;
       }
       this.$http.post('/auth/signin', {
         email: this.email,
         password: this.password,
-      }).then(() => {
+      }).then((res) => {
+        this.startLoading = false;
+        localStorage.setItem('auth_token', res.data.token);
         snackbar.open('Logged in succesfully!');
+        this.$router.push('/master-admin');
       })
-        .catch(e => console.log(e));
+        .catch(() => {
+          this.startLoading = false;
+          snackbar.open('Something went wrong. Please try again later!');
+        });
     },
     openHelpCard() {
       this.helpCard = true;
