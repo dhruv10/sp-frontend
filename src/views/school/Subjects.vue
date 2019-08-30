@@ -1,21 +1,21 @@
 <template>
   <div class="subject-root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="card-content">
         <data-table
           title="Subject"
+          :loading="loading"
           :table-data="subjectDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
           @bulkUploadClick="bulkUpload"
           @editClick="editSubject"
           @deleteClick="deleteSubject"
-        >
-        </data-table>
+        ></data-table>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <subject-form :formType="formType" @closeModal="closeModal" />
+      <subject-form :formType="formType" @closeModal="closeModal" :subjectData="subjectData" @getTableData="getTableData" />
     </b-modal>
   </div>
 </template>
@@ -34,6 +34,8 @@ export default {
       openModal: false,
       formType: 'add',
       subjectDetails: [],
+      subjectData: {},
+      loading: false,
       tableConfig: [
         {
           label: 'Subject Code',
@@ -59,12 +61,7 @@ export default {
     };
   },
   mounted() {
-    this.$http.get('/subject').then((res) => {
-      this.subjectDetails = res.data.results.map(sub => ({
-        ...sub, optional: sub.optional ? 'Optional' : 'Mandatory',
-      }));
-      console.log(this.subjectDetails);
-    }).catch(e => console.log(e));
+    this.getTableData();
   },
   methods: {
     openAddModal() {
@@ -74,13 +71,28 @@ export default {
     closeModal() {
       this.openModal = false;
     },
+    getTableData() {
+      this.loading = true;
+      this.$http.get('/subject').then((res) => {
+        this.subjectDetails = res.data.results.map(sub => ({
+          ...sub, optional: sub.optional ? 'Optional' : 'Mandatory',
+        }));
+        this.loading = false;
+        console.log(this.subjectDetails);
+      }).catch((e) => {
+        console.log(e);
+        this.loading = false;
+      });
+    },
     bulkUpload() {
     },
-    editSubject() {
+    editSubject(data) {
+      console.log(data);
+      this.subjectData = data;
       this.formType = 'edit';
       this.openModal = true;
     },
-    deleteSubject() {
+    deleteSubject(data) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Subject',
@@ -89,11 +101,16 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          this.$http.delete('/subject').then((res) => {
-            // this.subjectDetails = res
+          this.loading = true;
+          this.$http.delete(`/subject/${data._id}`).then((res) => {
             console.log(res);
+            this.getTableData();
+            this.loading = false;
             snackbar.open('Subject deleted!');
-          }).catch(e => console.log(e));
+          }).catch(() => {
+            this.loading = false;
+            snackbar.open('Something went wrong. Please try again later!');
+          });
         },
       });
     },
@@ -105,5 +122,8 @@ export default {
 .subject-root-container {
   margin-top: 50px;
   height: 100%;
+}
+.table-card {
+  height: 90vh
 }
 </style>
