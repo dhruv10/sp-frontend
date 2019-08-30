@@ -47,7 +47,7 @@
             :icon="child.icon"
             :label="child.label"
             :active="fullRoute === option.route + child.route"
-            @click="navigateTo(option.route, child.route)"
+            @click="navigateTo(option.route, child.route, child.handler)"
           >
           </b-menu-item>
         </b-menu-item>
@@ -71,7 +71,8 @@ export default {
     },
   },
   methods: {
-    navigateTo(parentRoute, childRoute) {
+    navigateTo(parentRoute, childRoute, handler) {
+      if (handler) handler();
       this.$router.push(parentRoute + childRoute);
     },
   },

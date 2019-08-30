@@ -77,7 +77,7 @@ export default {
         },
         {
           label: 'Class Teacher',
-          field: 'teacher',
+          field: 'classTeacher.basicInfo.name',
           sortable: true,
           centered: true,
         },

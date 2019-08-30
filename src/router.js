@@ -12,8 +12,12 @@ import Receptionist from './views/school/Receptionist.vue';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
+    {
+      path: '/',
+      redirect: '/login',
+    },
     {
       path: '/login',
       component: () => import(/* webpackChunkName: "login" */ './views/common/Login.vue'),
@@ -32,6 +36,10 @@ export default new Router({
       path: '/school',
       component: () => import(/* webpackChunkName: "layout" */ './views/common/Layout.vue'),
       children: [
+        {
+          path: '/',
+          redirect: 'classrooms',
+        },
         {
           path: 'classrooms',
           component: Classrooms,
@@ -68,3 +76,12 @@ export default new Router({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  console.log('asdmaslkgsda', to.path);
+  if (to.path === '/login') next(true);
+  else if (localStorage.getItem('auth_token') !== null) next(true);
+  else next('/login');
+});
+
+export default router;

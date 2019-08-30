@@ -29,7 +29,7 @@ const SideMenuConfig = {
   icon: 'school',
   options: [
     {
-      title: 'Setup',
+      title: 'Manage',
       icon: 'cog',
       route: '/school',
       children: [
@@ -71,34 +71,17 @@ const SideMenuConfig = {
       ],
     },
     {
-      title: 'Account',
-      icon: 'cog',
-      children: [
-        {
-          icon: 'chalkboard-teacher',
-          label: 'Classrooms',
-        },
-        {
-          icon: 'folder',
-          label: 'Students',
-        },
-        {
-          icon: 'chess-rook',
-          label: 'Teachers',
-        },
-        {
-          icon: 'user-graduate',
-          label: 'Students',
-        },
-      ],
-    },
-    {
       title: 'Actions',
       icon: 'cog',
+      route: '',
       children: [
         {
           icon: 'sign-out-alt',
           label: 'Logout',
+          route: '/login',
+          handler() {
+            localStorage.clear();
+          },
         },
       ],
     },
@@ -134,7 +117,6 @@ export default {
   transition: width 1s;
   box-shadow: black 1px 1px 12px -5px;
   padding-right: 0px;
-  height: 100vh;
 }
 .body {
   padding-left: 0px;
