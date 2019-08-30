@@ -1,9 +1,10 @@
 <template>
   <div class="classroom-root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="card-content">
         <data-table
           title="Student"
+          :loading="loading"
           :table-data="studentDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
@@ -38,6 +39,7 @@ export default {
       openModal: false,
       formType: 'add',
       formData: {},
+      loading: false,
       studentDetails: [],
       tableConfig: [
         {
@@ -202,12 +204,17 @@ export default {
   },
   methods: {
     getTableData() {
+      this.loading = true;
       this.$http
         .get('/student')
         .then((res) => {
           this.studentDetails = res.data.results;
+          this.loading = false;
         })
-        .catch(e => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          this.loading = false;
+        });
     },
     openAddModal() {
       this.formType = 'add';
@@ -232,13 +239,18 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
+          this.loading = true;
           this.$http
             .delete(`/student/${rowinfo._id}`)
             .then(() => {
               snackbar.open('Student deleted!');
               this.getTableData();
+              this.loading = false;
             })
-            .catch(e => console.log(e));
+            .catch((e) => {
+              console.log(e);
+              this.loading = false;
+            });
         },
       });
     },
@@ -250,5 +262,8 @@ export default {
 .classroom-root-container {
   margin-top: 50px;
   height: 100%;
+}
+.table-card {
+  height: 90vh
 }
 </style>

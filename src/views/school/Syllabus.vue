@@ -1,9 +1,10 @@
 <template>
   <div class="classroom-root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="card-content">
         <data-table
           title="Syllabus"
+          :loading="loading"
           :table-data="syllabusDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
@@ -39,6 +40,7 @@ export default {
       formType: 'add',
       formData: {},
       syllabusDetails: [],
+      loading: false,
       tableConfig: [
         {
           label: 'Document Name',
@@ -62,12 +64,17 @@ export default {
   },
   methods: {
     getTableData() {
+      this.loading = true;
       this.$http
         .get('/syllabus')
         .then((res) => {
           this.syllabusDetails = res.data.results;
+          this.loading = false;
         })
-        .catch(e => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          this.loading = false;
+        });
     },
     openAddModal() {
       this.formType = 'add';
@@ -92,14 +99,19 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
+          this.loading = true;
           this.$http
             .delete(`/syllabus/${rowinfo._id}`)
             .then((res) => {
               console.log(res);
               snackbar.open('Syllabus deleted!');
               this.getTableData();
+              this.loading = false;
             })
-            .catch(e => console.log(e));
+            .catch((e) => {
+              console.log(e);
+              this.loading = false;
+            });
         },
       });
     },
@@ -111,5 +123,8 @@ export default {
 .classroom-root-container {
   margin-top: 50px;
   height: 100%;
+}
+.table-card {
+  height: 90vh
 }
 </style>
