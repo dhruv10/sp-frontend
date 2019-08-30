@@ -20,10 +20,10 @@
         <b-field label="Type">
           <div>
             <div class="field">
-              <b-radio v-model="subject.radio" native-value="Mandatory">Mandatory</b-radio>
+              <b-radio v-model="radio" :native-value="false">Mandatory</b-radio>
             </div>
             <div class="field">
-              <b-radio v-model="subject.radio" native-value="Optional">Optional</b-radio>
+              <b-radio v-model="radio" :native-value="true">Optional</b-radio>
             </div>
           </div>
         </b-field>
@@ -48,6 +48,10 @@ export default {
       type: String,
       default: 'add',
     },
+    subjectData: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -55,6 +59,12 @@ export default {
       radio: 'Mandatory',
       subject: {},
     };
+  },
+  mounted() {
+    if (this.formType === 'edit') {
+      this.subject = this.subjectData;
+    }
+    console.log(this.subjectData);
   },
   methods: {
     closeModal() {
@@ -64,24 +74,41 @@ export default {
       console.log(this.subject);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      this.$http.post('/subject', { ...this.subject }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Subject added!');
-      });
+      this.$http
+        .post('/subject', { ...this.subject })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('Subject added!');
+        })
+        .catch(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Something went wrong. Please try again later!');
+        });
     },
     editSubject() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Subject edited!');
-      });
+      const editedSub = {
+        ...this.subject,
+        optional: Boolean(this.subject.optional === 'Optional'),
+      };
+      delete editedSub._id;
+      this.$http
+        .put(`/subject/${this.subjectData._id}`, { ...editedSub })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('Subject edited!');
+        })
+        .catch(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Something went wrong. Please try again later!');
+        });
     },
   },
 };
