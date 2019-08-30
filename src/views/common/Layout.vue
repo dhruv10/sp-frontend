@@ -73,10 +73,15 @@ const SideMenuConfig = {
     {
       title: 'Actions',
       icon: 'cog',
+      route: '',
       children: [
         {
           icon: 'sign-out-alt',
           label: 'Logout',
+          route: '/login',
+          handler() {
+            localStorage.clear();
+          },
         },
       ],
     },
