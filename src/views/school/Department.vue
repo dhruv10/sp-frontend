@@ -14,7 +14,12 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="440" scroll="keep">
-      <department-form :formType="formType" @closeModal="closeModal" />
+      <department-form
+        :formData="formData"
+        :formType="formType"
+        @closeModal="closeModal"
+        @getTableData="getTableData"
+      />
     </b-modal>
   </div>
 </template>
@@ -32,6 +37,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      formData: {},
       departmentDetails: [],
       tableConfig: [
         {
@@ -43,45 +49,46 @@ export default {
         },
         {
           label: 'Code',
-          field: 'number',
+          field: 'code',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Note',
-          field: 'section',
+          field: 'note',
           sortable: true,
           centered: true,
         },
       ],
     };
   },
-
   mounted() {
-    this.$http
-      .get('/department')
-      .then((res) => {
-        this.departmentDetails = res.data.results;
-        console.log(this.departmentDetails);
-      })
-      .catch(e => console.log(e));
+    this.getTableData();
   },
   methods: {
+    getTableData() {
+      this.$http
+        .get('/department')
+        .then((res) => {
+          this.departmentDetails = res.data.results;
+        })
+        .catch(e => console.log(e));
+    },
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
     closeModal() {
       this.openModal = false;
     },
     bulkUpload() {},
-    editDepartment() {
+    editDepartment(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
+      this.formData = rowinfo;
     },
-    deleteDepartment() {
+    deleteDepartment(rowinfo) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Department',
@@ -92,10 +99,10 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.$http
-            .delete('/department')
-            .then((res) => {
-              console.log(res);
+            .delete(`/department/${rowinfo._id}`)
+            .then(() => {
               snackbar.open('Department deleted!');
+              this.getTableData();
             })
             .catch(e => console.log(e));
         },

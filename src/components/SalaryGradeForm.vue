@@ -70,7 +70,7 @@
                 <div class="submit">
                   <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
                   <b-button
-                    @click="formType === 'add' ? addSyllabus() : editSyllabus()"
+                    @click="formType === 'add' ? addSalaryGrade() : editSalaryGrade()"
                     icon-right="arrow-circle-right"
                     class="submit"
                     :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
@@ -99,7 +99,7 @@ export default {
       startLoading: false,
       salaryGrade: {
         name: '',
-        basicSalary: Math.floor(Math.random() * 3000),
+        basicSalary: '',
         transportAllowance: '',
         overtimeHourlyRate: '',
         hourlyRate: '',
@@ -118,28 +118,31 @@ export default {
     closeModal() {
       this.$emit('closeModal');
     },
-    addSyllabus() {
-      console.log(this.salaryGrade);
+    addSalaryGrade() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      this.$http.post('/salary-grade', { ...this.salaryGrade }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Salary Grade added!');
-      });
+      this.$http
+        .post('/salary-grade', { ...this.salaryGrade })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('Salary Grade added!');
+        })
+        .catch(e => console.log(e));
     },
-    editSyllabus() {
+    editSalaryGrade() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Salary Grade edited!');
-      });
+      this.$http
+        .put(`/salary-grade/${this.formData._id}`, { ...this.salaryGrade })
+        .then((res) => {
+          console.log('Edited Response: ', res);
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Salary Grade edited!');
+        })
+        .catch(e => console.log(e));
     },
   },
 };

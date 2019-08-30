@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AddSchool from './views/master-admin/AddSchool.vue';
+import School from './views/master-admin/School.vue';
 import Classrooms from './views/school/Classrooms.vue';
 import SalaryGrade from './views/school/SalaryGrade.vue';
 import Department from './views/school/Department.vue';
@@ -24,7 +24,7 @@ export default new Router({
       children: [
         {
           path: 'add-school',
-          component: AddSchool,
+          component: School,
         },
       ],
     },

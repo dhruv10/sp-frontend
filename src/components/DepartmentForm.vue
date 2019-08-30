@@ -20,7 +20,7 @@
             </div>
             <div class="column is-4">
               <b-field label="Code ">
-                <b-input type="number" v-model="department.code" disabled></b-input>
+                <b-input v-model="department.code"></b-input>
               </b-field>
             </div>
           </div>
@@ -54,44 +54,51 @@ export default {
       type: String,
       default: 'add',
     },
+    formData: {
+      type: Object,
+    },
   },
   data() {
     return {
       startLoading: false,
       department: {
         name: '',
-        code: Math.floor(Math.random() * 3000),
+        code: '',
         note: '',
       },
     };
   },
-  mounted() {},
+  mounted() {
+    if (this.formType === 'edit') this.department = this.formData;
+  },
   methods: {
     closeModal() {
       this.$emit('closeModal');
     },
     addDepartment() {
-      console.log(this.department);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      this.$http.post('/department', { ...this.department }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Department added!');
-      });
+      this.$http
+        .post('/department', { ...this.department })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('Department added!');
+        })
+        .catch(e => console.log(e));
     },
     editDepartment() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Department edited!');
-      });
+      this.$http
+        .put(`/department/${this.formData._id}`, { ...this.department })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Department edited!');
+        })
+        .catch(e => console.log(e));
     },
   },
 };

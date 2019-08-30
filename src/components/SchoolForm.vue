@@ -2,9 +2,7 @@
   <div class="main-container">
     <div class="card">
       <header class="card-header">
-        <p
-          class="card-header-title header"
-        >{{ formType === 'add' ? 'Add School' : 'Edit School' }}</p>
+        <p class="card-header-title header">{{ formType === 'add' ? 'Add School' : 'Edit School' }}</p>
       </header>
     </div>
     <div class="card-content">
@@ -126,6 +124,9 @@ export default {
       type: String,
       default: 'add',
     },
+    formData: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -134,50 +135,53 @@ export default {
         name: '',
         address: '',
         dropFiles: [],
-        basicSalary: '',
-        code: Math.floor(Math.random() * 3000),
+        code: '',
         email: '',
         phone: '',
-        registrationDate: '',
+        registrationDate: new Date(),
         fax: '',
-        subscriptionDate: '',
+        subscriptionDate: new Date(),
         fb: '',
         twitter: '',
       },
     };
   },
+  mounted() {
+    if (this.formType === 'edit') this.school = this.formData;
+  },
   methods: {
     closeModal() {
       this.$emit('closeModal');
     },
-    submitFormData() {
-      console.log('school form object: ', this.school);
-    },
     addSchool() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Subject added!');
-      });
+      this.$http
+        .post('/school', {
+          ...this.school,
+          registrationDate: this.school.registrationDate.getTime().toString(),
+          subscriptionDate: this.school.subscriptionDate.getTime().toString(),
+        })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('School added!');
+        })
+        .catch(e => console.log(e));
     },
     editSchool() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Subject edited!');
-      });
+      this.$http
+        .put(`/school/${this.formData._id}`, { ...this.school })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('School edited!');
+          this.$emit('getTableData');
+        })
+        .catch(e => console.log(e));
     },
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1);

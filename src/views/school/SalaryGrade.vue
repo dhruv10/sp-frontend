@@ -14,7 +14,7 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <salary-grade-form :formType="formType" @closeModal="closeModal" />
+      <salary-grade-form :formData="formData" :formType="formType" @closeModal="closeModal" @getTableData="getTableData" />
     </b-modal>
   </div>
 </template>
@@ -32,6 +32,7 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      formData: {},
       salaryGradeDetails: [],
       tableConfig: [
         {
@@ -51,84 +52,84 @@ export default {
         },
         {
           label: 'Basic Salary',
-          field: 'number',
+          field: 'basicSalary',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Transport Allowance',
-          field: 'number',
+          field: 'transportAllowance',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Over Time Hourly Rate',
-          field: 'number',
+          field: 'overtimeHourlyRate',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Hourly Rate',
-          field: 'number',
+          field: 'hourlyRate',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'House Rent',
-          field: 'number',
+          field: 'houseRent',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Medical Allowance',
-          field: 'number',
+          field: 'medicalAllowance',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Provident Fund',
-          field: 'number',
+          field: 'providentFund',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Taxation',
-          field: 'number',
+          field: 'taxation',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Total Allowance',
-          field: 'number',
+          field: 'totalAllowance',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Total Deduction',
-          field: 'number',
+          field: 'totalDeduction',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Gross Salary',
-          field: 'number',
+          field: 'grossSalary',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Net Salary',
-          field: 'number',
+          field: 'netSalary',
           sortable: true,
           numeric: true,
           centered: true,
@@ -137,16 +138,20 @@ export default {
     };
   },
   mounted() {
-    this.$http.get('/salary-grade').then((res) => {
-      this.salaryGradeDetails = res.data.results;
-      console.log(this.salaryGradeDetails);
-    }).catch(e => console.log(e));
+    this.getTableData();
   },
   methods: {
+    getTableData() {
+      this.$http
+        .get('/salary-grade')
+        .then((res) => {
+          this.salaryGradeDetails = res.data.results;
+        })
+        .catch(e => console.log(e));
+    },
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
-      console.log('add');
     },
     closeModal() {
       this.openModal = false;
@@ -157,19 +162,23 @@ export default {
       this.openModal = true;
       console.log('row info :', rowinfo);
     },
-    deleteSalaryGrade() {
+    deleteSalaryGrade(rowinfo) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Salary Grade',
-        message: 'Are you sure you want to <b>delete</b> your salary grade? This action cannot be undone.',
+        message:
+          'Are you sure you want to <b>delete</b> your salary grade? This action cannot be undone.',
         confirmText: 'Delete Salary Grade',
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
-          this.$http.delete('/salary-grade').then((res) => {
-            console.log(res);
-            snackbar.open('Salary Grade deleted!');
-          }).catch(e => console.log(e));
+          this.$http
+            .delete(`/salary-grade${rowinfo._id}`)
+            .then(() => {
+              snackbar.open('Salary Grade deleted!');
+              this.getTableData();
+            })
+            .catch(e => console.log(e));
         },
       });
     },
