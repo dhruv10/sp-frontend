@@ -44,7 +44,7 @@ export default {
       tableConfig: [
         {
           label: 'Biometric Code',
-          field: 'code',
+          field: 'biometricCode',
           sortable: true,
           centered: true,
         },

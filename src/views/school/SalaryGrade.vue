@@ -4,6 +4,7 @@
       <div class="card-content">
         <data-table
           title="Salary Grade"
+          :loading="loading"
           :table-data="salaryGradeDetails"
           :columns-info="tableConfig"
           @addClick="openAddModal"
@@ -34,6 +35,7 @@ export default {
       formType: 'add',
       formData: {},
       salaryGradeDetails: [],
+      loading: false,
       tableConfig: [
         {
           label: 'ID',
@@ -142,12 +144,17 @@ export default {
   },
   methods: {
     getTableData() {
+      this.loading = true;
       this.$http
         .get('/salary-grade')
         .then((res) => {
           this.salaryGradeDetails = res.data.results;
+          this.loading = false;
         })
-        .catch(e => console.log(e));
+        .catch((e) => {
+          console.log(e);
+          this.loading = false;
+        });
     },
     openAddModal() {
       this.formType = 'add';
@@ -172,13 +179,18 @@ export default {
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
+          this.loading = true;
           this.$http
             .delete(`/salary-grade${rowinfo._id}`)
             .then(() => {
               snackbar.open('Salary Grade deleted!');
               this.getTableData();
+              this.loading = false;
             })
-            .catch(e => console.log(e));
+            .catch((e) => {
+              console.log(e);
+              this.loading = false;
+            });
         },
       });
     },
