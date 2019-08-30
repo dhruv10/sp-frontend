@@ -22,7 +22,12 @@
                     <div class="columns">
                       <div class="column">
                         <b-field label="Date of birth">
-                          <b-input type="date" v-model="student.date"></b-input>
+                          <b-datepicker
+                            placeholder="Click to select..."
+                            icon="calendar-today"
+                            icon-pack="fas"
+                            v-model="student.studentDOB"
+                          ></b-datepicker>
                         </b-field>
                       </div>
                       <div class="column">
@@ -63,43 +68,70 @@
                   </div>
                 </div>
                 <div class="columns">
-                  <div class="column is-half">
-                    <b-field label="Roll Number">
-                      <b-input type="number" v-model="student.rollno"></b-input>
-                    </b-field>
-                    <b-field label="Enrollment Number">
-                      <b-input type="number" v-model="student.enrollmentno"></b-input>
+                  <div class="column">
+                    <b-field label="Username">
+                      <b-input icon-pack="fas" v-model="student.username"></b-input>
                     </b-field>
                   </div>
-                  <div class="column is-half">
-                    <b-field label="Admission Date">
-                      <b-input type="date" v-model="student.admissiondate"></b-input>
+                  <div class="column">
+                    <b-field label="Email ID">
+                      <b-input icon-pack="fas" v-model="student.personalEmail"></b-input>
                     </b-field>
-                    <b-field label="Admission Number">
-                      <b-input type="number" v-model="student.admissionno"></b-input>
+                  </div>
+                  <div class="column">
+                    <b-field label="Phone Number">
+                      <b-input icon-pack="fas" v-model="student.phoneNumber"></b-input>
                     </b-field>
                   </div>
                 </div>
                 <div class="columns">
                   <div class="column is-half">
-                    <div class="columns">
-                      <div class="column">
-                        <b-field label="Blood Group">
-                          <b-input icon-pack="fas" v-model="student.bloodgroup"></b-input>
-                        </b-field>
-                      </div>
-                      <div class="column">
-                        <b-field label="Link Class">
-                          <b-select placeholder="Select a class">
-                            <option
-                              v-for="option in student.classes"
-                              :value="option"
-                              :key="option"
-                            >{{ option }}</option>
-                          </b-select>
-                        </b-field>
-                      </div>
-                    </div>
+                    <b-field label="Roll Number">
+                      <b-input type="number" v-model="student.rollNo"></b-input>
+                    </b-field>
+                    <b-field label="Enrollment Number">
+                      <b-input type="number" v-model="student.enrollmentNo"></b-input>
+                    </b-field>
+                  </div>
+                  <div class="column is-half">
+                    <b-field label="Admission Date">
+                      <b-datepicker
+                        placeholder="Click to select..."
+                        icon="calendar-today"
+                        icon-pack="fas"
+                        v-model="student.admissionDate"
+                      ></b-datepicker>
+                    </b-field>
+                    <b-field label="Admission Number">
+                      <b-input type="number" v-model="student.admissionNo"></b-input>
+                    </b-field>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column is-half">
+                    <b-field label="Blood Group">
+                      <b-input icon-pack="fas" v-model="student.bloodGroup"></b-input>
+                    </b-field>
+                  </div>
+                  <div class="column is-half">
+                    <b-field label="Gender">
+                      <b-select placeholder="Select the Gender please" v-model="student.gender">
+                        <option v-for="option in gender" :value="option" :key="option">{{ option }}</option>
+                      </b-select>
+                    </b-field>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column is-half">
+                    <b-field label="Link Class">
+                      <b-select placeholder="Select a class" v-model="student.class">
+                        <option
+                          v-for="option in student.classes"
+                          :value="option"
+                          :key="option"
+                        >{{ option }}</option>
+                      </b-select>
+                    </b-field>
                   </div>
                   <div class="column is-half mt-2">
                     <div class="block">
@@ -119,7 +151,7 @@
                   <div class="column is-8">
                     <b-field label="Health Disorder Note (if any)">
                       <b-input
-                        v-model="student.checkboxGroup"
+                        v-model="student.healthDisorderNote"
                         class="notearea"
                         maxlength="200"
                         type="textarea"
@@ -147,10 +179,14 @@
                   <div class="columns">
                     <div class="column is-8">
                       <b-field label="Father's Name">
-                        <b-input icon-pack="fas" v-model="student.fatherName"></b-input>
+                        <b-input icon-pack="fas" v-model="student.fatherInfo.name"></b-input>
                       </b-field>
                       <b-field label="Mobile Number">
-                        <b-input icon-pack="fas" v-model="student.fatherMobileNo" type="number"></b-input>
+                        <b-input
+                          icon-pack="fas"
+                          v-model="student.fatherInfo.phoneNumber"
+                          type="number"
+                        ></b-input>
                       </b-field>
                     </div>
                     <div class="column is-4 mt-2">
@@ -186,25 +222,30 @@
                   <div class="columns samesection">
                     <div class="column is-half">
                       <b-field label="Date of birth">
-                        <b-input type="date" v-model="student.fatherDOB"></b-input>
+                        <b-datepicker
+                          placeholder="Click to select..."
+                          icon="calendar-today"
+                          icon-pack="fas"
+                          v-model="student.fatherInfo.dob"
+                        ></b-datepicker>
                       </b-field>
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-input icon-pack="fas" v-model="student.fatherBloodGroup"></b-input>
+                        <b-input icon-pack="fas" v-model="student.fatherInfo.bloodGroup"></b-input>
                       </b-field>
                     </div>
                   </div>
                   <div class="columns samesection">
                     <div class="column">
                       <b-field label="Father's Education">
-                        <b-input icon-pack="fas" v-model="student.fatherEducation"></b-input>
+                        <b-input icon-pack="fas" v-model="student.fatherInfo.education"></b-input>
                       </b-field>
                       <b-field label="Father's Profession">
-                        <b-input icon-pack="fas" v-model="student.fatherProfession"></b-input>
+                        <b-input icon-pack="fas" v-model="student.fatherInfo.profession"></b-input>
                       </b-field>
                       <b-field label="Father's Designation">
-                        <b-input icon-pack="fas" v-model="student.fatherDesignation"></b-input>
+                        <b-input icon-pack="fas" v-model="student.fatherInfo.designation"></b-input>
                       </b-field>
                     </div>
                   </div>
@@ -215,10 +256,10 @@
                   <div class="columns">
                     <div class="column is-8">
                       <b-field label="Mother's Name">
-                        <b-input icon-pack="fas" v-model="student.motherName"></b-input>
+                        <b-input icon-pack="fas" v-model="student.motherInfo.name"></b-input>
                       </b-field>
                       <b-field label="Mobile Number">
-                        <b-input icon-pack="fas" type="number" v-model="student.motherMobileNo"></b-input>
+                        <b-input icon-pack="fas" type="number" v-model="student.motherInfo.phoneNumber"></b-input>
                       </b-field>
                     </div>
                     <div class="column is-4 mt-2">
@@ -254,25 +295,30 @@
                   <div class="columns samesection">
                     <div class="column is-half">
                       <b-field label="Date of birth">
-                        <b-input type="date" v-model="student.motherDOB"></b-input>
+                        <b-datepicker
+                          placeholder="Click to select..."
+                          icon="calendar-today"
+                          icon-pack="fas"
+                          v-model="student.motherDOB"
+                        ></b-datepicker>
                       </b-field>
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-input icon-pack="fas" v-model="student.motherBloodGroup"></b-input>
+                        <b-input icon-pack="fas" v-model="student.motherInfo.bloodGroup"></b-input>
                       </b-field>
                     </div>
                   </div>
                   <div class="columns samesection">
                     <div class="column">
                       <b-field label="Mother's Education">
-                        <b-input icon-pack="fas" v-model="student.motherEducation"></b-input>
+                        <b-input icon-pack="fas" v-model="student.motherInfo.education"></b-input>
                       </b-field>
                       <b-field label="Mother's Profession">
-                        <b-input icon-pack="fas" v-model="student.motherProfession"></b-input>
+                        <b-input icon-pack="fas" v-model="student.motherInfo.profession"></b-input>
                       </b-field>
                       <b-field label="Mother's Designation">
-                        <b-input icon-pack="fas" v-model="student.motherDesignation"></b-input>
+                        <b-input icon-pack="fas" v-model="student.motherInfo.designation"></b-input>
                       </b-field>
                     </div>
                   </div>
@@ -285,7 +331,7 @@
                       <b-field label="Address">
                         <b-input
                           class="notearea"
-                          v-model="student.address"
+                          v-model="student.permanentAddress"
                           maxlength="200"
                           type="textarea"
                         ></b-input>
@@ -355,37 +401,48 @@ export default {
   data() {
     return {
       startLoading: false,
+      gender: ['Male', 'Female'],
+      classes: ['X-A', 'X-B', 'XI-A', 'XII-A', 'XI-C'],
       student: {
         name: '',
-        date: '',
+        username: '',
+        personalEmail: '',
+        phoneNumber: '',
+        studentDOB: new Date(),
         nationality: '',
         photo: [],
-        rollno: '',
-        enrollmentno: '',
-        admissiondate: '',
-        admissionno: '',
-        bloodgroup: '',
-        classes: ['X-A', 'X-B', 'XI-A', 'XII-A', 'XI-C'],
+        rollNo: 0,
+        enrollmentNo: 0,
+        admissionDate: new Date(),
+        admissionNo: 0,
+        bloodGroup: '',
+        gender: '',
+        class: '',
         checkboxGroup: ['Maths', 'Science'],
+        healthDisorderNote: '',
         healthDocs: [],
-        fatherName: '',
-        fatherMobileNo: '',
-        fatherBloodGroup: '',
         fatherPhoto: [],
-        fatherDOB: '',
-        fatherEducation: '',
-        fatherProfession: '',
-        fatherDesignation: '',
-        motherName: '',
-        motherMobileNo: '',
-        motherBloodGroup: '',
+        fatherInfo: {
+          name: '',
+          phoneNumber: '',
+          designation: '',
+          bloodGroup: '',
+          dob: new Date(),
+          education: '',
+          profession: '',
+        },
         motherPhoto: [],
-        motherDOB: '',
-        motherEducation: '',
-        motherProfession: '',
-        motherDesignation: '',
-        address: '',
-        otherdocuments: '',
+        motherInfo: {
+          name: '',
+          phoneNumber: '',
+          designation: '',
+          bloodGroup: '',
+          dob: new Date(),
+          education: '',
+          profession: '',
+        },
+        permanentAddress: '',
+        otherdocuments: [],
       },
     };
   },
@@ -404,7 +461,12 @@ export default {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/student', { ...this.student })
+        .post('/student', {
+          ...this.student,
+          password: this.student.enrollmentNo,
+          birthDate: this.student.studentDOB.getTime().toString(),
+          admissionDate: this.student.admissionDate.getTime().toString(),
+        })
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');
@@ -418,8 +480,7 @@ export default {
       this.startLoading = true;
       this.$http
         .put(`/student/${this.formData._id}`, { ...this.student })
-        .then((res) => {
-          console.log('Edited Response: ', res);
+        .then(() => {
           this.startLoading = false;
           this.$emit('closeModal');
           snackbar.open('Student edited!');
