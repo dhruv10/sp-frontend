@@ -29,10 +29,14 @@
         </div>
       </div>
     </div>
+    <div>
+      <p v-if="noData && !loading" class="noData">{{ tableStatus }}</p>
+    </div>
     <b-table
       :data="data"
-      :paginated="true"
+      :paginated="!noData"
       :per-page="10"
+      :loading="loading"
       :current-page.sync="currentPage"
       :pagination-simple="true"
       pagination-position="bottom"
@@ -95,20 +99,35 @@ export default {
       type: Array,
       default: () => [],
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       currentPage: 1,
       data: this.tableData,
       columns: this.columnsInfo,
+      tableStatus: 'No data available',
+      noData: false,
     };
   },
   watch: {
     tableData: {
       handler() {
         this.data = this.tableData;
+        if (!this.data.length && !this.loading) {
+          this.noData = true;
+        } else this.noData = false;
       },
     },
+  },
+  mounted() {
+    if (!this.data.length) {
+      console.log('no data found');
+      this.noData = true;
+    }
   },
   methods: {
     onButtonClick(type, payload) {
@@ -127,4 +146,9 @@ export default {
 </script>
 
 <style>
+.noData {
+  text-align: center;
+  margin-top: 90px;
+  font-size: 25px;
+}
 </style>
