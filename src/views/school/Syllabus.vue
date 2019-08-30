@@ -14,7 +14,12 @@
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <syllabus-form :formType="formType" @closeModal="closeModal" />
+      <syllabus-form
+        :formData="formData"
+        :formType="formType"
+        @closeModal="closeModal"
+        @getTableData="getTableData"
+      />
     </b-modal>
   </div>
 </template>
@@ -32,18 +37,19 @@ export default {
     return {
       openModal: false,
       formType: 'add',
+      formData: {},
       syllabusDetails: [],
       tableConfig: [
         {
           label: 'Document Name',
-          field: 'name',
+          field: 'docTitle',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Class',
-          field: 'name',
+          field: 'class',
           sortable: true,
           numeric: true,
           centered: true,
@@ -52,15 +58,17 @@ export default {
     };
   },
   mounted() {
-    this.$http
-      .get('/syllabus')
-      .then((res) => {
-        this.syllabusDetails = res.data.results;
-        console.log(this.syllabusDetails);
-      })
-      .catch(e => console.log(e));
+    this.getTableData();
   },
   methods: {
+    getTableData() {
+      this.$http
+        .get('/syllabus')
+        .then((res) => {
+          this.syllabusDetails = res.data.results;
+        })
+        .catch(e => console.log(e));
+    },
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
@@ -69,11 +77,12 @@ export default {
       this.openModal = false;
     },
     bulkUpload() {},
-    editSyllabus() {
+    editSyllabus(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
+      this.formData = rowinfo;
     },
-    deleteSyllabus() {
+    deleteSyllabus(rowinfo) {
       const { dialog, snackbar } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Syllabus',
@@ -84,10 +93,11 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.$http
-            .delete('/syllabus')
+            .delete(`/syllabus/${rowinfo._id}`)
             .then((res) => {
               console.log(res);
               snackbar.open('Syllabus deleted!');
+              this.getTableData();
             })
             .catch(e => console.log(e));
         },

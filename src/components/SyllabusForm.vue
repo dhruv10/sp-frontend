@@ -76,6 +76,9 @@ export default {
       type: String,
       default: 'add',
     },
+    formData: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -88,7 +91,9 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    if (this.formType === 'edit') this.syllabus = this.formData;
+  },
   methods: {
     deleteDropFile(index) {
       this.syllabus.docFile.splice(index, 1);
@@ -97,27 +102,29 @@ export default {
       this.$emit('closeModal');
     },
     addSyllabus() {
-      console.log(this.syllabus);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      this.$http.post('/syllabus', { ...this.syllabus }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Syllabus added!');
-      });
+      this.$http
+        .post('/syllabus', { ...this.syllabus })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('getTableData');
+          this.$emit('closeModal');
+          snackbar.open('Syllabus added!');
+        })
+        .catch(e => console.log(e));
     },
     editSyllabus() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ error: false });
-        }, 1000);
-      }).then(() => {
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Syllabus edited!');
-      });
+      this.$http
+        .put(`/syllabus/${this.formData._id}`, { ...this.syllabus })
+        .then(() => {
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Syllabus edited!');
+        })
+        .catch(e => console.log(e));
     },
   },
 };
