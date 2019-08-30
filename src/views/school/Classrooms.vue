@@ -99,6 +99,7 @@ export default {
     getTeachers() {
       this.$http.get('/teacher').then((res) => {
         this.teachers = res.data.results;
+        console.log('this.teachers', this.teachers);
       }).catch(e => console.log(e));
     },
     bulkUpload() {
