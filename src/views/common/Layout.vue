@@ -29,7 +29,7 @@ const SideMenuConfig = {
   icon: 'school',
   options: [
     {
-      title: 'Setup',
+      title: 'Manage',
       icon: 'cog',
       route: '/school',
       children: [
@@ -67,28 +67,6 @@ const SideMenuConfig = {
           icon: 'box',
           label: 'Department',
           route: '/department',
-        },
-      ],
-    },
-    {
-      title: 'Account',
-      icon: 'cog',
-      children: [
-        {
-          icon: 'chalkboard-teacher',
-          label: 'Classrooms',
-        },
-        {
-          icon: 'folder',
-          label: 'Students',
-        },
-        {
-          icon: 'chess-rook',
-          label: 'Teachers',
-        },
-        {
-          icon: 'user-graduate',
-          label: 'Students',
         },
       ],
     },
