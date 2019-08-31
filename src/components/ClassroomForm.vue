@@ -22,16 +22,25 @@
             </b-field>
             <!-- <b-field label="Total Students">
               <b-input v-model="classroom.totalStudents"></b-input>
-            </b-field> -->
+            </b-field>-->
           </div>
           <b-field label="Class Teacher">
-               <b-dropdown aria-role="list" v-model="classroom.classTeacher">
+            <b-dropdown
+              aria-role="list"
+              v-model="classroom.classTeacher"
+            >
               <button class="button is-outline" slot="trigger">
-                <span class="teacher-label">{{classroom.basicInfo && classroom.basicInfo.classTeacher}}</span>
+                <span class="teacher-label">{{ classroom.classTeacher }}</span>
+                <span v-if="!teacherNames.length">No teacher added</span>
                 <b-icon icon="menu-down"></b-icon>
               </button>
-              <b-dropdown-item aria-role="listitem" v-for="(teacher, key) in teachers" :key="key" :value="teacher">{{ teacher.name }}</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" v-if="!teachers.length">No teacher added</b-dropdown-item>
+              <b-dropdown-item
+                aria-role="listitem"
+                v-for="teacher in teacherNames"
+                :key="teacher._id"
+                :value="teacher.name"
+                @click="selectedTeacher(teacher._id)"
+              >{{ teacher.name }}</b-dropdown-item>
             </b-dropdown>
           </b-field>
           <div class="submit">
@@ -69,31 +78,39 @@ export default {
   data() {
     return {
       startLoading: false,
-      classroom: {
-        classTeacher: {
-          basicInfo: {},
-        },
-      },
+      classroom: {},
+      teacherNames: [],
+      classTeacherId: '',
     };
   },
   mounted() {
+    this.teacherNames = this.teachers.map(t => ({
+      name: t.basicInfo.name,
+      _id: t._id,
+    }));
     if (this.formType === 'edit') {
       this.classroom = this.classData;
+      this.classroom.classTeacher = this.classData.classTeacher.basicInfo.name;
     }
-    console.log(this.classroom);
   },
   methods: {
     closeModal() {
       this.$emit('closeModal');
     },
+    selectedTeacher(data) {
+      this.classTeacherId = data;
+    },
     addClass() {
-      console.log(this.classroom);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/classroom', { ...this.classroom })
+        .post('/classroom', {
+          ...this.classroom,
+          classTeacher: this.classTeacherId,
+        })
         .then(() => {
           this.startLoading = false;
+          this.$emit('getTableData');
           this.$emit('closeModal');
           snackbar.open('Class added!');
         })
@@ -153,7 +170,7 @@ export default {
   justify-content: flex-end;
 }
 .teacher-label {
-  width: 33rem
+  width: 33rem;
 }
 .mr-1 {
   margin-right: 1rem;

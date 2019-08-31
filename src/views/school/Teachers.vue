@@ -19,6 +19,8 @@
         :formType="formType"
         @closeModal="closeModal"
         :teacherData="teacherData"
+        :subjects="subjects"
+        :dept="dept"
         @getTableData="getTableData"
       />
     </b-modal>
@@ -41,6 +43,8 @@ export default {
       teacherDetail: [],
       teacherData: {},
       loading: false,
+      subjects: [],
+      dept: [],
       tableConfig: [
         {
           label: 'Name',
@@ -88,11 +92,33 @@ export default {
   },
   mounted() {
     this.getTableData();
+    this.getSubject();
+    this.getDept();
   },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
+    },
+    getDept() {
+      this.$http
+        .get('/department')
+        .then((res) => {
+          this.dept = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    getSubject() {
+      this.$http
+        .get('/subject')
+        .then((res) => {
+          this.subjects = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     getTableData() {
       this.loading = true;
@@ -100,7 +126,19 @@ export default {
         .get('/teacher')
         .then((res) => {
           console.log('teacher', res.data.results);
-          this.teacherDetail = res.data.results;
+          this.teacherDetail = res.data.results.map(teacher => ({
+            ...teacher,
+            basicInfo: {
+              name: teacher.basicInfo.name,
+              gender: teacher.basicInfo.gender,
+              phoneNumber: teacher.basicInfo.phoneNumber,
+              bloodGroup: teacher.basicInfo.bloodGroup,
+              nationality: teacher.basicInfo.nationality,
+              birthDate: teacher.basicInfo.birthDate,
+              personalEmail: teacher.basicInfo.personalEmail,
+              permanentAddress: teacher.basicInfo.permanentAddress,
+            },
+          }));
           this.loading = false;
         })
         .catch((e) => {
