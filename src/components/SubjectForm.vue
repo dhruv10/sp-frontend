@@ -20,10 +20,10 @@
         <b-field label="Type">
           <div>
             <div class="field">
-              <b-radio v-model="radio" :native-value="false">Mandatory</b-radio>
+              <b-radio v-model="radio" native-value="Mandatory">Mandatory</b-radio>
             </div>
             <div class="field">
-              <b-radio v-model="radio" :native-value="true">Optional</b-radio>
+              <b-radio v-model="radio" native-value="Optional">Optional</b-radio>
             </div>
           </div>
         </b-field>
@@ -58,13 +58,14 @@ export default {
       startLoading: false,
       radio: 'Mandatory',
       subject: {},
+      optional: false,
     };
   },
   mounted() {
     if (this.formType === 'edit') {
       this.subject = this.subjectData;
+      this.radio = this.subject.optional === 'Optional' ? 'Optional' : 'Mandatory';
     }
-    console.log(this.subjectData);
   },
   methods: {
     closeModal() {
@@ -75,7 +76,7 @@ export default {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/subject', { ...this.subject })
+        .post('/subject', { ...this.subject, optional: this.radio === 'Optional' })
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');
@@ -91,15 +92,20 @@ export default {
     editSubject() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      const editedSub = {
+      this.optional = this.subject.optional === 'Mandatory';
+      const editedData = {
         ...this.subject,
-        optional: Boolean(this.subject.optional === 'Optional'),
+        optional: this.optional,
       };
-      delete editedSub._id;
+      delete editedData._id;
+      console.log(editedData);
       this.$http
-        .put(`/subject/${this.subjectData._id}`, { ...editedSub })
-        .then(() => {
+        .put(`/subject/${this.subjectData._id}`, {
+          editedData,
+        })
+        .then((res) => {
           this.startLoading = false;
+          console.log('resssss', res);
           this.$emit('getTableData');
           this.$emit('closeModal');
           snackbar.open('Subject edited!');

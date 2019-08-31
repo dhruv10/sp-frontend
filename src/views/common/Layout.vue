@@ -134,6 +134,7 @@ export default {
   transition: width 1s;
   box-shadow: black 1px 1px 12px -5px;
   padding-right: 0px;
+  height: 100vh;
 }
 .body {
   padding-left: 0px;

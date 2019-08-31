@@ -74,6 +74,7 @@ export default {
     getTableData() {
       this.loading = true;
       this.$http.get('/subject').then((res) => {
+        console.log('ressssss', res.data.results);
         this.subjectDetails = res.data.results.map(sub => ({
           ...sub, optional: sub.optional ? 'Optional' : 'Mandatory',
         }));

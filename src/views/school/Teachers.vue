@@ -19,6 +19,8 @@
         :formType="formType"
         @closeModal="closeModal"
         :teacherData="teacherData"
+        :subjects="subjects"
+        :dept="dept"
         @getTableData="getTableData"
       />
     </b-modal>
@@ -41,69 +43,82 @@ export default {
       teacherDetail: [],
       teacherData: {},
       loading: false,
+      subjects: [],
+      dept: [],
       tableConfig: [
         {
-          label: 'Biometric Code',
-          field: 'biometricCode',
-          sortable: true,
-          centered: true,
-        },
-        {
           label: 'Name',
-          field: 'name',
+          field: 'basicInfo.name',
           sortable: true,
           centered: true,
         },
         {
           label: 'Gender',
-          field: 'gender',
+          field: 'basicInfo.gender',
           sortable: true,
           centered: true,
         },
         {
           label: 'Contact Number',
-          field: 'number',
+          field: 'basicInfo.phoneNumber',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
           label: 'Blood Group',
-          field: 'blood',
-          sortable: true,
-          centered: true,
-        },
-        {
-          label: 'Nationality',
-          field: 'naitionality',
+          field: 'basicInfo.bloodGroup',
           sortable: true,
           centered: true,
         },
         {
           label: 'Date of Birth',
-          field: 'dob',
+          field: 'basicInfo.birthDate',
           sortable: true,
           centered: true,
         },
         {
           label: 'Email',
-          field: 'email',
+          field: 'basicInfo.personalEmail',
           sortable: true,
         },
         {
           label: 'Address',
-          field: 'address',
+          field: 'basicInfo.permanentAddress',
+          width: 40,
         },
       ],
     };
   },
   mounted() {
     this.getTableData();
+    this.getSubject();
+    this.getDept();
   },
   methods: {
     openAddModal() {
       this.formType = 'add';
       this.openModal = true;
+    },
+    getDept() {
+      this.$http
+        .get('/department')
+        .then((res) => {
+          this.dept = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    getSubject() {
+      this.$http
+        .get('/subject')
+        .then((res) => {
+          this.subjects = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     getTableData() {
       this.loading = true;
@@ -111,7 +126,19 @@ export default {
         .get('/teacher')
         .then((res) => {
           console.log('teacher', res.data.results);
-          this.teacherDetail = res.data.results;
+          this.teacherDetail = res.data.results.map(teacher => ({
+            ...teacher,
+            basicInfo: {
+              name: teacher.basicInfo.name,
+              gender: teacher.basicInfo.gender,
+              phoneNumber: teacher.basicInfo.phoneNumber,
+              bloodGroup: teacher.basicInfo.bloodGroup,
+              nationality: teacher.basicInfo.nationality,
+              birthDate: teacher.basicInfo.birthDate,
+              personalEmail: teacher.basicInfo.personalEmail,
+              permanentAddress: teacher.basicInfo.permanentAddress,
+            },
+          }));
           this.loading = false;
         })
         .catch((e) => {

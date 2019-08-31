@@ -56,7 +56,7 @@
           :numeric="column.numeric"
           :centered="column.centered"
         >
-          {{ props.row[column.field] }}
+          {{ getValue(props.row, column.field) }}
         </b-table-column>
         <b-table-column
           label="Actions"
@@ -130,6 +130,11 @@ export default {
     }
   },
   methods: {
+    getValue(value, field) {
+      const keys = field.split('.');
+      const newValue = keys.reduce((acc, prevValue) => acc[prevValue], value);
+      return newValue;
+    },
     onButtonClick(type, payload) {
       if (type === 'add') {
         this.$emit('addClick');

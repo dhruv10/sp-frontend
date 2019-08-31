@@ -1,6 +1,6 @@
 <template>
   <div class="root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="card-content">
         <data-table
           title="Salary Grade"
@@ -202,5 +202,8 @@ export default {
 .root-container {
   margin-top: 50px;
   height: 100%;
+}
+.table-card {
+  height: 90vh;
 }
 </style>
