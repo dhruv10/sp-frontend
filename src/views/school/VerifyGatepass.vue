@@ -21,7 +21,7 @@
                     </section>
                   </div>
                   <div class="column is-4">
-                    <b-field label="Code ">
+                    <b-field label="Code">
                       <b-input v-model="gatepass.code"></b-input>
                     </b-field>
                   </div>
