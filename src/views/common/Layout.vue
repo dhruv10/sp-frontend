@@ -77,8 +77,13 @@ const SideMenuConfig = {
       children: [
         {
           icon: '',
-          label: 'Gatepass Generator',
+          label: 'Gatepass Records',
           route: '/receptionist',
+        },
+        {
+          icon: '',
+          label: 'Verfiy Gatepass',
+          route: '/verify-gatepass',
         },
       ],
     },

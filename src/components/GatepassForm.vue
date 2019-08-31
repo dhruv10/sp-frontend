@@ -4,42 +4,42 @@
       <header class="card-header">
         <p
           class="card-header-title header"
-        >{{ formType === 'add' ? 'Add Department' : 'Edit Department' }}</p>
+        >{{ formType === 'add' ? 'Add Gatepass' : 'Edit Gatepass' }}</p>
       </header>
     </div>
     <div class="card-content">
       <div class="content card-area">
         <div class="mt-3">
           <div class="columns">
-            <div class="column is-8">
+            <div class="column">
               <section>
-                <b-field label="Department Name">
-                  <b-input icon-pack="fas" v-model="department.name" icon="credit-card"></b-input>
+                <b-field label="Student Name">
+                  <b-input icon-pack="fas" v-model="gatepass.student"></b-input>
                 </b-field>
               </section>
             </div>
-            <div class="column is-4">
-              <b-field label="Code ">
-                <b-input v-model="department.code"></b-input>
-              </b-field>
-            </div>
           </div>
           <div class="columns">
-            <div class="column is-12">
-              <b-field label="Note">
-                <b-input class="notearea" v-model="department.note" maxlength="200" type="textarea"></b-input>
+            <div class="column is-half">
+              <b-field label="Guardian's Name ">
+                <b-input v-model="gatepass.guardianName"></b-input>
+              </b-field>
+            </div>
+            <div class="column is-half">
+              <b-field label="Guardian's Phone ">
+                <b-input v-model="gatepass.guardianPhone"></b-input>
               </b-field>
             </div>
           </div>
-        </div>
-        <div class="submit">
-          <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
-          <b-button
-            @click="formType === 'add' ? addDepartment() : editDepartment()"
-            icon-right="arrow-circle-right"
-            class="submit"
-            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
-          >{{ formType === 'add' ? 'Add Department' : 'Edit Department' }}</b-button>
+          <div class="submit">
+            <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
+            <b-button
+              @click="formType === 'add' ? addGatepassRecord() : editGatepassRecord()"
+              icon-right="arrow-circle-right"
+              class="submit"
+              :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
+            >{{ formType === 'add' ? 'Add Gatepass' : 'Edit Gatepass' }}</b-button>
+          </div>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  name: 'DepartmentForm',
+  name: 'GatepassForm',
   props: {
     formType: {
       type: String,
@@ -61,42 +61,42 @@ export default {
   data() {
     return {
       startLoading: false,
-      department: {
-        name: '',
-        code: '',
-        note: '',
+      gatepass: {
+        student: '',
+        guardianName: '',
+        guardianPhone: '',
       },
     };
   },
   mounted() {
-    if (this.formType === 'edit') this.department = this.formData;
+    if (this.formType === 'edit') this.gatepass = this.formData;
   },
   methods: {
     closeModal() {
       this.$emit('closeModal');
     },
-    addDepartment() {
+    addGatepassRecord() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/department', { ...this.department })
+        .post('/gatepass', { ...this.gatepass })
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');
           this.$emit('closeModal');
-          snackbar.open('Department added!');
+          snackbar.open('Gatepass record added!');
         })
         .catch(e => console.log(e));
     },
-    editDepartment() {
+    editGatepassRecord() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .put(`/department/${this.formData._id}`, { ...this.department })
+        .put(`/gatepass/${this.formData._id}`, { ...this.gatepass })
         .then(() => {
           this.startLoading = false;
           this.$emit('closeModal');
-          snackbar.open('Department edited!');
+          snackbar.open('Gatepass Record edited!');
         })
         .catch(e => console.log(e));
     },
@@ -134,9 +134,5 @@ export default {
 }
 .mr-1 {
   margin-right: 1rem;
-}
-
-.notearea {
-  min-height: 7rem !important;
 }
 </style>
