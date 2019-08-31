@@ -9,6 +9,7 @@ import Syllabus from './views/school/Syllabus.vue';
 import Subjects from './views/school/Subjects.vue';
 import Teachers from './views/school/Teachers.vue';
 import Receptionist from './views/school/Receptionist.vue';
+import VerifyGatepass from './views/school/VerifyGatepass.vue';
 
 Vue.use(Router);
 
@@ -71,6 +72,10 @@ const router = new Router({
         {
           path: 'receptionist',
           component: Receptionist,
+        },
+        {
+          path: 'verify-gatepass',
+          component: VerifyGatepass,
         },
       ],
     },
