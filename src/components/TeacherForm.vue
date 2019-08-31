@@ -12,47 +12,65 @@
         <p>BASIC INFO</p>
         <div class="line">
           <b-field label="Name" class="name">
-            <b-input v-model="teacher.name"></b-input>
+            <b-input v-model="teacher.basicInfo.name"></b-input>
           </b-field>
         </div>
         <div class="line">
           <b-field label="Gender" class="gender">
-            <b-dropdown aria-role="list" v-model="teacher.gender">
+            <b-dropdown aria-role="list" v-model="teacher.basicInfo.gender">
               <button class="button is-outline" slot="trigger">
-                <span class="gender-label">{{teacher.gender}}</span>
+                <span class="gender-label">{{teacher.basicInfo.gender}}</span>
                 <b-icon icon="menu-down"></b-icon>
               </button>
-              <b-dropdown-item aria-role="listitem" value="male">Male</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="female">Female</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="transgender">Transgender</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem" value="Male">Male</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem" value="Female">Female</b-dropdown-item>
+              <b-dropdown-item aria-role="listitem" value="Transgender">Transgender</b-dropdown-item>
             </b-dropdown>
           </b-field>
           <b-field label="Biometric Code" class="code">
             <b-input v-model="teacher.biometricCode"></b-input>
           </b-field>
           <b-field label="Contact Number" class="phone">
-            <b-input v-model="teacher.phoneNumber"></b-input>
+            <b-input v-model="teacher.basicInfo.phoneNumber"></b-input>
           </b-field>
         </div>
         <div class="line">
           <b-field label="Blood Group" class="blood">
-            <b-input v-model="teacher.bloodGroup"></b-input>
+            <b-dropdown aria-role="list" v-model="teacher.basicInfo.bloodGroup">
+              <button class="button is-outline" slot="trigger">
+                <span class="blood-group-label">{{teacher.basicInfo.bloodGroup}}</span>
+                <b-icon icon="menu-down"></b-icon>
+              </button>
+              <b-dropdown-item
+                aria-role="listitem"
+                v-for="(bloodGroup, key) in bloodGroupList"
+                :key="key"
+                :value="bloodGroup"
+              >{{ bloodGroup }}</b-dropdown-item>
+            </b-dropdown>
           </b-field>
           <b-field label="Nationality" class="nation ml-2">
-            <b-input v-model="teacher.nationality"></b-input>
+            <b-input v-model="teacher.basicInfo.nationality"></b-input>
           </b-field>
           <b-field label="Date of Birth" class="dob ml-2">
-            <b-input type="date" v-model="teacher.birthDate"></b-input>
+            <b-datepicker
+              v-model="teacher.basicInfo.birthDate"
+              position="is-bottom-left"
+              placeholder
+              icon="calendar-today"
+            ></b-datepicker>
           </b-field>
         </div>
         <div class="line mt-1">
           <b-field label="Email" class="email">
-            <b-input type="email" v-model="teacher.personalEmail"></b-input>
+            <b-input type="email" v-model="teacher.basicInfo.personalEmail"></b-input>
           </b-field>
           <b-field label="Marital Status">
             <b-dropdown aria-role="list" v-model="teacher.martialStatus.status">
               <button class="button is-outline" slot="trigger">
-                <span class="subject-label">{{teacher.martialStatus.status ? 'Married' : 'Unmarried' }}</span>
+                <span
+                  class="subject-label"
+                >{{ teacher.martialStatus.status ? 'Married' : 'Unmarried' }}</span>
                 <b-icon icon="menu-down"></b-icon>
               </button>
               <b-dropdown-item aria-role="listitem" :value="true">Married</b-dropdown-item>
@@ -62,19 +80,23 @@
         </div>
         <div>
           <b-field label="Permanent Address">
-            <b-input maxlength="200" type="textarea" v-model="teacher.permanentAddress"></b-input>
+            <b-input maxlength="200" type="textarea" v-model="teacher.basicInfo.permanentAddress"></b-input>
           </b-field>
         </div>
       </div>
-      <p v-if="teacher.martialStatus.spouseBasicInfo.status" class="sub-heading">SPOUSE INFO</p>
-      <div>
+      <div v-if="teacher.martialStatus.status">
+        <p class="sub-heading">SPOUSE INFO</p>
         <div class="columns">
           <div class="column is-6">
             <b-field label="Spouse Name">
               <b-input icon-pack="fas" v-model="teacher.martialStatus.spouseBasicInfo.name"></b-input>
             </b-field>
             <b-field label="Mobile Number">
-              <b-input icon-pack="fas" type="number" v-model="teacher.martialStatus.spouseBasicInfo.phoneNumber"></b-input>
+              <b-input
+                icon-pack="fas"
+                type="number"
+                v-model="teacher.martialStatus.spouseBasicInfo.phoneNumber"
+              ></b-input>
             </b-field>
           </div>
           <div class="column is-6">
@@ -95,23 +117,40 @@
         <div class="line">
           <div>
             <b-field label="Alternative Mobile Number">
-              <b-input icon-pack="fas" type="number" v-model="teacher.martialStatus.spouseBasicInfo.alternativePhoneNumber"></b-input>
+              <b-input
+                icon-pack="fas"
+                type="number"
+                v-model="teacher.martialStatus.spouseBasicInfo.alternativePhoneNumber"
+              ></b-input>
             </b-field>
           </div>
           <div class="ml-2">
             <b-field label="Age">
-              <b-input icon-pack="fas" type="number" v-model="teacher.martialStatus.spouseBasicInfo.age"></b-input>
+              <b-input
+                icon-pack="fas"
+                type="number"
+                v-model="teacher.martialStatus.spouseBasicInfo.age"
+              ></b-input>
             </b-field>
           </div>
         </div>
         <b-field label="Email" class="mt-1">
-          <b-input icon-pack="fas" type="email" v-model="teacher.martialStatus.spouseBasicInfo.email"></b-input>
+          <b-input
+            icon-pack="fas"
+            type="email"
+            v-model="teacher.martialStatus.spouseBasicInfo.email"
+          ></b-input>
         </b-field>
       </div>
 
       <div class="line mt-1">
         <b-field label="Joining Date">
-          <b-input type="date" v-model="teacher.joiningDate"></b-input>
+          <b-datepicker
+            v-model="teacher.joiningDate"
+            position="is-bottom-right"
+            placeholder
+            icon="calendar-today"
+          ></b-datepicker>
         </b-field>
         <!-- <div class="class-teacher">
           <b-field label="Is Class Teacher">
@@ -124,24 +163,21 @@
           <b-field label="Subject">
             <b-dropdown aria-role="list" multiple v-model="teacher.subjects">
               <button class="button is-outline" slot="trigger">
-                <span class="subject-label">{{ teacher.subjects && teacher.subjects.length ? `Selected (${teacher.subjects && teacher.subjects.length})` : '' }}</span>
+                <span
+                  class="subject-label"
+                >{{ subjects.length && teacher.subjects ? `Selected (${teacher.subjects && teacher.subjects.length})` : '' }}</span>
+                <span v-if="!subjects.length" class="subject-label">No Subject Added!</span>
                 <b-icon icon="menu-down"></b-icon>
               </button>
 
-              <b-dropdown-item value="english" aria-role="listitem">
-                <div class="field">
-                  English
-                </div>
-              </b-dropdown-item>
-              <b-dropdown-item value="Maths" aria-role="listitem">
-                <div class="field">
-                  Maths
-                </div>
-              </b-dropdown-item>
-              <b-dropdown-item value="science" aria-role="listitem">
-                <div class="field">
-                  Science
-                </div>
+              <b-dropdown-item
+                v-for="sub in subjects"
+                :key="sub._id"
+                :value="sub.name"
+                aria-role="listitem"
+                @click="selectedSubjects(sub._id)"
+              >
+                <div class="field">{{ sub.name }}</div>
               </b-dropdown-item>
             </b-dropdown>
           </b-field>
@@ -151,23 +187,18 @@
             <b-dropdown aria-role="list" v-model="teacher.department">
               <button class="button is-outline" slot="trigger">
                 <span class="department-label">{{ teacher.department }}</span>
+                <span v-if="!dept.length" class="department-label">No Department Added!</span>
                 <b-icon icon="menu-down"></b-icon>
               </button>
 
-              <b-dropdown-item value="English" aria-role="listitem">
-                <div class="field">
-                  English
-                </div>
-              </b-dropdown-item>
-              <b-dropdown-item value="Maths" aria-role="listitem">
-                <div class="field">
-                  Maths
-                </div>
-              </b-dropdown-item>
-              <b-dropdown-item value="Science" aria-role="listitem">
-                <div class="field">
-                  Science
-                </div>
+              <b-dropdown-item
+                v-for="dep in dept"
+                :key="dep._id"
+                :value="dep.name"
+                aria-role="listitem"
+                @click="selectedDept(dep._id)"
+              >
+                <div class="field">{{ dep.name }}</div>
               </b-dropdown-item>
             </b-dropdown>
           </b-field>
@@ -214,7 +245,7 @@
             <b-field label="Payment Type">
               <b-dropdown aria-role="list" v-model="teacher.bankAccountInfo.paymentType">
                 <button class="button is-outline" slot="trigger">
-                  <span class="payment-label"></span>
+                  <span class="payment-label">{{ teacher.bankAccountInfo.paymentType }}</span>
                   <b-icon icon="menu-down"></b-icon>
                 </button>
 
@@ -286,22 +317,36 @@ export default {
       type: Object,
       default: () => {},
     },
+    subjects: {
+      type: Array,
+      default: () => [],
+    },
+    dept: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
       startLoading: false,
+      selectedDeptId: '',
       teacher: {
+        basicInfo: {},
         bankAccountInfo: {},
+        identityDocumentUrl: 'http://placehold.it/255',
         martialStatus: {
           spouseBasicInfo: {},
         },
       },
+      selectedSubjectId: [],
       radio: 'mandatory',
+      bloodGroupList: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
     };
   },
   mounted() {
     if (this.formType === 'edit') {
       this.teacher = this.teacherData;
+      console.log(this.dept);
       console.log(this.teacher);
     }
   },
@@ -309,33 +354,53 @@ export default {
     closeModal() {
       this.$emit('closeModal');
     },
+    selectedSubjects(id) {
+      this.selectedSubjectId.push(id);
+    },
+    selectedDept(id) {
+      this.selectedDeptId = id;
+    },
     addTeacher() {
       console.log(this.teacher);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      this.$http.post('/teacher', this.teacher).then(() => {
-        this.$emit('getTableData');
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Teacher added!');
-      }).catch(() => {
-        this.$emit('closeModal');
-        snackbar.open('Something went wrong. Please try later!');
-      });
+      this.$http
+        .post('/teacher', {
+          ...this.teacher,
+          subjects: this.selectedSubjectId,
+          department: this.selectedDeptId,
+          ...this.teacher.basicInfo,
+        })
+        .then(() => {
+          this.$emit('getTableData');
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Teacher added!');
+        })
+        .catch(() => {
+          this.$emit('closeModal');
+          snackbar.open('Something went wrong. Please try later!');
+        });
     },
     editTeacher() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-
-      this.$http.put(`/teacher${this.teacherData._id}`, this.teacher).then(() => {
-        this.$emit('getTableData');
-        this.startLoading = false;
-        this.$emit('closeModal');
-        snackbar.open('Teacher edited!');
-      }).catch(() => {
-        this.$emit('closeModal');
-        snackbar.open('Something went wrong. Please try later!');
-      });
+      this.$http
+        .put(`/teacher/${this.teacherData._id}`, {
+          ...this.teacher,
+          subjects: this.selectedSubjectId,
+          department: this.selectedDeptId,
+        })
+        .then(() => {
+          this.$emit('getTableData');
+          this.startLoading = false;
+          this.$emit('closeModal');
+          snackbar.open('Teacher edited!');
+        })
+        .catch(() => {
+          this.$emit('closeModal');
+          snackbar.open('Something went wrong. Please try later!');
+        });
     },
   },
 };
@@ -456,5 +521,8 @@ export default {
 }
 .ml-32 {
   margin-left: 32px;
+}
+.blood-group-label {
+  width: 4rem;
 }
 </style>
