@@ -14,7 +14,7 @@
         ></data-table>
       </div>
     </div>
-    <b-modal :active.sync="openModal" :width="720" scroll="keep">
+    <b-modal :active.sync="openModal" :width="720" scroll="keep" :full-screen="this.$isMobile()">
       <student-form
         :formData="formData"
         :formType="formType"
