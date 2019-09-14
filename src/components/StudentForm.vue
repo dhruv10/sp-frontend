@@ -4,7 +4,7 @@
       <header class="card-header">
         <p
           class="card-header-title header"
-        >{{ formType === 'add' ? 'Add Student' : 'Edit Student' }}</p>
+        >{{ formType === "add" ? "Add Student" : "Edit Student" }}</p>
       </header>
     </div>
     <div class="card-content">
@@ -110,7 +110,13 @@
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Blood Group">
-                      <b-input icon-pack="fas" v-model="student.bloodGroup"></b-input>
+                      <b-select placeholder="Select Blood Group" v-model="student.bloodGroup">
+                          <option
+                            v-for="i in allBloodGroups"
+                            :value="i"
+                            :key="i"
+                          >{{ i }}</option>
+                        </b-select>
                     </b-field>
                   </div>
                   <div class="column is-half">
@@ -232,7 +238,13 @@
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-input icon-pack="fas" v-model="student.fatherInfo.bloodGroup"></b-input>
+                        <b-select placeholder="Select Blood Group" v-model="student.fatherInfo.bloodGroup">
+                          <option
+                            v-for="i in allBloodGroups"
+                            :value="i"
+                            :key="i"
+                          >{{ i }}</option>
+                        </b-select>
                       </b-field>
                     </div>
                   </div>
@@ -259,7 +271,11 @@
                         <b-input icon-pack="fas" v-model="student.motherInfo.name"></b-input>
                       </b-field>
                       <b-field label="Mobile Number">
-                        <b-input icon-pack="fas" type="number" v-model="student.motherInfo.phoneNumber"></b-input>
+                        <b-input
+                          icon-pack="fas"
+                          type="number"
+                          v-model="student.motherInfo.phoneNumber"
+                        ></b-input>
                       </b-field>
                     </div>
                     <div class="column is-4 mt-2">
@@ -305,7 +321,13 @@
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-input icon-pack="fas" v-model="student.motherInfo.bloodGroup"></b-input>
+                        <b-select placeholder="Select Blood Group" v-model="student.motherInfo.bloodGroup">
+                          <option
+                            v-for="i in allBloodGroups"
+                            :value="i"
+                            :key="i"
+                          >{{ i }}</option>
+                        </b-select>
                       </b-field>
                     </div>
                   </div>
@@ -375,11 +397,11 @@
         <div class="submit mt-2">
           <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
           <b-button
-            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
-            @click="formType === 'add' ? addStudent() : editStudent()"
+            :type='startLoading ? "is-loading is-primary" : "is-primary"'
+            @click='formType === "add" ? addStudent() : editStudent()'
             icon-right="arrow-circle-right"
             class="submit"
-          >{{ formType === 'add' ? 'Add Student' : 'Edit Student' }}</b-button>
+          >{{ formType === "add" ? "Add Student" : "Edit Student" }}</b-button>
         </div>
       </div>
     </div>
@@ -403,6 +425,7 @@ export default {
       startLoading: false,
       gender: ['Male', 'Female'],
       classes: ['X-A', 'X-B', 'XI-A', 'XII-A', 'XI-C'],
+      allBloodGroups: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
       student: {
         name: '',
         username: '',
