@@ -17,15 +17,13 @@
         </div>
         <div class="line">
           <b-field label="Gender" class="gender">
-            <b-dropdown aria-role="list" v-model="teacher.basicInfo.gender" required>
-              <button class="button is-outline" slot="trigger">
-                <span class="gender-label">{{teacher.basicInfo.gender}}</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <b-dropdown-item aria-role="listitem" value="Male">Male</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="Female">Female</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" value="Transgender">Transgender</b-dropdown-item>
-            </b-dropdown>
+            <MultiSelect
+              required
+              v-model="teacher.basicInfo.gender"
+              :isMultiple="false"
+              :allOptions="genderList"
+              placeholder="Select Gender"
+            />
           </b-field>
           <b-field label="Biometric Code" class="code">
             <b-input v-model="teacher.biometricCode" required></b-input>
@@ -36,18 +34,13 @@
         </div>
         <div class="line">
           <b-field label="Blood Group" class="blood">
-            <b-dropdown aria-role="list" v-model="teacher.basicInfo.bloodGroup">
-              <button class="button is-outline" slot="trigger">
-                <span class="blood-group-label">{{teacher.basicInfo.bloodGroup}}</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <b-dropdown-item
-                aria-role="listitem"
-                v-for="(bloodGroup, key) in bloodGroupList"
-                :key="key"
-                :value="bloodGroup"
-              >{{ bloodGroup }}</b-dropdown-item>
-            </b-dropdown>
+            <MultiSelect
+              required
+              v-model="teacher.basicInfo.bloodGroup"
+              :isMultiple="false"
+              :allOptions="allBloodGroups"
+              placeholder="Select Blood Group"
+            />
           </b-field>
           <b-field label="Nationality" class="nation ml-2">
             <b-input v-model="teacher.basicInfo.nationality" required></b-input>
@@ -67,16 +60,13 @@
             <b-input type="email" required v-model="teacher.basicInfo.personalEmail"></b-input>
           </b-field>
           <b-field label="Marital Status">
-            <b-dropdown aria-role="list" required v-model="teacher.martialStatus.status">
-              <button class="button is-outline" slot="trigger">
-                <span
-                  class="subject-label"
-                >{{ teacher.martialStatus.status ? 'Married' : 'Unmarried' }}</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <b-dropdown-item aria-role="listitem" :value="true">Married</b-dropdown-item>
-              <b-dropdown-item aria-role="listitem" :value="false">Unmarried</b-dropdown-item>
-            </b-dropdown>
+            <MultiSelect
+              required
+              v-model="teacher.martialStatus.status"
+              :isMultiple="false"
+              :allOptions="martialStatus"
+              placeholder="Select Martial Status"
+            />
           </b-field>
         </div>
         <div>
@@ -181,46 +171,24 @@
         </div>-->
         <div class="ml-2">
           <b-field label="Subject">
-            <b-dropdown aria-role="list" multiple required v-model="teacher.subjects">
-              <button class="button is-outline" slot="trigger">
-                <span
-                  class="subject-label"
-                >{{ subjects.length && teacher.subjects ? `Selected (${teacher.subjects && teacher.subjects.length})` : '' }}</span>
-                <span v-if="!subjects.length" class="subject-label">No Subject Added!</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-
-              <b-dropdown-item
-                v-for="sub in subjects"
-                :key="sub._id"
-                :value="sub.name"
-                aria-role="listitem"
-                @click="selectedSubjects(sub._id)"
-              >
-                <div class="field">{{ sub.name }}</div>
-              </b-dropdown-item>
-            </b-dropdown>
+            <MultiSelect
+              required
+              v-model="teacher.subjects"
+              :isMultiple="true"
+              :allOptions="subjects"
+              placeholder="Select Subjects"
+            />
           </b-field>
         </div>
         <div class="ml-2">
           <b-field label="Department">
-            <b-dropdown aria-role="list" required v-model="teacher.department">
-              <button class="button is-outline" slot="trigger">
-                <span class="department-label">{{ teacher.department }}</span>
-                <span v-if="!dept.length" class="department-label">No Department Added!</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-
-              <b-dropdown-item
-                v-for="dep in dept"
-                :key="dep._id"
-                :value="dep.name"
-                aria-role="listitem"
-                @click="selectedDept(dep._id)"
-              >
-                <div class="field">{{ dep.name }}</div>
-              </b-dropdown-item>
-            </b-dropdown>
+            <MultiSelect
+              required
+              v-model="teacher.department"
+              :isMultiple="false"
+              :allOptions="departmentList"
+             placeholder="Select Department"
+            />
           </b-field>
         </div>
       </div>
@@ -326,6 +294,8 @@
 </template>
 
 <script>
+import MultiSelect from '@/components/MultiSelect.vue';
+
 export default {
   name: 'TeacherForm',
   props: {
@@ -341,17 +311,19 @@ export default {
       type: Array,
       default: () => [],
     },
-    dept: {
+    departmentList: {
       type: Array,
       default: () => [],
     },
   },
+  components: { MultiSelect },
   data() {
     return {
       startLoading: false,
       selectedDeptId: '',
       teacher: {
         basicInfo: {},
+        department: [],
         bankAccountInfo: {},
         identityDocumentUrl: 'http://placehold.it/255',
         martialStatus: {
@@ -360,15 +332,32 @@ export default {
       },
       selectedSubjectId: [],
       radio: 'mandatory',
-      bloodGroupList: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+      genderList: ['Male', 'Female'],
+      allBloodGroups: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
+      martialStatus: ['Unmarried', 'Married'],
     };
   },
   mounted() {
+    console.log('d list', this.departmentList);
     if (this.formType === 'edit') {
       this.teacher = this.teacherData;
-      console.log(this.dept);
-      console.log(this.teacher);
     }
+    this.genderList = this.genderList.map(val => ({
+      name: `${val}`,
+      code: `${val}`,
+    }));
+    this.allBloodGroups = this.allBloodGroups.map(val => ({
+      name: `${val}`,
+      code: `${val}`,
+    }));
+    this.martialStatus = this.martialStatus.map(val => ({
+      name: `${val}`,
+      code: `${val}`,
+    }));
+    // this.departmentList = this.departmentList.map(val => ({
+    //   name: `${val}`,
+    //   code: `${val}`
+    // }));
   },
   methods: {
     closeModal() {
