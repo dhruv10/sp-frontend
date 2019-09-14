@@ -11,10 +11,10 @@
       <div class="content card-area">
         <div class="line">
           <b-field label="Subject Code">
-            <b-input v-model="subject.code"></b-input>
+            <b-input required v-model="subject.code"></b-input>
           </b-field>
           <b-field label="Subject Name" class="mid">
-            <b-input v-model="subject.name"></b-input>
+            <b-input required v-model="subject.name"></b-input>
           </b-field>
         </div>
         <b-field label="Type">
@@ -76,7 +76,10 @@ export default {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/subject', { ...this.subject, optional: this.radio === 'Optional' })
+        .post('/subject', {
+          ...this.subject,
+          optional: this.radio === 'Optional',
+        })
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');

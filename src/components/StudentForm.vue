@@ -17,7 +17,7 @@
                 <div class="columns">
                   <div class="column is-8">
                     <b-field label="Student Name">
-                      <b-input v-model="student.name" icon-pack="fas" icon="user-graduate"></b-input>
+                      <b-input required v-model="student.name" icon-pack="fas" icon="user-graduate"></b-input>
                     </b-field>
                     <div class="columns">
                       <div class="column">
@@ -26,20 +26,21 @@
                             placeholder="Click to select..."
                             icon="calendar-today"
                             icon-pack="fas"
+                            required
                             v-model="student.studentDOB"
                           ></b-datepicker>
                         </b-field>
                       </div>
                       <div class="column">
                         <b-field label="Nationality">
-                          <b-input icon-pack="fas" v-model="student.nationality"></b-input>
+                          <b-input icon-pack="fas" required v-model="student.nationality"></b-input>
                         </b-field>
                       </div>
                     </div>
                   </div>
                   <div class="column is-4 mt-2">
                     <b-field>
-                      <b-upload v-model="student.photo" multiple drag-drop>
+                      <b-upload required v-model="student.photo" multiple drag-drop>
                         <section class="uploadsection">
                           <div class="content has-text-centered">
                             <p>
@@ -70,27 +71,27 @@
                 <div class="columns">
                   <div class="column">
                     <b-field label="Username">
-                      <b-input icon-pack="fas" v-model="student.username"></b-input>
+                      <b-input icon-pack="fas" required v-model="student.username"></b-input>
                     </b-field>
                   </div>
                   <div class="column">
                     <b-field label="Email ID">
-                      <b-input icon-pack="fas" v-model="student.personalEmail"></b-input>
+                      <b-input icon-pack="fas" required v-model="student.personalEmail"></b-input>
                     </b-field>
                   </div>
                   <div class="column">
                     <b-field label="Phone Number">
-                      <b-input icon-pack="fas" v-model="student.phoneNumber"></b-input>
+                      <b-input icon-pack="fas" required v-model="student.phoneNumber"></b-input>
                     </b-field>
                   </div>
                 </div>
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Roll Number">
-                      <b-input type="number" v-model="student.rollNo"></b-input>
+                      <b-input type="number" required v-model="student.rollNo"></b-input>
                     </b-field>
                     <b-field label="Enrollment Number">
-                      <b-input type="number" v-model="student.enrollmentNo"></b-input>
+                      <b-input type="number" required v-model="student.enrollmentNo"></b-input>
                     </b-field>
                   </div>
                   <div class="column is-half">
@@ -99,29 +100,34 @@
                         placeholder="Click to select..."
                         icon="calendar-today"
                         icon-pack="fas"
+                        required
                         v-model="student.admissionDate"
                       ></b-datepicker>
                     </b-field>
                     <b-field label="Admission Number">
-                      <b-input type="number" v-model="student.admissionNo"></b-input>
+                      <b-input type="number" required v-model="student.admissionNo"></b-input>
                     </b-field>
                   </div>
                 </div>
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Blood Group">
-                      <b-select placeholder="Select Blood Group" v-model="student.bloodGroup">
-                          <option
-                            v-for="i in allBloodGroups"
-                            :value="i"
-                            :key="i"
-                          >{{ i }}</option>
-                        </b-select>
+                      <b-select
+                        placeholder="Select Blood Group"
+                        required
+                        v-model="student.bloodGroup"
+                      >
+                        <option v-for="i in allBloodGroups" :value="i" :key="i">{{ i }}</option>
+                      </b-select>
                     </b-field>
                   </div>
                   <div class="column is-half">
                     <b-field label="Gender">
-                      <b-select placeholder="Select the Gender please" v-model="student.gender">
+                      <b-select
+                        placeholder="Select the Gender please"
+                        required
+                        v-model="student.gender"
+                      >
                         <option v-for="option in gender" :value="option" :key="option">{{ option }}</option>
                       </b-select>
                     </b-field>
@@ -130,7 +136,7 @@
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Link Class">
-                      <b-select placeholder="Select a class" v-model="student.class">
+                      <b-select placeholder="Select a class" required v-model="student.class">
                         <option
                           v-for="option in student.classes"
                           :value="option"
@@ -141,15 +147,32 @@
                   </div>
                   <div class="column is-half mt-2">
                     <div class="block">
-                      <b-checkbox v-model="student.checkboxGroup" native-value="Science">Science</b-checkbox>
-                      <b-checkbox v-model="student.checkboxGroup" native-value="Maths">Maths</b-checkbox>
-                      <b-checkbox v-model="student.checkboxGroup" native-value="English">English</b-checkbox>
+                      <b-checkbox
+                        required
+                        v-model="student.checkboxGroup"
+                        native-value="Science"
+                      >Science</b-checkbox>
+                      <b-checkbox
+                        required
+                        v-model="student.checkboxGroup"
+                        native-value="Maths"
+                      >Maths</b-checkbox>
+                      <b-checkbox
+                        required
+                        v-model="student.checkboxGroup"
+                        native-value="English"
+                      >English</b-checkbox>
                       <br />
                       <b-checkbox
+                        required
                         v-model="student.checkboxGroup"
                         native-value="Social Science"
                       >Social Science</b-checkbox>
-                      <b-checkbox v-model="student.checkboxGroup" native-value="Sports">Sports</b-checkbox>
+                      <b-checkbox
+                        required
+                        v-model="student.checkboxGroup"
+                        native-value="Sports"
+                      >Sports</b-checkbox>
                     </div>
                   </div>
                 </div>
@@ -157,6 +180,7 @@
                   <div class="column is-8">
                     <b-field label="Health Disorder Note (if any)">
                       <b-input
+                        required
                         v-model="student.healthDisorderNote"
                         class="notearea"
                         maxlength="200"
@@ -166,7 +190,13 @@
                   </div>
                   <div class="column is-4 mt-2">
                     <b-field>
-                      <b-upload class="dropfile" v-model="student.healthDocs" multiple drag-drop>
+                      <b-upload
+                        class="dropfile"
+                        required
+                        v-model="student.healthDocs"
+                        multiple
+                        drag-drop
+                      >
                         <section class="uploadsection">
                           <div class="content has-text-centered">
                             <p>
@@ -185,11 +215,12 @@
                   <div class="columns">
                     <div class="column is-8">
                       <b-field label="Father's Name">
-                        <b-input icon-pack="fas" v-model="student.fatherInfo.name"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.fatherInfo.name"></b-input>
                       </b-field>
                       <b-field label="Mobile Number">
                         <b-input
                           icon-pack="fas"
+                          required
                           v-model="student.fatherInfo.phoneNumber"
                           type="number"
                         ></b-input>
@@ -197,7 +228,7 @@
                     </div>
                     <div class="column is-4 mt-2">
                       <b-field>
-                        <b-upload v-model="student.fatherPhoto" multiple drag-drop>
+                        <b-upload required v-model="student.fatherPhoto" multiple drag-drop>
                           <section class="uploadsection">
                             <div class="content has-text-centered">
                               <p>
@@ -232,18 +263,19 @@
                           placeholder="Click to select..."
                           icon="calendar-today"
                           icon-pack="fas"
+                          required
                           v-model="student.fatherInfo.dob"
                         ></b-datepicker>
                       </b-field>
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-select placeholder="Select Blood Group" v-model="student.fatherInfo.bloodGroup">
-                          <option
-                            v-for="i in allBloodGroups"
-                            :value="i"
-                            :key="i"
-                          >{{ i }}</option>
+                        <b-select
+                          placeholder="Select Blood Group"
+                          required
+                          v-model="student.fatherInfo.bloodGroup"
+                        >
+                          <option v-for="i in allBloodGroups" :value="i" :key="i">{{ i }}</option>
                         </b-select>
                       </b-field>
                     </div>
@@ -251,13 +283,13 @@
                   <div class="columns samesection">
                     <div class="column">
                       <b-field label="Father's Education">
-                        <b-input icon-pack="fas" v-model="student.fatherInfo.education"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.fatherInfo.education"></b-input>
                       </b-field>
                       <b-field label="Father's Profession">
-                        <b-input icon-pack="fas" v-model="student.fatherInfo.profession"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.fatherInfo.profession"></b-input>
                       </b-field>
                       <b-field label="Father's Designation">
-                        <b-input icon-pack="fas" v-model="student.fatherInfo.designation"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.fatherInfo.designation"></b-input>
                       </b-field>
                     </div>
                   </div>
@@ -268,19 +300,20 @@
                   <div class="columns">
                     <div class="column is-8">
                       <b-field label="Mother's Name">
-                        <b-input icon-pack="fas" v-model="student.motherInfo.name"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.motherInfo.name"></b-input>
                       </b-field>
                       <b-field label="Mobile Number">
                         <b-input
                           icon-pack="fas"
                           type="number"
+                          required
                           v-model="student.motherInfo.phoneNumber"
                         ></b-input>
                       </b-field>
                     </div>
                     <div class="column is-4 mt-2">
                       <b-field>
-                        <b-upload v-model="student.motherPhoto" multiple drag-drop>
+                        <b-upload required v-model="student.motherPhoto" multiple drag-drop>
                           <section class="uploadsection">
                             <div class="content has-text-centered">
                               <p>
@@ -315,18 +348,19 @@
                           placeholder="Click to select..."
                           icon="calendar-today"
                           icon-pack="fas"
+                          required
                           v-model="student.motherDOB"
                         ></b-datepicker>
                       </b-field>
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-select placeholder="Select Blood Group" v-model="student.motherInfo.bloodGroup">
-                          <option
-                            v-for="i in allBloodGroups"
-                            :value="i"
-                            :key="i"
-                          >{{ i }}</option>
+                        <b-select
+                          placeholder="Select Blood Group"
+                          required
+                          v-model="student.motherInfo.bloodGroup"
+                        >
+                          <option v-for="i in allBloodGroups" :value="i" :key="i">{{ i }}</option>
                         </b-select>
                       </b-field>
                     </div>
@@ -334,13 +368,13 @@
                   <div class="columns samesection">
                     <div class="column">
                       <b-field label="Mother's Education">
-                        <b-input icon-pack="fas" v-model="student.motherInfo.education"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.motherInfo.education"></b-input>
                       </b-field>
                       <b-field label="Mother's Profession">
-                        <b-input icon-pack="fas" v-model="student.motherInfo.profession"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.motherInfo.profession"></b-input>
                       </b-field>
                       <b-field label="Mother's Designation">
-                        <b-input icon-pack="fas" v-model="student.motherInfo.designation"></b-input>
+                        <b-input icon-pack="fas" required v-model="student.motherInfo.designation"></b-input>
                       </b-field>
                     </div>
                   </div>
@@ -353,6 +387,7 @@
                       <b-field label="Address">
                         <b-input
                           class="notearea"
+                          required
                           v-model="student.permanentAddress"
                           maxlength="200"
                           type="textarea"
@@ -361,7 +396,7 @@
                     </div>
                     <div class="column is-4 mt-2">
                       <b-field>
-                        <b-upload v-model="student.otherdocuments" multiple drag-drop>
+                        <b-upload required v-model="student.otherdocuments" multiple drag-drop>
                           <section class="uploadsection">
                             <div class="content has-text-centered">
                               <p>

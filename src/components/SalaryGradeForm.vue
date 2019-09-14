@@ -14,57 +14,57 @@
             <div class="column">
               <section>
                 <b-field label="Grade Name">
-                  <b-input icon-pack="fas" v-model="salaryGrade.name" icon="credit-card"></b-input>
+                  <b-input icon-pack="fas" required v-model="salaryGrade.name" icon="credit-card"></b-input>
                 </b-field>
 
                 <div class="columns">
                   <div class="column">
                     <section>
                       <b-field label="Basic Salary">
-                        <b-input type="number" v-model="salaryGrade.basicSalary"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.basicSalary"></b-input>
                       </b-field>
                       <b-field label="Transport Allowance">
-                        <b-input type="number" v-model="salaryGrade.transportAllowance"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.transportAllowance"></b-input>
                       </b-field>
                       <b-field label="Over Time Hourly Rate">
-                        <b-input type="number" v-model="salaryGrade.overtimeHourlyRate"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.overtimeHourlyRate"></b-input>
                       </b-field>
                       <b-field label="Hourly Rate">
-                        <b-input type="number" v-model="salaryGrade.hourlyRate"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.hourlyRate"></b-input>
                       </b-field>
                     </section>
                   </div>
                   <div class="column">
                     <section>
                       <b-field label="House Rent">
-                        <b-input type="number" v-model="salaryGrade.houseRent"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.houseRent"></b-input>
                       </b-field>
                       <b-field label="Medical Allowance">
-                        <b-input type="number" v-model="salaryGrade.medicalAllowance"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.medicalAllowance"></b-input>
                       </b-field>
                       <b-field label="Provident Fund">
-                        <b-input type="number" v-model="salaryGrade.providentFund"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.providentFund"></b-input>
                       </b-field>
                       <b-field label="Taxation">
-                        <b-input type="number" v-model="salaryGrade.taxation"></b-input>
+                        <b-input type="number" required v-model="salaryGrade.taxation"></b-input>
                       </b-field>
                     </section>
                   </div>
                 </div>
                 <b-field label="Total Allowance">
-                  <b-input type="number" v-model="salaryGrade.totalAllowance"></b-input>
+                  <b-input type="number" required v-model="salaryGrade.totalAllowance"></b-input>
                 </b-field>
 
                 <b-field label="Total Deduction">
-                  <b-input type="number" v-model="salaryGrade.totalDeduction"></b-input>
+                  <b-input type="number" required v-model="salaryGrade.totalDeduction"></b-input>
                 </b-field>
 
                 <b-field label="Gross Salary">
-                  <b-input type="number" v-model="salaryGrade.grossSalary"></b-input>
+                  <b-input type="number" required v-model="salaryGrade.grossSalary"></b-input>
                 </b-field>
 
                 <b-field label="Net Salary">
-                  <b-input type="number" v-model="salaryGrade.netSalary"></b-input>
+                  <b-input type="number" required v-model="salaryGrade.netSalary"></b-input>
                 </b-field>
 
                 <div class="submit">
