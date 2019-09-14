@@ -61,13 +61,45 @@ export default {
   components: {
     HelpCard,
   },
+  mounted() {
+    document.addEventListener('keyup', this.loginWithEnter);
+  },
+  destroyed() {
+    document.removeEventListener('keyup', this.loginWithEnter);
+  },
   methods: {
+    loginWithEnter(e) {
+      if (e.keyCode === 13) {
+        this.login();
+      }
+    },
     login() {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
-      if (this.email === '' || this.password === '') {
+      if (this.email === '') {
         this.startLoading = false;
-        snackbar.open('Something is missing!');
+        snackbar.open({
+          message: 'Email field is missing!',
+          type: 'is-danger',
+        });
+        return;
+      }
+      // eslint-disable-next-line no-useless-escape
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!re.test(this.email.toLowerCase())) {
+        this.startLoading = false;
+        snackbar.open({
+          message: 'Email field is not in correct format!',
+          type: 'is-danger',
+        });
+        return;
+      }
+      if (this.password === '') {
+        this.startLoading = false;
+        snackbar.open({
+          message: 'Password field is missing!',
+          type: 'is-danger',
+        });
         return;
       }
       this.$http.post('/auth/signin', {
@@ -81,9 +113,12 @@ export default {
         snackbar.open('Logged in succesfully!');
         this.$router.push('/school');
       })
-        .catch(() => {
+        .catch((e) => {
           this.startLoading = false;
-          snackbar.open('Something went wrong. Please try again later!');
+          snackbar.open({
+            message: e.response && e.response.data && e.response.data.errors && e.response.data.errors.message,
+            type: 'is-danger',
+          });
         });
     },
     openHelpCard() {

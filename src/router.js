@@ -69,8 +69,14 @@ const router = new Router({
           path: 'teachers',
           component: Teachers,
         },
+      ],
+    },
+    {
+      path: '/receptionist',
+      component: () => import(/* webpackChunkName: "layout" */ './views/common/Layout.vue'),
+      children: [
         {
-          path: 'receptionist',
+          path: '/',
           component: Receptionist,
         },
         {
@@ -83,7 +89,6 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log('asdmaslkgsda', to.path);
   if (to.path === '/login') next(true);
   else if (localStorage.getItem('auth_token') !== null) next(true);
   else next('/login');

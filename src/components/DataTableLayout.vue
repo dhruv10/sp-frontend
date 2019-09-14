@@ -56,7 +56,7 @@
           :numeric="column.numeric"
           :centered="column.centered"
         >
-          {{ getValue(props.row, column.field) }}
+          <div class="option-data">{{ getValue(props.row, column.field) }}</div>
         </b-table-column>
         <b-table-column
           label="Actions"
@@ -155,5 +155,12 @@ export default {
   text-align: center;
   margin-top: 90px;
   font-size: 25px;
+}
+/* showing ... in long text */
+.option-data {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100px;
 }
 </style>

@@ -4,11 +4,9 @@
     <div class="card">
       <div class="card-content">
         <div class="main-container">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title header">Verify Gatepass</p>
-            </header>
-          </div>
+          <div class="tile is-8 is-vertical is-parent">
+        <h1 class="title">Verify Gatepass</h1>
+      </div>
           <div class="card-content">
             <div class="content card-area">
               <div class="mt-3">
@@ -79,6 +77,7 @@ export default {
 
 .main-container {
   background: white;
+  height: 83.7vh;
   .card-header {
     background: $primary-color;
     .header {

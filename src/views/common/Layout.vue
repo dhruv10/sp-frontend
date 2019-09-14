@@ -73,12 +73,12 @@ const SideMenuConfig = {
     {
       title: 'Receptionist',
       icon: 'cog',
-      route: '/school',
+      route: '/receptionist',
       children: [
         {
           icon: '',
           label: 'Gatepass Records',
-          route: '/receptionist',
+          route: '/',
         },
         {
           icon: '',

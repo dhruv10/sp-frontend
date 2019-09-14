@@ -22,14 +22,10 @@
 
       <template slot="end">
         <b-navbar-item tag="div">
-          <div class="buttons">
-            <b-button
-              type="is-primary"
-              icon-left="user"
-              outlined
-            >
-              <strong>Welcome, {{ userEmail }}</strong>
-            </b-button>
+          <div class="user">
+            <b-navbar-item class="is-primary">
+              <p class="is-primary"><b>Welcome, {{ userEmail }}</b></p>
+            </b-navbar-item>
           </div>
         </b-navbar-item>
       </template>
@@ -63,11 +59,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../styles/app.global.scss";
+
 .header-root {
   box-shadow: 3px 2px 8px -5px;
   position: fixed;
   z-index: 10;
   width: 84%;
+}
+.userTag {
+  font-weight: 800;
+  color: $primary-color;
 }
 </style>
