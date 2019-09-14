@@ -25,20 +25,13 @@
             </b-field>-->
           </div>
           <b-field label="Class Teacher">
-            <b-dropdown aria-role="list" required v-model="classroom.classTeacher">
-              <button class="button is-outline" slot="trigger">
-                <span class="teacher-label">{{ classroom.classTeacher }}</span>
-                <span v-if="!teacherNames.length">No teacher added</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <b-dropdown-item
-                aria-role="listitem"
-                v-for="teacher in teacherNames"
-                :key="teacher._id"
-                :value="teacher.name"
-                @click="selectedTeacher(teacher._id)"
-              >{{ teacher.name }}</b-dropdown-item>
-            </b-dropdown>
+            <MultiSelect
+              required
+              v-model="classroom.classTeacher"
+              :allOptions="teacherNames"
+              :isMultiple="false"
+              placeholder="Select Class Teacher"
+            />
           </b-field>
           <div class="submit">
             <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
@@ -56,6 +49,8 @@
 </template>
 
 <script>
+import MultiSelect from '@/components/MultiSelect.vue';
+
 export default {
   name: 'ClassroomForm',
   props: {
@@ -72,6 +67,7 @@ export default {
       default: () => {},
     },
   },
+  components: { MultiSelect },
   data() {
     return {
       startLoading: false,
@@ -81,9 +77,10 @@ export default {
     };
   },
   mounted() {
-    this.teacherNames = this.teachers.map(t => ({
-      name: t.basicInfo.name,
-      _id: t._id,
+    console.log('teachers: ', this.teachers);
+    this.teacherNames = this.teachers.map(val => ({
+      name: val.basicInfo.name,
+      code: val.basicInfo.name,
     }));
     if (this.formType === 'edit') {
       this.classroom = this.classData;
