@@ -12,12 +12,12 @@
         <p>BASIC INFO</p>
         <div class="line">
           <b-field label="Name" class="name">
-            <b-input v-model="teacher.basicInfo.name"></b-input>
+            <b-input v-model="teacher.basicInfo.name" required></b-input>
           </b-field>
         </div>
         <div class="line">
           <b-field label="Gender" class="gender">
-            <b-dropdown aria-role="list" v-model="teacher.basicInfo.gender">
+            <b-dropdown aria-role="list" v-model="teacher.basicInfo.gender" required>
               <button class="button is-outline" slot="trigger">
                 <span class="gender-label">{{teacher.basicInfo.gender}}</span>
                 <b-icon icon="menu-down"></b-icon>
@@ -28,10 +28,10 @@
             </b-dropdown>
           </b-field>
           <b-field label="Biometric Code" class="code">
-            <b-input v-model="teacher.biometricCode"></b-input>
+            <b-input v-model="teacher.biometricCode" required></b-input>
           </b-field>
           <b-field label="Contact Number" class="phone">
-            <b-input v-model="teacher.basicInfo.phoneNumber"></b-input>
+            <b-input v-model="teacher.basicInfo.phoneNumber" required></b-input>
           </b-field>
         </div>
         <div class="line">
@@ -50,10 +50,11 @@
             </b-dropdown>
           </b-field>
           <b-field label="Nationality" class="nation ml-2">
-            <b-input v-model="teacher.basicInfo.nationality"></b-input>
+            <b-input v-model="teacher.basicInfo.nationality" required></b-input>
           </b-field>
           <b-field label="Date of Birth" class="dob ml-2">
             <b-datepicker
+              required
               v-model="teacher.basicInfo.birthDate"
               position="is-bottom-left"
               placeholder
@@ -63,10 +64,10 @@
         </div>
         <div class="line mt-1">
           <b-field label="Email" class="email">
-            <b-input type="email" v-model="teacher.basicInfo.personalEmail"></b-input>
+            <b-input type="email" required v-model="teacher.basicInfo.personalEmail"></b-input>
           </b-field>
           <b-field label="Marital Status">
-            <b-dropdown aria-role="list" v-model="teacher.martialStatus.status">
+            <b-dropdown aria-role="list" required v-model="teacher.martialStatus.status">
               <button class="button is-outline" slot="trigger">
                 <span
                   class="subject-label"
@@ -80,7 +81,12 @@
         </div>
         <div>
           <b-field label="Permanent Address">
-            <b-input maxlength="200" type="textarea" v-model="teacher.basicInfo.permanentAddress"></b-input>
+            <b-input
+              maxlength="200"
+              type="textarea"
+              required
+              v-model="teacher.basicInfo.permanentAddress"
+            ></b-input>
           </b-field>
         </div>
       </div>
@@ -89,10 +95,15 @@
         <div class="columns">
           <div class="column is-6">
             <b-field label="Spouse Name">
-              <b-input icon-pack="fas" v-model="teacher.martialStatus.spouseBasicInfo.name"></b-input>
+              <b-input
+                icon-pack="fas"
+                required
+                v-model="teacher.martialStatus.spouseBasicInfo.name"
+              ></b-input>
             </b-field>
             <b-field label="Mobile Number">
               <b-input
+                required
                 icon-pack="fas"
                 type="number"
                 v-model="teacher.martialStatus.spouseBasicInfo.phoneNumber"
@@ -101,7 +112,12 @@
           </div>
           <div class="column is-6">
             <b-field>
-              <b-upload v-model="teacher.martialStatus.spouseBasicInfo.docs" multiple drag-drop>
+              <b-upload
+                required
+                v-model="teacher.martialStatus.spouseBasicInfo.docs"
+                multiple
+                drag-drop
+              >
                 <div class="uploadsection">
                   <div class="content has-text-centered">
                     <p>
@@ -118,6 +134,7 @@
           <div>
             <b-field label="Alternative Mobile Number">
               <b-input
+                required
                 icon-pack="fas"
                 type="number"
                 v-model="teacher.martialStatus.spouseBasicInfo.alternativePhoneNumber"
@@ -127,6 +144,7 @@
           <div class="ml-2">
             <b-field label="Age">
               <b-input
+                required
                 icon-pack="fas"
                 type="number"
                 v-model="teacher.martialStatus.spouseBasicInfo.age"
@@ -136,6 +154,7 @@
         </div>
         <b-field label="Email" class="mt-1">
           <b-input
+            required
             icon-pack="fas"
             type="email"
             v-model="teacher.martialStatus.spouseBasicInfo.email"
@@ -146,6 +165,7 @@
       <div class="line mt-1">
         <b-field label="Joining Date">
           <b-datepicker
+            required
             v-model="teacher.joiningDate"
             position="is-bottom-right"
             placeholder
@@ -161,7 +181,7 @@
         </div>-->
         <div class="ml-2">
           <b-field label="Subject">
-            <b-dropdown aria-role="list" multiple v-model="teacher.subjects">
+            <b-dropdown aria-role="list" multiple required v-model="teacher.subjects">
               <button class="button is-outline" slot="trigger">
                 <span
                   class="subject-label"
@@ -184,7 +204,7 @@
         </div>
         <div class="ml-2">
           <b-field label="Department">
-            <b-dropdown aria-role="list" v-model="teacher.department">
+            <b-dropdown aria-role="list" required v-model="teacher.department">
               <button class="button is-outline" slot="trigger">
                 <span class="department-label">{{ teacher.department }}</span>
                 <span v-if="!dept.length" class="department-label">No Department Added!</span>
@@ -209,41 +229,41 @@
         <div class="line">
           <div class="bank">
             <b-field label="Bank Name">
-              <b-input v-model="teacher.bankAccountInfo.bank"></b-input>
+              <b-input required v-model="teacher.bankAccountInfo.bank"></b-input>
             </b-field>
           </div>
           <div class="branchh ml-2">
             <b-field label="Branch">
-              <b-input v-model="teacher.bankAccountInfo.branch"></b-input>
+              <b-input required v-model="teacher.bankAccountInfo.branch"></b-input>
             </b-field>
           </div>
           <div class="grade ml-2">
             <b-field label="Grade">
-              <b-input v-model="teacher.salaryGrade"></b-input>
+              <b-input required v-model="teacher.salaryGrade"></b-input>
             </b-field>
           </div>
         </div>
         <div class="line mt-1">
           <div class="bank">
             <b-field label="Account No">
-              <b-input v-model="teacher.bankAccountInfo.accountNo"></b-input>
+              <b-input required v-model="teacher.bankAccountInfo.accountNo"></b-input>
             </b-field>
           </div>
           <div class="branch ml-2">
             <b-field label="IFSC Code">
-              <b-input v-model="teacher.bankAccountInfo.IFSC"></b-input>
+              <b-input required v-model="teacher.bankAccountInfo.IFSC"></b-input>
             </b-field>
           </div>
         </div>
         <div class="line mt-1">
           <div class="bank">
             <b-field label="PF No">
-              <b-input v-model="teacher.bankAccountInfo.pfNo"></b-input>
+              <b-input required v-model="teacher.bankAccountInfo.pfNo"></b-input>
             </b-field>
           </div>
           <div class="branch ml-2">
             <b-field label="Payment Type">
-              <b-dropdown aria-role="list" v-model="teacher.bankAccountInfo.paymentType">
+              <b-dropdown aria-role="list" required v-model="teacher.bankAccountInfo.paymentType">
                 <button class="button is-outline" slot="trigger">
                   <span class="payment-label">{{ teacher.bankAccountInfo.paymentType }}</span>
                   <b-icon icon="menu-down"></b-icon>
@@ -265,7 +285,7 @@
         <div class="line mt-1">
           <div class="photo">
             <b-field label="Upload Photo">
-              <b-upload v-model="teacher.photo" multiple drag-drop>
+              <b-upload required v-model="teacher.photo" multiple drag-drop>
                 <div class="uploadsection">
                   <div class="content has-text-centered">
                     <p>
@@ -279,7 +299,7 @@
           </div>
           <div class="ml-32">
             <b-field label="Upload Documents">
-              <b-upload v-model="teacher.docs" multiple drag-drop>
+              <b-upload required v-model="teacher.docs" multiple drag-drop>
                 <div class="uploadsection">
                   <div class="content has-text-centered">
                     <p>

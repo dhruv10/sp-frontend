@@ -14,10 +14,11 @@
             <div class="column is-8">
               <section>
                 <b-field label="Document Title">
-                  <b-input icon-pack="fas" v-model="syllabus.docTitle" icon="credit-card"></b-input>
+                  <b-input icon-pack="fas" required v-model="syllabus.docTitle" icon="credit-card"></b-input>
                 </b-field>
                 <b-field label="Link Class">
                   <MultiSelect
+                    required
                     v-model="syllabus.selectedClass"
                     :allOptions="test"
                     placeholder="Select a class"
@@ -27,7 +28,7 @@
             </div>
             <div class="column is-4 mt-2">
               <b-field>
-                <b-upload v-model="syllabus.docFile" multiple drag-drop>
+                <b-upload v-model="syllabus.docFile" multiple drag-drop required>
                   <section class="uploadsection">
                     <div class="content has-text-centered">
                       <p>

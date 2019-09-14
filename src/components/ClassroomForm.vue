@@ -11,24 +11,21 @@
       <div class="card-content">
         <div class="content card-area">
           <b-field label="Class Name">
-            <b-input v-model="classroom.name"></b-input>
+            <b-input required v-model="classroom.name"></b-input>
           </b-field>
           <div class="line">
             <b-field label="Class Number">
-              <b-input v-model="classroom.classNumber"></b-input>
+              <b-input required v-model="classroom.classNumber"></b-input>
             </b-field>
             <b-field label="Section" class="mid">
-              <b-input v-model="classroom.classSection"></b-input>
+              <b-input required v-model="classroom.classSection"></b-input>
             </b-field>
             <!-- <b-field label="Total Students">
-              <b-input v-model="classroom.totalStudents"></b-input>
+              <b-input required v-model="classroom.totalStudents"></b-input>
             </b-field>-->
           </div>
           <b-field label="Class Teacher">
-            <b-dropdown
-              aria-role="list"
-              v-model="classroom.classTeacher"
-            >
+            <b-dropdown aria-role="list" required v-model="classroom.classTeacher">
               <button class="button is-outline" slot="trigger">
                 <span class="teacher-label">{{ classroom.classTeacher }}</span>
                 <span v-if="!teacherNames.length">No teacher added</span>
