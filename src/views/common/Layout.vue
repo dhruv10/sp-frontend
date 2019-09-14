@@ -78,7 +78,7 @@ const SideMenuConfig = {
         {
           icon: '',
           label: 'Gatepass Records',
-          route: '/receptionist',
+          route: '/',
         },
         {
           icon: '',
