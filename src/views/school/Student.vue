@@ -20,6 +20,7 @@
         :formType="formType"
         @closeModal="closeModal"
         @getTableData="getTableData"
+        :classrooms="classrooms"
       />
     </b-modal>
   </div>
@@ -40,6 +41,7 @@ export default {
       formType: 'add',
       formData: {},
       loading: false,
+      classrooms: [],
       studentDetails: [],
       tableConfig: [
         {
@@ -201,6 +203,7 @@ export default {
   },
   mounted() {
     this.getTableData();
+    this.getClassrooms();
   },
   methods: {
     getTableData() {
@@ -214,6 +217,16 @@ export default {
         .catch((e) => {
           console.log(e);
           this.loading = false;
+        });
+    },
+    getClassrooms() {
+      this.$http
+        .get('/classroom')
+        .then((res) => {
+          this.classrooms = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
     openAddModal() {

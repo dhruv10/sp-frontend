@@ -112,37 +112,37 @@
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Blood Group">
-                      <b-select
-                        placeholder="Select Blood Group"
+                      <MultiSelect
                         required
                         v-model="student.bloodGroup"
-                      >
-                        <option v-for="i in allBloodGroups" :value="i" :key="i">{{ i }}</option>
-                      </b-select>
+                        :isMultiple="false"
+                        :allOptions="allBloodGroups"
+                        placeholder="Select Blood Group"
+                      />
                     </b-field>
                   </div>
                   <div class="column is-half">
                     <b-field label="Gender">
-                      <b-select
-                        placeholder="Select the Gender please"
+                      <MultiSelect
                         required
                         v-model="student.gender"
-                      >
-                        <option v-for="option in gender" :value="option" :key="option">{{ option }}</option>
-                      </b-select>
+                        :isMultiple="false"
+                        :allOptions="genderList"
+                        placeholder="Select the Gender please"
+                      />
                     </b-field>
                   </div>
                 </div>
                 <div class="columns">
                   <div class="column is-half">
                     <b-field label="Link Class">
-                      <b-select placeholder="Select a class" required v-model="student.class">
-                        <option
-                          v-for="option in student.classes"
-                          :value="option"
-                          :key="option"
-                        >{{ option }}</option>
-                      </b-select>
+                      <MultiSelect
+                        required
+                        v-model="student.class"
+                        :isMultiple="false"
+                        :allOptions="classlist"
+                        placeholder="Select a class"
+                      />
                     </b-field>
                   </div>
                   <div class="column is-half mt-2">
@@ -270,13 +270,13 @@
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-select
-                          placeholder="Select Blood Group"
-                          required
-                          v-model="student.fatherInfo.bloodGroup"
-                        >
-                          <option v-for="i in allBloodGroups" :value="i" :key="i">{{ i }}</option>
-                        </b-select>
+                        <MultiSelect
+                        required
+                        v-model="student.fatherInfo.bloodGroup"
+                        :isMultiple="false"
+                        :allOptions="allBloodGroups"
+                        placeholder="Select Blood Group"
+                      />
                       </b-field>
                     </div>
                   </div>
@@ -355,13 +355,13 @@
                     </div>
                     <div class="column is-half">
                       <b-field label="Blood Group">
-                        <b-select
-                          placeholder="Select Blood Group"
-                          required
-                          v-model="student.motherInfo.bloodGroup"
-                        >
-                          <option v-for="i in allBloodGroups" :value="i" :key="i">{{ i }}</option>
-                        </b-select>
+                        <MultiSelect
+                        required
+                        v-model="student.motherInfo.bloodGroup"
+                        :isMultiple="false"
+                        :allOptions="allBloodGroups"
+                        placeholder="Select Blood Group"
+                      />
                       </b-field>
                     </div>
                   </div>
@@ -444,6 +444,8 @@
 </template>
 
 <script>
+import MultiSelect from '@/components/MultiSelect.vue';
+
 export default {
   name: 'StudentForm',
   props: {
@@ -454,12 +456,19 @@ export default {
     formData: {
       type: Object,
     },
+    classrooms: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  components: {
+    MultiSelect,
   },
   data() {
     return {
       startLoading: false,
-      gender: ['Male', 'Female'],
-      classes: ['X-A', 'X-B', 'XI-A', 'XII-A', 'XI-C'],
+      genderList: ['Male', 'Female'],
+      classlist: [],
       allBloodGroups: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
       student: {
         name: '',
@@ -506,6 +515,18 @@ export default {
   },
   mounted() {
     if (this.formType === 'edit') this.student = this.formData;
+    this.classlist = this.classrooms.map(val => ({
+      name: `${val.classSection} ${val.classNumber}`,
+      code: `${val.classSection} ${val.classNumber}`,
+    }));
+    this.genderList = this.genderList.map(val => ({
+      name: `${val}`,
+      code: `${val}`,
+    }));
+    this.allBloodGroups = this.allBloodGroups.map(val => ({
+      name: `${val}`,
+      code: `${val}`,
+    }));
   },
   methods: {
     deleteDropFile(index) {
