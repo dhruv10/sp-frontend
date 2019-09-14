@@ -13,6 +13,7 @@
       @tag="addTag"
       @change="$emit('input', selectedValues)"
     ></multiselect>
+    <span v-if="!allOptions.length">No field added</span>
   </div>
 </template>
 
@@ -21,9 +22,7 @@ import Multiselect from 'vue-multiselect';
 
 export default {
   props: {
-    value: {
-      type: Array,
-    },
+    value: {},
     allOptions: {
       type: Array,
     },
