@@ -13,6 +13,7 @@
       @tag="addTag"
       @change="$emit('input', selectedValues)"
     ></multiselect>
+    <span v-if="!allOptions.length">No field added</span>
   </div>
 </template>
 

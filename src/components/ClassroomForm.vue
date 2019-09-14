@@ -77,7 +77,6 @@ export default {
     };
   },
   mounted() {
-    console.log('teachers: ', this.teachers);
     this.teacherNames = this.teachers.map(val => ({
       name: val.basicInfo.name,
       code: val.basicInfo.name,
