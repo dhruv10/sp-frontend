@@ -20,6 +20,7 @@
                   <MultiSelect
                     required
                     v-model="syllabus.selectedClass"
+                    :isMultiple="false"
                     :allOptions="classlist"
                     placeholder="Select a class"
                   />

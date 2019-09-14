@@ -22,9 +22,7 @@ import Multiselect from 'vue-multiselect';
 
 export default {
   props: {
-    value: {
-      type: Array,
-    },
+    value: {},
     allOptions: {
       type: Array,
     },
