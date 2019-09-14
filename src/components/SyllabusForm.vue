@@ -17,13 +17,11 @@
                   <b-input icon-pack="fas" v-model="syllabus.docTitle" icon="credit-card"></b-input>
                 </b-field>
                 <b-field label="Link Class">
-                  <b-select v-model="syllabus.selectedClass" placeholder="Select a class">
-                    <option
-                      v-for="option in syllabus.class"
-                      :value="option"
-                      :key="option"
-                    >{{ option }}</option>
-                  </b-select>
+                  <MultiSelect
+                    v-model="syllabus.selectedClass"
+                    :allOptions="test"
+                    placeholder="Select a class"
+                  />
                 </b-field>
               </section>
             </div>
@@ -69,6 +67,8 @@
 </template>
 
 <script>
+import MultiSelect from '@/components/MultiSelect.vue';
+
 export default {
   name: 'Syllabus',
   props: {
@@ -80,9 +80,22 @@ export default {
       type: Object,
     },
   },
+  components: {
+    MultiSelect,
+  },
   data() {
     return {
       startLoading: false,
+      test: [
+        {
+          name: 'asd',
+          code: 'asd',
+        },
+        {
+          name: 'wasp',
+          code: 'wasp',
+        },
+      ],
       dropFiles: [],
       syllabus: {
         docTitle: '',
