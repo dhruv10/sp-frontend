@@ -73,7 +73,7 @@ const SideMenuConfig = {
     {
       title: 'Receptionist',
       icon: 'cog',
-      route: '/school',
+      route: '/receptionist',
       children: [
         {
           icon: '',
