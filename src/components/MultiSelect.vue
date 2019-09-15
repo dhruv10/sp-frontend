@@ -1,7 +1,7 @@
 <template>
   <div>
     <multiselect
-      v-model="selectedValues"
+      :value="selectedValues"
       tag-placeholder="Add this as new tag"
       label="name"
       track-by="code"
@@ -11,9 +11,8 @@
       :taggable="isTaggable"
       tagPosition="bottom"
       @tag="addTag"
-      @change="$emit('input', selectedValues)"
+      @input="selectedValues = $event; $emit('input', selectedValues)"
     ></multiselect>
-    <span v-if="!allOptions.length">No field added</span>
   </div>
 </template>
 
