@@ -11,17 +11,23 @@
           <div class="column is-8">
             <section>
               <b-field label="School Name">
-                <b-input v-model="school.name"></b-input>
+                <b-input required v-model="school.name"></b-input>
               </b-field>
 
               <b-field label="Address">
-                <b-input v-model="school.address" class="address" maxlength="200" type="textarea"></b-input>
+                <b-input
+                  required
+                  v-model="school.address"
+                  class="address"
+                  maxlength="200"
+                  type="textarea"
+                ></b-input>
               </b-field>
             </section>
           </div>
           <div class="column is-4 mt-2">
             <b-field>
-              <b-upload v-model="school.dropFiles" multiple drag-drop>
+              <b-upload required v-model="school.dropFiles" multiple drag-drop>
                 <section class="uploadsection">
                   <div class="content has-text-centered">
                     <p>
@@ -45,7 +51,7 @@
             </div>
 
             <b-field label="School Code">
-              <b-input icon-pack="fas" v-model="school.code" disabled></b-input>
+              <b-input icon-pack="fas" required v-model="school.code" disabled></b-input>
             </b-field>
           </div>
         </div>
@@ -54,19 +60,20 @@
           <div class="column">
             <section>
               <b-field label="Email">
-                <b-input type="email" v-model="school.email" maxlength="30"></b-input>
+                <b-input type="email" required v-model="school.email" maxlength="30"></b-input>
               </b-field>
 
               <div class="columns">
                 <div class="column">
                   <section>
                     <b-field label="Phone Number">
-                      <b-input v-model="school.phone"></b-input>
+                      <b-input required v-model="school.phone"></b-input>
                     </b-field>
                     <b-field label="Registration Date">
                       <b-datepicker
                         placeholder="Type or select a date..."
                         icon="calendar-today"
+                        required
                         v-model="school.registrationDate"
                         editable
                       ></b-datepicker>
@@ -76,12 +83,13 @@
                 <div class="column">
                   <section>
                     <b-field label="Fax">
-                      <b-input v-model="school.fax"></b-input>
+                      <b-input required v-model="school.fax"></b-input>
                     </b-field>
                     <b-field label="Subscription Date">
                       <b-datepicker
                         placeholder="Type or select a date..."
                         icon="calendar-today"
+                        required
                         v-model="school.subscriptionDate"
                         editable
                       ></b-datepicker>

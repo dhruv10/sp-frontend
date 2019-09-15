@@ -14,13 +14,13 @@
             <div class="column is-8">
               <section>
                 <b-field label="Department Name">
-                  <b-input icon-pack="fas" v-model="department.name" icon="credit-card"></b-input>
+                  <b-input icon-pack="fas" required v-model="department.name" icon="credit-card"></b-input>
                 </b-field>
               </section>
             </div>
             <div class="column is-4">
               <b-field label="Code ">
-                <b-input v-model="department.code"></b-input>
+                <b-input v-model="department.code" required></b-input>
               </b-field>
             </div>
           </div>
