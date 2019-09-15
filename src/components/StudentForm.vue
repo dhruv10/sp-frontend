@@ -40,7 +40,7 @@
                   </div>
                   <div class="column is-4 mt-2">
                     <b-field>
-                      <b-upload required v-model="student.photo" multiple drag-drop>
+                      <b-upload required v-model="student.photo" @input="uploadPhoto" drag-drop>
                         <section class="uploadsection">
                           <div class="content has-text-centered">
                             <p>
@@ -529,6 +529,12 @@ export default {
     }));
   },
   methods: {
+    uploadPhoto(file) {
+      console.log(file);
+      this.$uploadFile('/students', 'student-photo', file, console.log)
+        .then(url => this.student.photo.push({ name: file.name, url }))
+        .catch(console.log);
+    },
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1);
     },

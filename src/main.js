@@ -6,6 +6,8 @@ import store from './store';
 import 'buefy/dist/buefy.css';
 import './registerServiceWorker';
 import './init-axios';
+import './init-ismobile';
+import './init-file-upload';
 
 Vue.use(Buefy, {
   defaultIconPack: 'fas',
