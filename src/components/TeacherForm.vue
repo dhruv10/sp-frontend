@@ -10,284 +10,294 @@
     <div class="card-content">
       <div class="content card-area">
         <p>BASIC INFO</p>
-        <div class="line">
-          <b-field label="Name" class="name">
-            <b-input v-model="teacher.basicInfo.name" required></b-input>
-          </b-field>
-        </div>
-        <div class="line">
-          <b-field label="Gender" class="gender">
-            <MultiSelect
-              required
-              v-model="teacher.basicInfo.gender"
-              :isMultiple="false"
-              :allOptions="genderList"
-              placeholder="Select Gender"
-            />
-          </b-field>
-          <b-field label="Biometric Code" class="code">
-            <b-input v-model="teacher.biometricCode" required></b-input>
-          </b-field>
-          <b-field label="Contact Number" class="phone">
-            <b-input v-model="teacher.basicInfo.phoneNumber" required></b-input>
-          </b-field>
-        </div>
-        <div class="line">
-          <b-field label="Blood Group" class="blood">
-            <MultiSelect
-              required
-              v-model="teacher.basicInfo.bloodGroup"
-              :isMultiple="false"
-              :allOptions="allBloodGroups"
-              placeholder="Select Blood Group"
-            />
-          </b-field>
-          <b-field label="Nationality" class="nation ml-2">
-            <b-input v-model="teacher.basicInfo.nationality" required></b-input>
-          </b-field>
-          <b-field label="Date of Birth" class="dob ml-2">
-            <b-datepicker
-              required
-              v-model="teacher.basicInfo.birthDate"
-              position="is-bottom-left"
-              placeholder
-              icon="calendar-today"
-            ></b-datepicker>
-          </b-field>
-        </div>
-        <div class="line mt-1">
-          <b-field label="Email" class="email">
-            <b-input type="email" required v-model="teacher.basicInfo.personalEmail"></b-input>
-          </b-field>
-          <b-field label="Marital Status">
-            <MultiSelect
-              required
-              v-model="teacher.martialStatus.status"
-              :isMultiple="false"
-              :allOptions="martialStatus"
-              placeholder="Select Martial Status"
-            />
-          </b-field>
-        </div>
-        <div>
-          <b-field label="Permanent Address">
-            <b-input
-              maxlength="200"
-              type="textarea"
-              required
-              v-model="teacher.basicInfo.permanentAddress"
-            ></b-input>
-          </b-field>
-        </div>
-      </div>
-      <div v-if="teacher.martialStatus.status">
-        <p class="sub-heading">SPOUSE INFO</p>
-        <div class="columns">
-          <div class="column is-6">
-            <b-field label="Spouse Name">
-              <b-input
-                icon-pack="fas"
-                required
-                v-model="teacher.martialStatus.spouseBasicInfo.name"
-              ></b-input>
-            </b-field>
-            <b-field label="Mobile Number">
-              <b-input
-                required
-                icon-pack="fas"
-                type="number"
-                v-model="teacher.martialStatus.spouseBasicInfo.phoneNumber"
-              ></b-input>
-            </b-field>
-          </div>
-          <div class="column is-6">
-            <b-field>
-              <b-upload
-                required
-                v-model="teacher.martialStatus.spouseBasicInfo.docs"
-                multiple
-                drag-drop
-              >
-                <div class="uploadsection">
-                  <div class="content has-text-centered">
-                    <p>
-                      <b-icon icon="upload" size="is-large"></b-icon>
-                    </p>
-                    <p>Upload Documents</p>
-                  </div>
-                </div>
-              </b-upload>
-            </b-field>
-          </div>
-        </div>
-        <div class="line">
-          <div>
-            <b-field label="Alternative Mobile Number">
-              <b-input
-                required
-                icon-pack="fas"
-                type="number"
-                v-model="teacher.martialStatus.spouseBasicInfo.alternativePhoneNumber"
-              ></b-input>
-            </b-field>
-          </div>
-          <div class="ml-2">
-            <b-field label="Age">
-              <b-input
-                required
-                icon-pack="fas"
-                type="number"
-                v-model="teacher.martialStatus.spouseBasicInfo.age"
-              ></b-input>
-            </b-field>
-          </div>
-        </div>
-        <b-field label="Email" class="mt-1">
-          <b-input
-            required
-            icon-pack="fas"
-            type="email"
-            v-model="teacher.martialStatus.spouseBasicInfo.email"
-          ></b-input>
-        </b-field>
-      </div>
-
-      <div class="line mt-1">
-        <b-field label="Joining Date">
-          <b-datepicker
-            required
-            v-model="teacher.joiningDate"
-            position="is-bottom-right"
-            placeholder
-            icon="calendar-today"
-          ></b-datepicker>
-        </b-field>
-        <!-- <div class="class-teacher">
-          <b-field label="Is Class Teacher">
-            <div class="field">
-              <b-switch v-model="isSwitched">{{ isSwitched }}</b-switch>
+        <div class="mt-3">
+          <div class="columns">
+            <div class="column is-8">
+              <b-field label="Name" class="name">
+                <b-input v-model="teacher.basicInfo.name" required></b-input>
+              </b-field>
             </div>
-          </b-field>
-        </div>-->
-        <div class="ml-2">
-          <b-field label="Subject">
-            <MultiSelect
-              required
-              v-model="teacher.subjects"
-              :isMultiple="true"
-              :allOptions="subjects"
-              placeholder="Select Subjects"
-            />
-          </b-field>
-        </div>
-        <div class="ml-2">
-          <b-field label="Department">
-            <MultiSelect
-              required
-              v-model="teacher.department"
-              :isMultiple="false"
-              :allOptions="departmentList"
-             placeholder="Select Department"
-            />
-          </b-field>
-        </div>
-      </div>
-      <div class="mt-1">
-        <p class="sub-heading">BANK INFO</p>
-        <div class="line">
-          <div class="bank">
-            <b-field label="Bank Name">
-              <b-input required v-model="teacher.bankAccountInfo.bank"></b-input>
+            <div class="column is-4">
+              <b-field label="Biometric Code" class="code">
+                <b-input v-model="teacher.biometricCode" required></b-input>
+              </b-field>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="Gender" class="gender">
+                <MultiSelect
+                  required
+                  v-model="teacher.basicInfo.gender"
+                  :isMultiple="false"
+                  :allOptions="genderList"
+                  placeholder="Select Gender"
+                />
+              </b-field>
+            </div>
+            <div class="column is-6">
+              <b-field label="Blood Group">
+                <MultiSelect
+                  required
+                  v-model="teacher.basicInfo.bloodGroup"
+                  :isMultiple="false"
+                  :allOptions="allBloodGroups"
+                  placeholder="Select Blood Group"
+                />
+              </b-field>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="Contact Number">
+                <b-input v-model="teacher.basicInfo.phoneNumber" required></b-input>
+              </b-field>
+            </div>
+            <div class="column is-6">
+              <b-field label="Date of Birth">
+                <b-datepicker
+                  required
+                  v-model="teacher.basicInfo.birthDate"
+                  position="is-bottom-left"
+                  placeholder
+                  icon="calendar-today"
+                ></b-datepicker>
+              </b-field>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-8">
+              <b-field label="Email" class="email">
+                <b-input type="email" required v-model="teacher.basicInfo.personalEmail"></b-input>
+              </b-field>
+            </div>
+            <div class="column is-4">
+              <b-field label="Joining Date">
+                <b-datepicker
+                  required
+                  v-model="teacher.joiningDate"
+                  position="is-bottom-left"
+                  placeholder
+                  icon="calendar-today"
+                ></b-datepicker>
+              </b-field>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-12">
+              <b-field label="Permanent Address">
+                <b-input
+                  maxlength="200"
+                  type="textarea"
+                  required
+                  v-model="teacher.basicInfo.permanentAddress"
+                ></b-input>
+              </b-field>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="Subject">
+                <MultiSelect
+                  required
+                  v-model="teacher.subjects"
+                  :isMultiple="true"
+                  :allOptions="subjects"
+                  placeholder="Select Subjects"
+                />
+              </b-field>
+            </div>
+            <div class="column is-6">
+              <b-field label="Department">
+                <MultiSelect
+                  required
+                  v-model="teacher.department"
+                  :isMultiple="false"
+                  :allOptions="departmentList"
+                  placeholder="Select Department"
+                />
+              </b-field>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="Marital Status">
+                <MultiSelect
+                  required
+                  v-model="teacher.martialStatus.status"
+                  :isMultiple="false"
+                  @close="getMartialStatus"
+                  :allOptions="martialStatus"
+                  placeholder="Select Martial Status"
+                />
+              </b-field>
+            </div>
+            <div class="column is-6">
+              <b-field label="Nationality">
+                <b-input v-model="teacher.basicInfo.nationality" required></b-input>
+              </b-field>
+            </div>
+          </div>
+          <div v-if="teacher.martialStatus.status && teacher.martialStatus.status.name == 'Married'">
+            <p class="sub-heading">SPOUSE INFO</p>
+            <div class="columns">
+              <div class="column is-6">
+                <b-field label="Spouse Name">
+                  <b-input
+                    icon-pack="fas"
+                    required
+                    v-model="teacher.martialStatus.spouseBasicInfo.name"
+                  ></b-input>
+                </b-field>
+                <b-field label="Mobile Number">
+                  <b-input
+                    required
+                    icon-pack="fas"
+                    type="number"
+                    v-model="teacher.martialStatus.spouseBasicInfo.phoneNumber"
+                  ></b-input>
+                </b-field>
+              </div>
+              <div class="column is-6">
+                <b-field>
+                  <b-upload
+                    required
+                    v-model="teacher.martialStatus.spouseBasicInfo.docs"
+                    multiple
+                    drag-drop
+                  >
+                    <div class="uploadsection">
+                      <div class="content has-text-centered">
+                        <p>
+                          <b-icon icon="upload" size="is-large"></b-icon>
+                        </p>
+                        <p>Upload Documents</p>
+                      </div>
+                    </div>
+                  </b-upload>
+                </b-field>
+              </div>
+            </div>
+            <div class="line">
+              <div>
+                <b-field label="Alternative Mobile Number">
+                  <b-input
+                    required
+                    icon-pack="fas"
+                    type="number"
+                    v-model="teacher.martialStatus.spouseBasicInfo.alternativePhoneNumber"
+                  ></b-input>
+                </b-field>
+              </div>
+              <div class="ml-2">
+                <b-field label="Age">
+                  <b-input
+                    required
+                    icon-pack="fas"
+                    type="number"
+                    v-model="teacher.martialStatus.spouseBasicInfo.age"
+                  ></b-input>
+                </b-field>
+              </div>
+            </div>
+            <b-field label="Email" class="mt-1">
+              <b-input
+                required
+                icon-pack="fas"
+                type="email"
+                v-model="teacher.martialStatus.spouseBasicInfo.email"
+              ></b-input>
             </b-field>
           </div>
-          <div class="branchh ml-2">
-            <b-field label="Branch">
-              <b-input required v-model="teacher.bankAccountInfo.branch"></b-input>
-            </b-field>
+          <br>
+          <p class="sub-heading">BANK INFO</p>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="Bank Name">
+                <b-input required v-model="teacher.bankAccountInfo.bank"></b-input>
+              </b-field>
+            </div>
+            <div class="column is-3">
+              <b-field label="Branch">
+                <b-input required v-model="teacher.bankAccountInfo.branch"></b-input>
+              </b-field>
+            </div>
+            <div class="column is-3">
+              <b-field label="Grade">
+                <b-input required v-model="teacher.salaryGrade"></b-input>
+              </b-field>
+            </div>
           </div>
-          <div class="grade ml-2">
-            <b-field label="Grade">
-              <b-input required v-model="teacher.salaryGrade"></b-input>
-            </b-field>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="Account No">
+                <b-input required v-model="teacher.bankAccountInfo.accountNo"></b-input>
+              </b-field>
+            </div>
+            <div class="column is-6">
+              <b-field label="IFSC Code">
+                <b-input required v-model="teacher.bankAccountInfo.IFSC"></b-input>
+              </b-field>
+            </div>
           </div>
-        </div>
-        <div class="line mt-1">
-          <div class="bank">
-            <b-field label="Account No">
-              <b-input required v-model="teacher.bankAccountInfo.accountNo"></b-input>
-            </b-field>
+          <div class="columns">
+            <div class="column is-6">
+              <b-field label="PF No">
+                <b-input required v-model="teacher.bankAccountInfo.pfNo"></b-input>
+              </b-field>
+            </div>
+            <div class="column is-6">
+              <b-field label="Payment Type">
+                <MultiSelect
+                  required
+                  v-model="teacher.bankAccountInfo.paymentType"
+                  :isMultiple="false"
+                  :allOptions="paymentOptions"
+                  placeholder="Select Department"
+                />
+              </b-field>
+            </div>
           </div>
-          <div class="branch ml-2">
-            <b-field label="IFSC Code">
-              <b-input required v-model="teacher.bankAccountInfo.IFSC"></b-input>
-            </b-field>
-          </div>
-        </div>
-        <div class="line mt-1">
-          <div class="bank">
-            <b-field label="PF No">
-              <b-input required v-model="teacher.bankAccountInfo.pfNo"></b-input>
-            </b-field>
-          </div>
-          <div class="branch ml-2">
-            <b-field label="Payment Type">
-              <b-dropdown aria-role="list" required v-model="teacher.bankAccountInfo.paymentType">
-                <button class="button is-outline" slot="trigger">
-                  <span class="payment-label">{{ teacher.bankAccountInfo.paymentType }}</span>
-                  <b-icon icon="menu-down"></b-icon>
-                </button>
-
-                <b-dropdown-item value="Cash" aria-role="listitem">
-                  <div class="field">Cash</div>
-                </b-dropdown-item>
-                <b-dropdown-item value="Cheque" aria-role="listitem">
-                  <div class="field">Cheque</div>
-                </b-dropdown-item>
-                <b-dropdown-item value="NEFT" aria-role="listitem">
-                  <div class="field">NEFT</div>
-                </b-dropdown-item>
-              </b-dropdown>
-            </b-field>
-          </div>
-        </div>
-        <div class="line mt-1">
-          <div class="photo">
-            <b-field label="Upload Photo">
-              <b-upload required v-model="teacher.photo" multiple drag-drop>
-                <div class="uploadsection">
-                  <div class="content has-text-centered">
-                    <p>
-                      <b-icon icon="upload" size="is-large"></b-icon>
-                    </p>
-                    <p>Upload Profile Photo</p>
+          <div class="line mt-1">
+            <div class="photo">
+              <b-field label="Upload Photo">
+                <b-upload required v-model="teacher.photo" multiple drag-drop>
+                  <div class="uploadsection">
+                    <div class="content has-text-centered">
+                      <p>
+                        <b-icon icon="upload" size="is-large"></b-icon>
+                      </p>
+                      <p>Upload Profile Photo</p>
+                    </div>
                   </div>
-                </div>
-              </b-upload>
-            </b-field>
-          </div>
-          <div class="ml-32">
-            <b-field label="Upload Documents">
-              <b-upload required v-model="teacher.docs" multiple drag-drop>
-                <div class="uploadsection">
-                  <div class="content has-text-centered">
-                    <p>
-                      <b-icon icon="upload" size="is-large"></b-icon>
-                    </p>
-                    <p>Upload Documents</p>
+                </b-upload>
+              </b-field>
+            </div>
+            <div class="ml-32">
+              <b-field label="Upload Documents">
+                <b-upload required v-model="teacher.docs" multiple drag-drop>
+                  <div class="uploadsection">
+                    <div class="content has-text-centered">
+                      <p>
+                        <b-icon icon="upload" size="is-large"></b-icon>
+                      </p>
+                      <p>Upload Documents</p>
+                    </div>
                   </div>
-                </div>
-              </b-upload>
-            </b-field>
+                </b-upload>
+              </b-field>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="footer-buttons">
-        <b-button outlined type="is-primary" @click="closeModal()">Cancel</b-button>
-        <b-button
-          :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
-          class="submit"
-          @click="formType === 'add' ? addTeacher() : editTeacher()"
-        >{{ formType === 'add' ? 'Add Teacher' : 'Apply Changes' }}</b-button>
+        <div class="submit">
+          <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
+          <b-button
+            @click="formType === 'add' ? addTeacher() : editTeacher()"
+            icon-right="arrow-circle-right"
+            class="submit"
+            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
+          >{{ formType === 'add' ? 'Add Teacher' : 'Apply Changes' }}</b-button>
+        </div>
       </div>
     </div>
   </div>
@@ -335,10 +345,10 @@ export default {
       genderList: ['Male', 'Female'],
       allBloodGroups: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
       martialStatus: ['Unmarried', 'Married'],
+      paymentOptions: ['Cash', 'Cheque', 'NEFT'],
     };
   },
   mounted() {
-    console.log('d list', this.departmentList);
     if (this.formType === 'edit') {
       this.teacher = this.teacherData;
     }
@@ -354,10 +364,10 @@ export default {
       name: `${val}`,
       code: `${val}`,
     }));
-    // this.departmentList = this.departmentList.map(val => ({
-    //   name: `${val}`,
-    //   code: `${val}`
-    // }));
+    this.paymentOptions = this.paymentOptions.map(val => ({
+      name: `${val}`,
+      code: `${val}`,
+    }));
   },
   methods: {
     closeModal() {
@@ -465,14 +475,6 @@ export default {
     .email {
       margin-right: 20px;
       width: 70%;
-    }
-  }
-  .footer-buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-    .submit {
-      margin-left: 20px;
     }
   }
   .subject-label {
