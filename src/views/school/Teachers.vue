@@ -47,45 +47,38 @@ export default {
       dept: [],
       tableConfig: [
         {
-          label: 'Name',
+          headerName: 'Name',
           field: 'basicInfo.name',
-          sortable: true,
-          centered: true,
         },
         {
-          label: 'Gender',
+          headerName: 'Gender',
           field: 'basicInfo.gender',
-          sortable: true,
-          centered: true,
+          width: 150,
         },
         {
-          label: 'Contact Number',
+          headerName: 'Mobile',
           field: 'basicInfo.phoneNumber',
-          sortable: true,
-          numeric: true,
-          centered: true,
+          width: 180,
         },
         {
-          label: 'Blood Group',
+          headerName: 'Blood Group',
           field: 'basicInfo.bloodGroup',
-          sortable: true,
-          centered: true,
+          width: 180,
         },
         {
-          label: 'Date of Birth',
+          headerName: 'Date of Birth',
           field: 'basicInfo.birthDate',
-          sortable: true,
-          centered: true,
+          width: 200,
         },
         {
-          label: 'Email',
+          headerName: 'Email',
           field: 'basicInfo.personalEmail',
-          sortable: true,
+          width: 230,
         },
         {
-          label: 'Address',
+          headerName: 'Address',
           field: 'basicInfo.permanentAddress',
-          width: 40,
+          width: 280,
         },
       ],
     };
@@ -189,6 +182,6 @@ export default {
   margin-top: 50px;
 }
 .table-card {
-  height: 90vh
+  height: 90vh;
 }
 </style>
