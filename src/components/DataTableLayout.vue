@@ -1,6 +1,27 @@
 <template>
   <div>
-    <div class="tile is-ancestor">
+    <div class="info-header">
+      <h1 class="title">{{ `${title}` }}</h1>
+      <div>
+        <b-button
+          type="is-primary"
+          icon-left="plus"
+          rounded
+          @click="onButtonClick('add')"
+        >
+          Add {{ title }}
+        </b-button>
+        <b-button
+          type="is-primary"
+          icon-left="upload"
+          rounded
+          @click="onButtonClick('excel')"
+        >
+          Import via Excel
+        </b-button>
+      </div>
+    </div>
+    <!-- <div class="tile is-ancestor">
       <div class="tile is-8 is-vertical is-parent">
         <h1 class="title">{{ `${title}` }}</h1>
       </div>
@@ -12,9 +33,7 @@
               icon-left="plus"
               rounded
               @click="onButtonClick('add')"
-            >
-              Add {{ title }}
-            </b-button>
+            >Add {{ title }}</b-button>
           </div>
           <div class="column">
             <b-button
@@ -22,72 +41,43 @@
               icon-left="upload"
               rounded
               @click="onButtonClick('excel')"
-            >
-              Import via Excel
-            </b-button>
+            >Import via Excel</b-button>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div>
       <p v-if="noData && !loading" class="noData">{{ tableStatus }}</p>
     </div>
-    <b-table
-      :data="data"
-      :paginated="!noData"
-      :per-page="10"
-      :loading="loading"
-      :current-page.sync="currentPage"
-      :pagination-simple="true"
-      pagination-position="bottom"
-      aria-next-label="Next page"
-      aria-previous-label="Previous page"
-      aria-page-label="Page"
-      aria-current-label="Current page"
-    >
-      <template slot-scope="props">
-        <b-table-column
-          v-for="column of columns"
-          :key="column.field"
-          :field="column.field"
-          :label="column.label"
-          :width="column.width"
-          :sortable="column.sortable"
-          :numeric="column.numeric"
-          :centered="column.centered"
-        >
-          <div class="option-data">{{ getValue(props.row, column.field) }}</div>
-        </b-table-column>
-        <b-table-column
-          label="Actions"
-          :centered="true"
-        >
-          <a
-            class="button is-primary is-small is-outlined"
-            style="margin-right: 10px"
-            @click="onButtonClick('edit', props.row)"
-          >
-            <span>Edit</span>
-            <span class="icon is-small">
-              <i class="fas fa-edit"></i>
-            </span>
-          </a>
-          <a
-            class="button is-danger is-small is-outlined"
-            @click="onButtonClick('delete', props.row)"
-          >
-            <span>Delete</span>
-            <span class="icon is-small">
-              <i class="fas fa-times"></i>
-            </span>
-          </a>
-        </b-table-column>
-      </template>
-    </b-table>
+    <div v-if="loading">
+      <b-loading :is-full-page="false" :active.sync="loading"></b-loading>
+    </div>
+    <div v-if="!noData && !loading" id="myGrid" style="height: 100%;" class="ag-theme-material">
+      <ag-grid-vue
+        style="width: 100%; height: 77vh;"
+        class="ag-theme-balham"
+        :columnDefs="columnsInfo"
+        :rowData="data"
+        :defaultColDef="{
+          sortable: true,
+          resizable: true,
+          filter: true
+        }"
+        :pagination="true"
+        :paginationPageSize="paginationPageSize"
+        :paginationNumberFormatter="paginationNumberFormatter"
+        :gridOptions="gridOptions"
+
+      ></ag-grid-vue>
+    </div>
   </div>
 </template>
 
 <script>
+import { AgGridVue } from 'ag-grid-vue';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
+
 export default {
   props: {
     title: String,
@@ -104,6 +94,9 @@ export default {
       default: false,
     },
   },
+  components: {
+    AgGridVue,
+  },
   data() {
     return {
       currentPage: 1,
@@ -111,6 +104,14 @@ export default {
       columns: this.columnsInfo,
       tableStatus: 'No data available',
       noData: false,
+      gridOptions: {
+        headerHeight: 50,
+        rowHeight: 45,
+        animateRows: true,
+      },
+      enableStatusBar: true,
+      paginationPageSize: null,
+      paginationNumberFormatter: null,
     };
   },
   watch: {
@@ -128,6 +129,36 @@ export default {
       console.log('no data found');
       this.noData = true;
     }
+    this.columnsInfo.push({
+      headerName: 'Actions',
+      field: '',
+      template: `
+            <div style="margin-top: 7px">
+              <a
+                class="button is-primary is-small is-outlined"
+                style="margin-right: 10px"
+                @click="onButtonClick('edit', props.row)"
+              >
+                <span>Edit</span>
+                <span class="icon is-small">
+                  <i class="fas fa-edit"></i>
+                </span>
+              </a>
+              <a
+                class="button is-danger is-small is-outlined"
+                @click="onButtonClick('delete', props.row)"
+              >
+                <span>Delete</span>
+                <span class="icon is-small">
+                  <i class="fas fa-times"></i>
+                </span>
+              </a>
+            </div>
+          `,
+      minWidth: 80,
+      maxWidth: 80,
+      pinned: 'right',
+    });
   },
   methods: {
     getValue(value, field) {
@@ -150,17 +181,32 @@ export default {
 };
 </script>
 
+<style scoped>
+.info-header {
+  display: flex;
+  justify-content: space-between;
+}
+.info-header > div > * {
+  margin-left: 20px;
+}
+</style>
+
 <style>
 .noData {
   text-align: center;
   margin-top: 90px;
   font-size: 25px;
 }
-/* showing ... in long text */
-.option-data {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100px;
+.ag-cell-label-container{
+  height: 100%;
+  font-size: 16px;
+  color: black;
+  font-weight: 800;
+  font-family: "Avenir";
+}
+.ag-theme-material {
+  font-size: 16px;
+  font-weight: 300;
+  font-family: "Avenir";
 }
 </style>
