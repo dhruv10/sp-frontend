@@ -81,6 +81,7 @@ export default {
 
 <style lang="scss">
 .side-menu-root {
+  width: 234px;
   position: fixed;
   margin-top: 20px;
   margin-left: 2px;
