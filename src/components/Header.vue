@@ -1,7 +1,7 @@
 <template>
   <div
     class="header-root"
-    :style="{ width: expanded ? '100%' : '84%', 'margin-left': expanded ? '12px' : null }"
+    :style="{ width: expanded ? '100%' : 'calc(100% - 250px)' }"
   >
     <b-navbar>
       <template slot="brand">
@@ -11,23 +11,12 @@
         >
           <b-icon icon="bars"></b-icon>
         </a>
-      </template>
-      <template slot="start">
-        <b-navbar-item class="is-primary">
-          <p class="is-primary">
-            <b>{{ schoolName }}</b>
-          </p>
-        </b-navbar-item>
-      </template>
-
-      <template slot="end">
-        <b-navbar-item tag="div">
-          <div class="user">
-            <b-navbar-item class="is-primary">
-              <p class="is-primary"><b>Welcome, {{ userEmail }}</b></p>
-            </b-navbar-item>
-          </div>
-        </b-navbar-item>
+        <p class="is-primary school-name">
+          <b>{{ schoolName }}</b>
+        </p>
+          <!-- <div class="user">
+            <p class="is-primary"><b>Welcome, {{ userEmail }}</b></p>
+          </div> -->
       </template>
     </b-navbar>
   </div>
@@ -63,10 +52,14 @@ export default {
 @import "../styles/app.global.scss";
 
 .header-root {
-  box-shadow: 3px 2px 8px -5px;
+  box-shadow: 1px 1px 8px -5px;
   position: fixed;
   z-index: 10;
   width: 84%;
+}
+.school-name {
+  display: flex;
+  align-items: center;
 }
 .userTag {
   font-weight: 800;
