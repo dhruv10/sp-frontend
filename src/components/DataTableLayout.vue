@@ -1,6 +1,27 @@
 <template>
   <div>
-    <div class="tile is-ancestor">
+    <div class="info-header">
+      <h1 class="title">{{ `${title}` }}</h1>
+      <div>
+        <b-button
+          type="is-primary"
+          icon-left="plus"
+          rounded
+          @click="onButtonClick('add')"
+        >
+          Add {{ title }}
+        </b-button>
+        <b-button
+          type="is-primary"
+          icon-left="upload"
+          rounded
+          @click="onButtonClick('excel')"
+        >
+          Import via Excel
+        </b-button>
+      </div>
+    </div>
+    <!-- <div class="tile is-ancestor">
       <div class="tile is-8 is-vertical is-parent">
         <h1 class="title">{{ `${title}` }}</h1>
       </div>
@@ -28,7 +49,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div>
       <p v-if="noData && !loading" class="noData">{{ tableStatus }}</p>
     </div>
@@ -149,6 +170,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.info-header {
+  display: flex;
+  justify-content: space-between;
+}
+.info-header > div > * {
+  margin-left: 20px;
+}
+</style>
 
 <style>
 .noData {
