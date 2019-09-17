@@ -14,6 +14,7 @@ module.exports = {
     'import/extensions': 0,
     'max-len': 0,
     'no-underscore-dangle': 0,
+    'no-param-reassign': 0,
   },
   parserOptions: {
     parser: 'babel-eslint',
