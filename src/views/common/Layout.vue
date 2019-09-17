@@ -73,6 +73,23 @@ const SideMenuConfig = {
       ],
     },
     {
+      title: 'Accounts',
+      icon: 'cog',
+      route: '/accounts',
+      children: [
+        {
+          icon: '',
+          label: 'Fee Deposit',
+          route: '/',
+        },
+        {
+          icon: '',
+          label: 'Transport',
+          route: '/transport',
+        },
+      ],
+    },
+    {
       title: 'Receptionist',
       icon: 'cog',
       route: '/receptionist',
