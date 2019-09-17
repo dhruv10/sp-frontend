@@ -50,7 +50,9 @@
           <div class="columns">
             <div class="column is-6">
               <b-field label="Contact Number">
-                <b-input v-model="teacher.basicInfo.phoneNumber" required></b-input>
+                <b-input v-model="teacher.basicInfo.phoneNumber" type="number"
+                min="10"
+                max="12" required></b-input>
               </b-field>
             </div>
             <div class="column is-6">
@@ -126,7 +128,6 @@
                   required
                   v-model="teacher.martialStatus.status"
                   :isMultiple="false"
-                  @close="getMartialStatus"
                   :allOptions="martialStatus"
                   placeholder="Select Martial Status"
                 />
@@ -138,7 +139,9 @@
               </b-field>
             </div>
           </div>
-          <div v-if="teacher.martialStatus.status && teacher.martialStatus.status.name == 'Married'">
+          <div
+            v-if="teacher.martialStatus.status && teacher.martialStatus.status.name == 'Married'"
+          >
             <p class="sub-heading">SPOUSE INFO</p>
             <div class="columns">
               <div class="column is-6">
@@ -209,7 +212,7 @@
               ></b-input>
             </b-field>
           </div>
-          <br>
+          <br />
           <p class="sub-heading">BANK INFO</p>
           <div class="columns">
             <div class="column is-6">
@@ -231,7 +234,7 @@
           <div class="columns">
             <div class="column is-6">
               <b-field label="Account No">
-                <b-input required v-model="teacher.bankAccountInfo.accountNo"></b-input>
+                <b-input required v-model="teacher.bankAccountInfo.accountNo" type="number"></b-input>
               </b-field>
             </div>
             <div class="column is-6">
@@ -243,17 +246,17 @@
           <div class="columns">
             <div class="column is-6">
               <b-field label="PF No">
-                <b-input required v-model="teacher.bankAccountInfo.pfNo"></b-input>
+                <b-input required v-model="teacher.bankAccountInfo.pfNo" type="number"></b-input>
               </b-field>
             </div>
             <div class="column is-6">
-              <b-field label="Payment Type">
+              <b-field label="Payment Mode">
                 <MultiSelect
                   required
                   v-model="teacher.bankAccountInfo.paymentType"
                   :isMultiple="false"
                   :allOptions="paymentOptions"
-                  placeholder="Select Department"
+                  placeholder="Select payment mode"
                 />
               </b-field>
             </div>
@@ -261,7 +264,7 @@
           <div class="line mt-1">
             <div class="photo">
               <b-field label="Upload Photo">
-                <b-upload required v-model="teacher.photo" multiple drag-drop>
+                <b-upload required @input="uploadPhoto($event, teacher)" drag-drop>
                   <div class="uploadsection">
                     <div class="content has-text-centered">
                       <p>
@@ -272,6 +275,24 @@
                   </div>
                 </b-upload>
               </b-field>
+              <div v-if="teacher.photoUploadValue">
+                <b-progress
+                  :value="teacher.photoUploadValue"
+                  type="is-info"
+                  show-value
+                  format="percent"
+                ></b-progress>
+              </div>
+              <div class="tags mt-1">
+                <span v-for="(file, index) in teacher.photo" :key="index" class="tag is-primary">
+                  {{file.name}}
+                  <button
+                    class="delete is-small"
+                    type="button"
+                    @click="deleteDropFile(index, teacher.photo)"
+                  ></button>
+                </span>
+              </div>
             </div>
             <div class="ml-32">
               <b-field label="Upload Documents">
@@ -294,7 +315,6 @@
           <b-button
             @click="formType === 'add' ? addTeacher() : editTeacher()"
             icon-right="arrow-circle-right"
-            class="submit"
             :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
           >{{ formType === 'add' ? 'Add Teacher' : 'Apply Changes' }}</b-button>
         </div>
@@ -332,13 +352,18 @@ export default {
       startLoading: false,
       selectedDeptId: '',
       teacher: {
-        basicInfo: {},
+        basicInfo: {
+          birthDate: new Date(),
+        },
         department: [],
         bankAccountInfo: {},
         identityDocumentUrl: 'http://placehold.it/255',
         martialStatus: {
           spouseBasicInfo: {},
         },
+        joiningDate: new Date(),
+        photo: [],
+        photoUploadValue: 0,
       },
       selectedSubjectId: [],
       radio: 'mandatory',
@@ -370,6 +395,25 @@ export default {
     }));
   },
   methods: {
+    uploadPhoto(file, instance) {
+      this.$uploadFile(
+        '/teachers',
+        file.name + new Date().getTime(),
+        file,
+        (p) => {
+          instance.photoUploadValue = p;
+        },
+      )
+        .then((url) => {
+          instance.photo.push({ name: file.name, url });
+          instance.photoUploadValue = 0;
+          console.log('instance photo', instance.photo);
+        })
+        .catch(console.log);
+    },
+    deleteDropFile(index, instance) {
+      instance.splice(index, 1);
+    },
     closeModal() {
       this.$emit('closeModal');
     },
@@ -535,5 +579,13 @@ export default {
 }
 .blood-group-label {
   width: 4rem;
+}
+.submit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+.mr-1 {
+  margin-right: 1rem;
 }
 </style>
