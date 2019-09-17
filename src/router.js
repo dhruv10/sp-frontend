@@ -10,6 +10,8 @@ import Subjects from './views/school/Subjects.vue';
 import Teachers from './views/school/Teachers.vue';
 import Receptionist from './views/school/Receptionist.vue';
 import VerifyGatepass from './views/school/VerifyGatepass.vue';
+import FeeDeposit from './views/school/FeeDeposit.vue';
+import Transport from './views/school/Transport.vue';
 
 Vue.use(Router);
 
@@ -68,6 +70,20 @@ const router = new Router({
         {
           path: 'teachers',
           component: Teachers,
+        },
+      ],
+    },
+    {
+      path: '/accounts',
+      component: () => import(/* webpackChunkName: "layout" */ './views/common/Layout.vue'),
+      children: [
+        {
+          path: '/',
+          component: FeeDeposit,
+        },
+        {
+          path: 'transport',
+          component: Transport,
         },
       ],
     },
