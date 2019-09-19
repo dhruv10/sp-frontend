@@ -136,6 +136,8 @@ export default {
           `,
       minWidth: 80,
       maxWidth: 80,
+      filter: false,
+      sortable: false,
       pinned: 'right',
     });
   },
