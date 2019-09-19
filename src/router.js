@@ -12,6 +12,7 @@ import Receptionist from './views/school/Receptionist.vue';
 import VerifyGatepass from './views/school/VerifyGatepass.vue';
 import FeeDeposit from './views/school/FeeDeposit.vue';
 import Transport from './views/school/Transport.vue';
+import EasyInvoicing from './views/school/EasyInvoicing.vue';
 
 Vue.use(Router);
 
@@ -70,6 +71,10 @@ const router = new Router({
         {
           path: 'teachers',
           component: Teachers,
+        },
+        {
+          path: 'easy-invoicing',
+          component: EasyInvoicing,
         },
       ],
     },

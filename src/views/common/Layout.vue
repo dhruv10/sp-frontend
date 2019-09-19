@@ -70,6 +70,11 @@ const SideMenuConfig = {
           label: 'Department',
           route: '/department',
         },
+        {
+          icon: 'box',
+          label: 'Easy Invoicing',
+          route: '/easy-invoicing',
+        },
       ],
     },
     {
