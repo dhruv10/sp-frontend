@@ -1,13 +1,15 @@
 <template>
   <div class="root-container">
-    <div class="columns">
-      <div
-        class="column is-2 side-menu-container"
-        v-show="menuOpen"
-      >
-        <side-menu :config="sideMenuConfig"></side-menu>
+    <div class="main-layout">
+      <div>
+        <div
+          class="side-menu-container"
+          v-show="menuOpen"
+        >
+          <side-menu :config="sideMenuConfig"></side-menu>
+        </div>
       </div>
-      <div class="column body">
+      <div class="body" :style="{ width: menuOpen ? 'calc(100% - 250px)' : '100%' }">
         <app-header
           :expanded="!menuOpen"
           @toggleMenu="toggleMenu"
@@ -128,8 +130,12 @@ export default {
 @import "../../styles/app.global.scss";
 .root-container {
   width: 100%;
+  .main-layout {
+    display: flex;
+  }
 }
 .side-menu-container {
+  width: 250px;
   position: relative;
   transition: width 1s;
   box-shadow: black 1px 1px 12px -5px;
@@ -137,6 +143,7 @@ export default {
   height: 100vh;
 }
 .body {
+  width: calc(100% - 250px);
   padding-left: 0px;
 }
 </style>
