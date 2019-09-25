@@ -70,6 +70,28 @@ const SideMenuConfig = {
           label: 'Department',
           route: '/department',
         },
+        {
+          icon: 'box',
+          label: 'Easy Invoicing',
+          route: '/easy-invoicing',
+        },
+      ],
+    },
+    {
+      title: 'Accounts',
+      icon: 'cog',
+      route: '/accounts',
+      children: [
+        {
+          icon: '',
+          label: 'Fee Deposit',
+          route: '/',
+        },
+        {
+          icon: '',
+          label: 'Transport',
+          route: '/transport',
+        },
       ],
     },
     {

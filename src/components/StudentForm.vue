@@ -40,7 +40,7 @@
                   </div>
                   <div class="column is-4 mt-2">
                     <b-field>
-                      <b-upload required v-model="student.photo" @input="uploadPhoto" drag-drop>
+                      <b-upload required @input="uploadPhoto($event, student)" drag-drop>
                         <section class="uploadsection">
                           <div class="content has-text-centered">
                             <p>
@@ -52,7 +52,16 @@
                       </b-upload>
                     </b-field>
 
-                    <div class="tags">
+                    <div v-if="student.photoUploadValue">
+                      <b-progress
+                        :value="student.photoUploadValue"
+                        type="is-info"
+                        show-value
+                        format="percent"
+                      ></b-progress>
+                    </div>
+
+                    <div class="tags mt-1">
                       <span
                         v-for="(file, index) in student.photo"
                         :key="index"
@@ -62,7 +71,7 @@
                         <button
                           class="delete is-small"
                           type="button"
-                          @click="deleteDropFile(index)"
+                          @click="deleteDropFile(index, student.photo)"
                         ></button>
                       </span>
                     </div>
@@ -76,7 +85,7 @@
                   </div>
                   <div class="column">
                     <b-field label="Email ID">
-                      <b-input icon-pack="fas" required v-model="student.personalEmail"></b-input>
+                      <b-input icon-pack="fas" type="email" required v-model="student.personalEmail"></b-input>
                     </b-field>
                   </div>
                   <div class="column">
@@ -180,7 +189,6 @@
                   <div class="column is-8">
                     <b-field label="Health Disorder Note (if any)">
                       <b-input
-                        required
                         v-model="student.healthDisorderNote"
                         class="notearea"
                         maxlength="200"
@@ -228,7 +236,11 @@
                     </div>
                     <div class="column is-4 mt-2">
                       <b-field>
-                        <b-upload required v-model="student.fatherPhoto" multiple drag-drop>
+                        <b-upload
+                          required
+                          @input="uploadPhoto($event, student.fatherInfo)"
+                          drag-drop
+                        >
                           <section class="uploadsection">
                             <div class="content has-text-centered">
                               <p>
@@ -240,9 +252,18 @@
                         </b-upload>
                       </b-field>
 
+                      <div v-if="student.fatherInfo.photoUploadValue">
+                        <b-progress
+                          :value="student.fatherInfo.photoUploadValue"
+                          type="is-info"
+                          show-value
+                          format="percent"
+                        ></b-progress>
+                      </div>
+
                       <div class="tags">
                         <span
-                          v-for="(file, index) in student.fatherPhoto"
+                          v-for="(file, index) in student.fatherInfo.photo"
                           :key="index"
                           class="tag is-primary"
                         >
@@ -250,7 +271,7 @@
                           <button
                             class="delete is-small"
                             type="button"
-                            @click="deleteDropFile(index)"
+                            @click="deleteDropFile(index, student.fatherInfo.photo)"
                           ></button>
                         </span>
                       </div>
@@ -271,12 +292,12 @@
                     <div class="column is-half">
                       <b-field label="Blood Group">
                         <MultiSelect
-                        required
-                        v-model="student.fatherInfo.bloodGroup"
-                        :isMultiple="false"
-                        :allOptions="allBloodGroups"
-                        placeholder="Select Blood Group"
-                      />
+                          required
+                          v-model="student.fatherInfo.bloodGroup"
+                          :isMultiple="false"
+                          :allOptions="allBloodGroups"
+                          placeholder="Select Blood Group"
+                        />
                       </b-field>
                     </div>
                   </div>
@@ -313,7 +334,11 @@
                     </div>
                     <div class="column is-4 mt-2">
                       <b-field>
-                        <b-upload required v-model="student.motherPhoto" multiple drag-drop>
+                        <b-upload
+                          required
+                          @input="uploadPhoto($event, student.motherInfo)"
+                          drag-drop
+                        >
                           <section class="uploadsection">
                             <div class="content has-text-centered">
                               <p>
@@ -325,9 +350,18 @@
                         </b-upload>
                       </b-field>
 
+                      <div v-if="student.motherInfo.photoUploadValue">
+                        <b-progress
+                          :value="student.motherInfo.photoUploadValue"
+                          type="is-info"
+                          show-value
+                          format="percent"
+                        ></b-progress>
+                      </div>
+
                       <div class="tags">
                         <span
-                          v-for="(file, index) in student.motherPhoto"
+                          v-for="(file, index) in student.motherInfo.photo"
                           :key="index"
                           class="tag is-primary"
                         >
@@ -335,7 +369,7 @@
                           <button
                             class="delete is-small"
                             type="button"
-                            @click="deleteDropFile(index)"
+                            @click="deleteDropFile(index, student.motherInfo.photo)"
                           ></button>
                         </span>
                       </div>
@@ -356,12 +390,12 @@
                     <div class="column is-half">
                       <b-field label="Blood Group">
                         <MultiSelect
-                        required
-                        v-model="student.motherInfo.bloodGroup"
-                        :isMultiple="false"
-                        :allOptions="allBloodGroups"
-                        placeholder="Select Blood Group"
-                      />
+                          required
+                          v-model="student.motherInfo.bloodGroup"
+                          :isMultiple="false"
+                          :allOptions="allBloodGroups"
+                          placeholder="Select Blood Group"
+                        />
                       </b-field>
                     </div>
                   </div>
@@ -418,7 +452,7 @@
                           <button
                             class="delete is-small"
                             type="button"
-                            @click="deleteDropFile(index)"
+                            @click="deleteDropFile(index, student.otherdocuments)"
                           ></button>
                         </span>
                       </div>
@@ -432,8 +466,8 @@
         <div class="submit mt-2">
           <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
           <b-button
-            :type='startLoading ? "is-loading is-primary" : "is-primary"'
-            @click='formType === "add" ? addStudent() : editStudent()'
+            :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
+            @click="formType === 'add' ? addStudent() : editStudent()"
             icon-right="arrow-circle-right"
             class="submit"
           >{{ formType === "add" ? "Add Student" : "Edit Student" }}</b-button>
@@ -478,6 +512,7 @@ export default {
         studentDOB: new Date(),
         nationality: '',
         photo: [],
+        photoUploadValue: 0,
         rollNo: 0,
         enrollmentNo: 0,
         admissionDate: new Date(),
@@ -488,7 +523,6 @@ export default {
         checkboxGroup: ['Maths', 'Science'],
         healthDisorderNote: '',
         healthDocs: [],
-        fatherPhoto: [],
         fatherInfo: {
           name: '',
           phoneNumber: '',
@@ -497,8 +531,9 @@ export default {
           dob: new Date(),
           education: '',
           profession: '',
+          photo: [],
+          photoUploadValue: 0,
         },
-        motherPhoto: [],
         motherInfo: {
           name: '',
           phoneNumber: '',
@@ -507,6 +542,8 @@ export default {
           dob: new Date(),
           education: '',
           profession: '',
+          photo: [],
+          photoUploadValue: 0,
         },
         permanentAddress: '',
         otherdocuments: [],
@@ -529,14 +566,40 @@ export default {
     }));
   },
   methods: {
-    uploadPhoto(file) {
-      console.log(file);
-      this.$uploadFile('/students', 'student-photo', file, console.log)
-        .then(url => this.student.photo.push({ name: file.name, url }))
+    uploadPhoto(file, instance) {
+      this.$uploadFile(
+        '/students',
+        file.name + new Date().getTime(),
+        file,
+        (p) => {
+          instance.photoUploadValue = p;
+        },
+      )
+        .then((url) => {
+          instance.photo.push({ name: file.name, url });
+          instance.photoUploadValue = 0;
+          console.log('instance photo', instance.photo);
+        })
         .catch(console.log);
     },
-    deleteDropFile(index) {
-      this.dropFiles.splice(index, 1);
+    uploadMultipleDocs(file, instance) {
+      this.$uploadFile(
+        '/students',
+        file.name + new Date().getTime(),
+        file,
+        (p) => {
+          instance.photoUploadValue = p;
+        },
+      )
+        .then((url) => {
+          instance.photo.push({ name: file.name, url });
+          instance.photoUploadValue = 0;
+          console.log('instance photo', instance.photo);
+        })
+        .catch(console.log);
+    },
+    deleteDropFile(index, instance) {
+      instance.splice(index, 1);
     },
     closeModal() {
       this.$emit('closeModal');

@@ -20,7 +20,7 @@
         @closeModal="closeModal"
         :teacherData="teacherData"
         :subjects="subjects"
-        :dept="dept"
+        :deparmentList="deparmentList"
         @getTableData="getTableData"
       />
     </b-modal>
@@ -44,7 +44,7 @@ export default {
       teacherData: {},
       loading: false,
       subjects: [],
-      dept: [],
+      deparmentList: [],
       tableConfig: [
         {
           headerName: 'Name',
@@ -97,7 +97,8 @@ export default {
       this.$http
         .get('/department')
         .then((res) => {
-          this.dept = res.data.results;
+          this.deparmentList = res.data.results;
+          // console.log('2', res.data.results);
         })
         .catch((e) => {
           console.log(e);
@@ -118,7 +119,7 @@ export default {
       this.$http
         .get('/teacher')
         .then((res) => {
-          console.log('teacher', res.data.results);
+          // console.log('teacher', res.data.results);
           this.teacherDetail = res.data.results.map(teacher => ({
             ...teacher,
             basicInfo: {
@@ -144,6 +145,7 @@ export default {
     },
     bulkUpload() {},
     editTeacher(data) {
+      console.log(123);
       this.formType = 'edit';
       this.teacherData = data;
       this.openModal = true;
