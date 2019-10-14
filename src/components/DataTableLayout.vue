@@ -7,13 +7,13 @@
           type="is-primary"
           icon-left="plus"
           rounded
-          @click="onButtonClick('add')"
+          @click="onTableButtonClick('add')"
         >Add {{ title }}</b-button>
         <b-button
           type="is-primary"
           icon-left="upload"
           rounded
-          @click="onButtonClick('excel')"
+          @click="onTableButtonClick('excel')"
         >Import via Excel</b-button>
       </div>
     </div>
