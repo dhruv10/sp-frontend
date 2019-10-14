@@ -7,41 +7,16 @@
           type="is-primary"
           icon-left="plus"
           rounded
-          @click="onButtonClick('add')"
+          @click="onTableButtonClick('add')"
         >Add {{ title }}</b-button>
         <b-button
           type="is-primary"
           icon-left="upload"
           rounded
-          @click="onButtonClick('excel')"
+          @click="onTableButtonClick('excel')"
         >Import via Excel</b-button>
       </div>
     </div>
-    <!-- <div class="tile is-ancestor">
-      <div class="tile is-8 is-vertical is-parent">
-        <h1 class="title">{{ `${title}` }}</h1>
-      </div>
-      <div class="tile is-4 is-vertical is-parent">
-        <div class="columns">
-          <div class="column">
-            <b-button
-              type="is-primary"
-              icon-left="plus"
-              rounded
-              @click="onButtonClick('add')"
-            >Add {{ title }}</b-button>
-          </div>
-          <div class="column">
-            <b-button
-              type="is-primary"
-              icon-left="upload"
-              rounded
-              @click="onButtonClick('excel')"
-            >Import via Excel</b-button>
-          </div>
-        </div>
-      </div>
-    </div>-->
     <div>
       <p v-if="noData && !loading" class="noData">{{ tableStatus }}</p>
     </div>
@@ -69,10 +44,13 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { AgGridVue } from 'ag-grid-vue';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import { link } from 'fs';
+import TableActionButtonsVue from './TableActionButtons.vue';
+
+Vue.component('ActionButtons', TableActionButtonsVue);
 
 export default {
   props: {
@@ -128,75 +106,7 @@ export default {
     this.columnsInfo.push({
       headerName: 'Actions',
       field: '',
-      cellRenderer: (params) => {
-        const mainDiv = document.createElement('div');
-        const linkA = document.createElement('a');
-        const spanA = document.createElement('span');
-        const spanB = document.createElement('span');
-        const iconA = document.createElement('i');
-        const linkB = document.createElement('a');
-        const spanC = document.createElement('span');
-        const spanD = document.createElement('span');
-        const iconB = document.createElement('i');
-        console.clear();
-        mainDiv.style.marginTop = '7px';
-        spanA.innerText = 'Edit';
-        iconA.classList.add('fas', 'fa-edit');
-        spanB.classList.add('icon', 'is-small');
-        spanB.appendChild(iconA);
-        linkA.href = '#';
-        linkA.innerText = '';
-        linkA.append(spanA, spanB);
-        linkA.addEventListener('click', (e, props) => {
-          e.preventDefault();
-          console.log('JMD  ', props);
-        });
-        linkA.classList.add('button', 'is-primary', 'is-small', 'is-outlined');
-        linkA.style.marginRight = '10px';
-        console.log('linkA: ', linkA);
-
-        spanC.innerText = 'Delete';
-        iconB.classList.add('fas', 'fa-times');
-        spanD.classList.add('icon', 'is-small');
-        spanD.appendChild(iconB);
-        linkB.href = '#';
-        linkB.innerText = '';
-        linkB.append(spanC, spanD);
-        linkB.addEventListener('click', (e, props) => {
-          e.preventDefault();
-          console.log('B');
-        });
-        linkB.classList.add('button', 'is-danger', 'is-small', 'is-outlined');
-        console.log('linkB: ', linkB);
-        mainDiv.append(linkA, linkB);
-
-        console.log('i am the param: ', params);
-
-        return mainDiv;
-      },
-      // template: `
-      //       <div style="margin-top: 7px">
-      //         <a
-      //           class="button is-primary is-small is-outlined"
-      //           style="margin-right: 10px"
-      //           @click="onButtonClick('edit', props.row)"
-      //         >
-      //           <span>Edit</span>
-      //           <span class="icon is-small">
-      //             <i class="fas fa-edit"></i>
-      //           </span>
-      //         </a>
-      //         <a
-      //           class="button is-danger is-small is-outlined"
-      //           @click="onButtonClick('delete', props.row)"
-      //         >
-      //           <span>Delete</span>
-      //           <span class="icon is-small">
-      //             <i class="fas fa-times"></i>
-      //           </span>
-      //         </a>
-      //       </div>
-      //     `,
+      cellRendererFramework: 'ActionButtons',
       minWidth: 80,
       maxWidth: 80,
       filter: false,
@@ -210,7 +120,7 @@ export default {
       const newValue = keys.reduce((acc, prevValue) => acc[prevValue], value);
       return newValue;
     },
-    onButtonClick(type, payload) {
+    onTableButtonClick(type, payload) {
       if (type === 'add') {
         this.$emit('addClick');
       } else if (type === 'excel') {
