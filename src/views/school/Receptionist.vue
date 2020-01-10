@@ -2,16 +2,31 @@
   <div class="classroom-root-container">
     <div class="card">
       <div class="card-content">
-        <data-table
-          title="Gatepass Records"
-          :loading="loading"
-          :table-data="gatepassData"
-          :columns-info="tableConfig"
-          @addClick="openAddModal"
-          @bulkUploadClick="bulkUpload"
-          @editClick="editAdmissionQuery"
-          @deleteClick="deleteAdmissionQuery"
-        ></data-table>
+        <div class="card">
+          <div class="card-content">
+            <div class="columns">
+              <div class="column is-3">
+                <p class="title is-6">Student</p>
+              </div>
+              <div class="column is-3">
+                <p class="title is-6">Picked By</p>
+              </div>
+              <div class="column is-2">
+                <p class="title is-6">Reason For leaving</p>
+              </div>
+              <div class="column is-2">
+                <p class="title is-6 align">Checkout Status</p>
+              </div>
+              <div class="column is-2">
+                <p class="title is-6 align">Verification</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <GatePassDetailCard/>
+        <GatePassDetailCard/>
+        <GatePassDetailCard/>
+
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
@@ -19,19 +34,20 @@
         :formData="formData"
         :formType="formType"
         @closeModal="closeModal"
-        @getTableData="getTableData" />
+        @getTableData="getTableData"
+      />
     </b-modal>
   </div>
 </template>
 
 <script>
-import DataTable from '../../components/DataTableLayout';
-import GatepassForm from '../../components/GatepassForm';
+// import DataTable from '../../components/DataTableLayout';
+import GatePassDetailCard from '../../components/GatePassDetailCard';
 
 export default {
   components: {
-    DataTable,
-    GatepassForm,
+    // DataTable,
+    GatePassDetailCard,
   },
   data() {
     return {
@@ -50,14 +66,14 @@ export default {
           centered: true,
         },
         {
-          label: 'Guardian\'s Name',
+          label: "Guardian's Name",
           field: 'guardianName',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Guardian\'s Phone No',
+          label: "Guardian's Phone No",
           field: 'guardianPhone',
           sortable: true,
           centered: true,
@@ -130,5 +146,14 @@ export default {
 .classroom-root-container {
   margin-top: 50px;
   height: 100%;
+}
+.columns {
+  align-items: center !important;
+}
+.column {
+  padding: 0px !important;
+}
+.align {
+  text-align: center;
 }
 </style>
