@@ -87,4 +87,10 @@ div.multiselect__content-wrapper > ul {
 div.multiselect__content-wrapper {
   font-size: 12px !important;
 }
+.multiselect__tags {
+  box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+  border-color: #dbdbdb;
+  border-radius: 4px;
+  color: #363636;
+}
 </style>
