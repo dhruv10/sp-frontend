@@ -12,6 +12,8 @@
       tagPosition="bottom"
       @tag="addTag"
       @input="selectedValues = $event; $emit('input', selectedValues)"
+      :disabled="disable"
+      :loading="loading"
     ></multiselect>
   </div>
 </template>
@@ -37,6 +39,14 @@ export default {
       type: String,
       required: false,
       default: 'Select a value',
+    },
+    disable: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
