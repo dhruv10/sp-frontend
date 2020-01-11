@@ -1,40 +1,34 @@
 <template>
-  <div class="container">
+  <div class="main-container">
     <div class="container columns">
-      <div class="column is-6">
-        <div class="columns">
-          <div class="column is-5">
-            <section>
-              <b-field label="Select Class">
-                <MultiSelect
-                  required
-                  :isMultiple="false"
-                  :allOptions="classlist"
-                  placeholder="Select a class"
-                  v-model="selectedClass"
-                  :loading="classLoading"
-                />
-              </b-field>
-            </section>
-          </div>
-          <div class="column is-1"></div>
-          <div class="column is-6">
-            <section>
-              <b-field label="Select Student">
-                <MultiSelect
-                  required
-                  :isMultiple="false"
-                  :allOptions="studentList"
-                  placeholder="Select student"
-                  :disable="!studentList.length"
-                  :loading="studentLoading"
-                />
-              </b-field>
-            </section>
-          </div>
-        </div>
+      <div class="column is-5">
+        <section>
+          <b-field label="Select Class">
+            <MultiSelect
+              required
+              :isMultiple="false"
+              :allOptions="classlist"
+              placeholder="Select a class"
+              v-model="selectedClass"
+              :loading="classLoading"
+            />
+          </b-field>
+        </section>
       </div>
-      <div class="column is-auto"></div>
+      <div class="column is-7">
+        <section>
+          <b-field label="Select Student">
+            <MultiSelect
+              required
+              :isMultiple="false"
+              :allOptions="studentList"
+              placeholder="Select student"
+              :disable="!studentList.length"
+              :loading="studentLoading"
+            />
+          </b-field>
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -105,8 +99,11 @@ export default {
 };
 </script>
 
-<style>
-.container {
-  margin: 20px !important;
+<style lang="scss">
+@import "../styles/app.global.scss";
+
+.main-container {
+  // margin: 20px !important;
+  background: white;
 }
 </style>
