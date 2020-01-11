@@ -99,8 +99,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import "../styles/app.global.scss";
+<style lang="scss" scoped>
+@import "../../styles/app.global.scss";
 
 .main-container {
   // margin: 20px !important;

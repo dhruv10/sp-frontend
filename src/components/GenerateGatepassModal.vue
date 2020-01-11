@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import StudentSelection from './StudentSelection';
+import StudentSelection from './common/StudentSelection';
 
 export default {
   data() {
