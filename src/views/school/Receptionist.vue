@@ -1,6 +1,12 @@
 <template>
-  <div class="classroom-root-container">
+  <div class="receptionist-root-container">
     <div class="card">
+      <div class="info-header">
+        <h1 class="gatepass-title">Gate Pass</h1>
+        <div>
+          <b-button type="is-primary" icon-left="plus" rounded @click="openAddModal">Generate gatepass</b-button>
+        </div>
+      </div>
       <div class="card-content">
         <div class="card">
           <div class="card-content">
@@ -26,15 +32,13 @@
         <GatePassDetailCard/>
         <GatePassDetailCard/>
         <GatePassDetailCard/>
-
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <gatepass-form
+      <GenerateGatepassModal
         :formData="formData"
         :formType="formType"
         @closeModal="closeModal"
-        @getTableData="getTableData"
       />
     </b-modal>
   </div>
@@ -43,11 +47,13 @@
 <script>
 // import DataTable from '../../components/DataTableLayout';
 import GatePassDetailCard from '../../components/GatePassDetailCard';
+import GenerateGatepassModal from '../../components/GenerateGatepassModal';
 
 export default {
   components: {
     // DataTable,
     GatePassDetailCard,
+    GenerateGatepassModal,
   },
   data() {
     return {
@@ -82,7 +88,7 @@ export default {
     };
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
   },
   methods: {
     getTableData() {
@@ -99,7 +105,6 @@ export default {
         });
     },
     openAddModal() {
-      this.formType = 'add';
       this.openModal = true;
     },
     closeModal() {
@@ -143,7 +148,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.classroom-root-container {
+@import "../../styles/app.global.scss";
+.receptionist-root-container {
   margin-top: 50px;
   height: 100%;
 }
@@ -155,5 +161,21 @@ export default {
 }
 .align {
   text-align: center;
+}
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px 0px 25px;
+}
+.info-header > div > * {
+  margin-left: 20px;
+}
+.main-contianer {
+  margin-top: 50px;
+}
+.gatepass-title {
+  font-size: 2rem;
+  font-weight: 600;
 }
 </style>
