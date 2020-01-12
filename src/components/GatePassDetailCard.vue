@@ -33,10 +33,15 @@
           <!-- <div class="status">
               <b-icon pack="fas" icon="exclamation-triangle" size="is-small" type="is-warning"></b-icon>
           </div>-->
-          <div class="btn-details">
-            <otp-input />
+          <div class="btn-details" v-if="!verifying && !verified">
+            <otp-input @value="checkOtp"/>
           </div>
-          <div class="btn-details">
+          <div class="btn-details" v-else-if="verifying && !verified">hello</div>
+          <div class="status" v-if="verified">
+              <b-icon pack="fas" icon="download" size="is-medium" type="is-primary"></b-icon>
+              <p class="download" @click="deleteRequest">Download Gatepass</p>
+          </div>
+          <div class="btn-details" v-else>
             <a class="cancel" @click="deleteRequest">Cancel Request</a>
           </div>
         </div>
@@ -52,6 +57,8 @@ export default {
   data() {
     return {
       loading: false,
+      verifying: false,
+      verified: false,
     };
   },
   components: {
@@ -76,16 +83,29 @@ export default {
         },
       });
     },
+    checkOtp(otp) {
+      this.verifying = true;
+      console.log(otp);
+      setTimeout(() => {
+        const { snackbar } = this.$buefy;
+        snackbar.open('OTP Verfied!');
+        this.verifying = false;
+        this.verified = true;
+      }, 3000);
+    },
   },
 };
 </script>
 
 <style>
+@import '../styles/app.global.scss';
+
 .right-container {
   text-align: center;
 }
 .status {
   text-align: center;
+  cursor: pointer;
 }
 .btn-details {
   text-align: center;
@@ -96,6 +116,10 @@ export default {
 }
 .cancel {
   color: red;
+  font-size: 12px;
+}
+.download {
+  /* color: $primary-color; */
   font-size: 12px;
 }
 .col {
