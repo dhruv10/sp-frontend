@@ -9,7 +9,7 @@ import Syllabus from './views/school/Syllabus.vue';
 import Subjects from './views/school/Subjects.vue';
 import Teachers from './views/school/Teachers.vue';
 import Receptionist from './views/school/Receptionist.vue';
-import VerifyGatepass from './views/school/VerifyGatepass.vue';
+import Admission from './views/school/Admission.vue';
 import FeeDeposit from './views/school/FeeDeposit.vue';
 import Transport from './views/school/Transport.vue';
 import EasyInvoicing from './views/school/EasyInvoicing.vue';
@@ -101,8 +101,8 @@ const router = new Router({
           component: Receptionist,
         },
         {
-          path: 'verify-gatepass',
-          component: VerifyGatepass,
+          path: 'admission',
+          component: Admission,
         },
       ],
     },
