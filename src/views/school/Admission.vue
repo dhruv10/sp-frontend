@@ -1,5 +1,5 @@
 <template>
-  <div class="receptionist-root-container">
+  <div class="admission-root-container">
     <div class="card">
       <div class="info-header">
         <h1 class="gatepass-title">Admission</h1>
@@ -16,24 +16,31 @@
         <div class="card">
           <div class="card-content">
             <div class="columns">
-              <div class="column is-3">
+              <div class="column is-2">
                 <p class="title is-6">Student</p>
               </div>
+              <div class="column is-1 align">
+                <p class="title is-6">Class</p>
+              </div>
+              <div class="column is-1">
+                <p class="title is-6">Phone</p>
+              </div>
+              <div class="column is-2 ml-1">
+                <p class="title is-6">Address</p>
+              </div>
               <div class="column is-3">
-                <p class="title is-6">Picked By</p>
+                <p class="title is-6"></p>
               </div>
-              <div class="column is-2">
-                <p class="title is-6">Reason For leaving</p>
+              <div class="column is-1 align">
+                <p class="title is-6">Documents</p>
               </div>
-              <div class="column is-2">
-                <p class="title is-6 align">Checkout Status</p>
-              </div>
-              <div class="column is-2">
-                <p class="title is-6 align">Verification</p>
+              <div class="column is-2 align">
+                <p class="title is-6">Status</p>
               </div>
             </div>
           </div>
         </div>
+        <AdmissionCard />
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
@@ -44,10 +51,12 @@
 
 <script>
 import AdmissionForm from '../../components/AdmissionForm';
+import AdmissionCard from '../../components/AdmissionCard';
 
 export default {
   components: {
     AdmissionForm,
+    AdmissionCard,
   },
   data() {
     return {
@@ -106,7 +115,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/app.global.scss";
-.receptionist-root-container {
+.admission-root-container {
   margin-top: 50px;
   height: 100%;
 }
@@ -134,5 +143,8 @@ export default {
 .gatepass-title {
   font-size: 2rem;
   font-weight: 600;
+}
+.ml-1 {
+  margin-left: 2rem;
 }
 </style>
