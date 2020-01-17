@@ -3,47 +3,58 @@
     <div class="card-content">
       <div class="columns col">
         <div class="column inner-col is-2">
-          <p class="title is-5">Sakshi Srivastava</p>
-          <p class="subtitle is-6">03/10/1998</p>
+          <p class="title is-5">{{ admissionDetailList.name }}</p>
+          <p class="subtitle is-6">{{ admissionDetailList.dob }}</p>
         </div>
 
         <div class="column inner-col is-1 right-container">
-          <p class="picked-title title is-6 m-0">7</p>
+          <p class="picked-title title is-6 m-0">{{ admissionDetailList.class }}</p>
         </div>
 
-        <div class="column inner-col is-1">
-          <p class="is-6">8595475182</p>
-          <p class="is-6">9968516771</p>
+        <div class="column inner-col is-2">
+          <p class="is-6">(F) {{ admissionDetailList.fPhone }}</p>
+          <p class="is-6">(M) {{ admissionDetailList.mPhone }}</p>
         </div>
 
-        <div class="column inner-col ml-1 is-2">
-          <p class="sub-title is-6">CD - 199 pitampura delhi - 110034</p>
+        <div class="column inner-col ml-1 is-3">
+          <p class="sub-title is-6">{{ admissionDetailList.address }}</p>
         </div>
 
-        <div class="column is-3"></div>
-        <div class="column inner-col is-1 right-container">
+        <div class="column inner-col is-2 right-container">
           <p class="title is-6">
-            <b-tag rounded type="is-warning">Awaiting</b-tag>
+            <b-tag rounded :type="testStatus.color">{{ testStatus.text }}</b-tag>
           </p>
         </div>
         <div class="column inner-col is-2">
-          <div class="btn-details" v-if="!scheduledDate">
-            <b-button type="is-primary" size="is-small" @click="scheduleTest()">Schedule Test</b-button>
+          <div class="btn-details" v-if="admissionDetailList.status === 0">
+            <b-button type="is-primary" size="is-small" @click="openModal()">Schedule Test</b-button>
           </div>
-          <div class="status" v-else-if="!result">
-            <b-button type="is-primary" size="is-small" @click="AddResult()">Add Result</b-button>
+          <div class="status" v-else-if="admissionDetailList.status === 1">
+            <p class="title is-6" v-if="testDateLeft">{{admissionDetailList.testScheduledDate }}</p>
+            <b-button v-else type="is-primary" size="is-small" @click="openModal()">Add Result</b-button>
           </div>
           <div class="right-container" v-else>
-            <b-tag rounded :type="result == 'Pass' ? 'is-success' : 'is-danger'">{{ result }}</b-tag>
+            <b-button
+              type="is-primary"
+              size="is-small"
+              @click="openModal()"
+              v-if="admissionDetailList.isPass"
+            >Schedule Interview</b-button>
+            <p v-else class="completed">Application Closed</p>
           </div>
-          <div class="btn-details">
+          <div class="btn-details" v-if="admissionDetailList.isPass">
             <a class="cancel" @click="deleteRequest">Cancel Admission</a>
           </div>
         </div>
       </div>
     </div>
-    <b-modal :active.sync="openScheduleTest" :width="640" scroll="keep">
-      <AdmissionStatusModal :isScheduleTest="isScheduleTest" @closeModal="closeModal" @setDate="setDate" @setResult="setResult" />
+    <b-modal :active.sync="openActionModal" :width="400" scroll="keep">
+      <AdmissionStatusModal
+        :action="admissionDetailList.status"
+        @closeModal="closeModal"
+        @setDate="setDate"
+        @setResult="setResult"
+      />
     </b-modal>
   </div>
 </template>
@@ -51,63 +62,78 @@
 <script>
 import AdmissionStatusModal from './AdmissionStatusModal.vue';
 
+const STATUSES = {
+  SCHEDULE_TEST: 0,
+  RESULT_AWAITING: 1,
+  RESULT_DECLARED: 2,
+};
+
 export default {
   data() {
     return {
-      isScheduleTest: true,
-      openScheduleTest: false,
-      scheduledDate: null,
-      result: null,
+      openActionModal: false,
+      testDateLeft: true,
+      dateToday: new Date().toLocaleDateString(),
     };
+  },
+  props: {
+    admissionDetailList: {
+      type: Object,
+      default: () => {},
+    },
   },
   components: {
     AdmissionStatusModal,
   },
+  mounted() {
+    // TODO: fix action overflowing layout
+    console.log(this.admissionDetailList.testScheduledDate, this.dateToday);
+    if (this.admissionDetailList.testScheduledDate < this.dateToday) this.testDateLeft = false;
+    else this.testDateLeft = true;
+  },
+  computed: {
+    testStatus() {
+      const { status } = this.admissionDetailList;
+      let res = { text: '', color: '' };
+      if (status === STATUSES.SCHEDULE_TEST) {
+        res = {
+          text: 'Not Scheduled',
+          color: 'is-info',
+        };
+      } else if (status === STATUSES.RESULT_AWAITING) {
+        res = {
+          text: 'Awaiting',
+          color: 'is-warning',
+        };
+      } else {
+        res = {
+          text: this.admissionDetailList.isPass ? 'Pass' : 'Fail',
+          color: this.admissionDetailList.isPass ? 'is-success' : 'is-danger',
+        };
+      }
+
+      return res;
+    },
+  },
   methods: {
-    scheduleTest() {
-      this.isScheduleTest = true;
-      this.openScheduleTest = true;
-    },
     closeModal() {
-      this.openScheduleTest = false;
+      this.openActionModal = false;
     },
-    AddResult() {
-      this.isScheduleTest = false;
-      this.openScheduleTest = true;
+    openModal() {
+      this.openActionModal = true;
     },
     setDate(date) {
-      this.scheduledDate = new Date(date).toLocaleDateString();
+      this.$emit('nextAction', new Date(date).toLocaleDateString());
+      console.log(this.admissionDetailList.testScheduledDate, this.dateToday);
+
+      if (this.admissionDetailList.testScheduledDate < this.dateToday) this.testDateLeft = false;
+      else this.testDateLeft = true;
     },
     setResult(result) {
-      this.result = result;
+      this.$emit('nextAction', result);
     },
     deleteRequest() {
-      const { dialog, snackbar } = this.$buefy;
-      dialog.confirm({
-        title: 'Deleting Gatepass Request',
-        message:
-          'Are you sure you want to <b>delete</b> this Admission request? This action cannot be undone.',
-        confirmText: 'Delete Admission',
-        type: 'is-danger',
-        hasIcon: true,
-        onConfirm: () => {
-          this.loading = true;
-          setTimeout(() => {
-            snackbar.open('Admission deleted!');
-            this.loading = false;
-          }, 2000);
-        },
-      });
-    },
-    checkOtp(otp) {
-      this.verifying = true;
-      console.log(otp);
-      setTimeout(() => {
-        const { snackbar } = this.$buefy;
-        snackbar.open('OTP Verfied!');
-        this.verifying = false;
-        this.verified = true;
-      }, 3000);
+      this.$emit('deleteAdmissionQuery', this.admissionDetailList);
     },
   },
 };
@@ -127,13 +153,8 @@ export default {
   text-align: center;
   margin-top: 2px;
 }
-
 .cancel {
   color: red;
-  font-size: 12px;
-}
-.download {
-  /* color: $primary-color; */
   font-size: 12px;
 }
 .col {
@@ -142,17 +163,11 @@ export default {
 .inner-col {
   padding: 0px !important;
 }
-.otp {
-  padding-right: 2px !important;
-}
-.otp-button {
-  width: 50%;
-  height: 70%;
-}
-.otp-input {
-  height: 28px !important;
-}
 .ml-1 {
   margin-left: 2rem;
+}
+.completed {
+  font-size: 14px;
+  font-weight: 500;
 }
 </style>
