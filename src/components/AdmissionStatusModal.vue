@@ -1,10 +1,12 @@
 <template>
-  <div :class="isScheduleTest ? 'main-container' : 'main-container result'">
+  <div class="main-container">
     <header class="card-header">
-      <p class="card-header-title header">{{isScheduleTest ? "Schedule Test Date" : "Add Result" }}</p>
+      <p
+        class="card-header-title header"
+      >{{action === 0 ? "Schedule Test Date" : (action == 1 ? "Add Result" : "Schedule Interview") }}</p>
     </header>
-    <div v-if="isScheduleTest" class="card-area">
-      <b-datepicker v-model="date" inline :unselectable-days-of-week="[0, 6]"></b-datepicker>
+    <div v-if="action === 0" class="card-area">
+      <b-datepicker v-model="testDate" inline :unselectable-days-of-week="[0, 7]" :min-date="new Date()"></b-datepicker>
       <div class="submit">
         <b-button outlined type="is-primary" class="mr-1" @click="closeModal">Cancel</b-button>
         <b-button
@@ -15,14 +17,16 @@
         >Schedule</b-button>
       </div>
     </div>
-    <div v-else>
+    <div v-else-if="action === 1">
       <div class="card-area">
-        <div class="field">
-          <b-radio v-model="result" name="name" native-value="Pass">Pass</b-radio>
-        </div>
-        <div class="field">
-          <b-radio v-model="result" name="name" native-value="Fail">Fail</b-radio>
-        </div>
+        <b-field class="field">
+          <b-radio-button v-model="result" name="name" native-value="Pass" type="is-success">
+            <p class="result">Pass</p>
+          </b-radio-button>
+          <b-radio-button v-model="result" name="name" native-value="Fail" type="is-danger">
+            <p class="result">Fail</p>
+          </b-radio-button>
+        </b-field>
       </div>
       <div class="submit mr-2">
         <b-button outlined type="is-primary" class="mr-1" @click="closeModal">Cancel</b-button>
@@ -34,6 +38,18 @@
         >Submit Result</b-button>
       </div>
     </div>
+    <div v-else-if="action == 2" class="card-area">
+      <b-datepicker v-model="interviewDate" inline :unselectable-days-of-week="[0, 7]" :min-date="new Date()"></b-datepicker>
+      <div class="submit mr-2">
+        <b-button outlined type="is-primary" class="mr-1" @click="closeModal">Cancel</b-button>
+        <b-button
+          icon-right="arrow-circle-right"
+          type="is-primary"
+          class="submit"
+          @click="scheduleInterview"
+        >Schedule Interview</b-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,14 +57,15 @@
 export default {
   data() {
     return {
-      date: new Date(),
+      testDate: new Date(),
+      interviewDate: new Date(),
       result: '',
     };
   },
   props: {
-    isScheduleTest: {
-      type: Boolean,
-      default: true,
+    action: {
+      type: Number,
+      default: 0,
     },
   },
   methods: {
@@ -56,11 +73,16 @@ export default {
       this.$emit('closeModal');
     },
     schedule() {
-      this.$emit('setDate', this.date);
+      this.$emit('setDate', this.testDate);
       this.$emit('closeModal');
     },
     submitResult() {
+      this.result = this.result === 'Pass';
       this.$emit('setResult', this.result);
+      this.$emit('closeModal');
+    },
+    scheduleInterview() {
+      console.log(this.interviewDate);
       this.$emit('closeModal');
     },
   },
@@ -98,9 +120,10 @@ export default {
   margin-right: 1rem;
 }
 .result {
-  width: calc(100% - 20rem);
+  padding: 40px;
+  font-size: 18px;
 }
-.modal-content {
-  max-width: 410px !important;
+.field {
+  justify-content: center !important;
 }
 </style>
