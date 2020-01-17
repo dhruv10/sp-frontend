@@ -2,7 +2,7 @@
   <div class="admission-root-container">
     <div class="card">
       <div class="info-header">
-        <h1 class="gatepass-title">Admission</h1>
+        <h1 class="admission-title">Admission</h1>
         <div>
           <b-button
             type="is-primary"
@@ -22,25 +22,28 @@
               <div class="column is-1 align">
                 <p class="title is-6">Class</p>
               </div>
-              <div class="column is-1">
+              <div class="column is-2">
                 <p class="title is-6">Phone</p>
               </div>
-              <div class="column is-2 ml-1">
+              <div class="column is-3 ml-1">
                 <p class="title is-6">Address</p>
               </div>
-              <div class="column is-3">
-                <p class="title is-6"></p>
-              </div>
-              <div class="column is-1 align">
-                <p class="title is-6">Documents</p>
+              <div class="column is-2 align">
+                <p class="title is-6">Test Status</p>
               </div>
               <div class="column is-2 align">
-                <p class="title is-6">Status</p>
+                <p class="title is-6">Action</p>
               </div>
             </div>
           </div>
         </div>
-        <AdmissionCard />
+        <div v-for="detail in admissionDetailList" :key="detail._id">
+          <AdmissionCard
+            :admissionDetailList="detail"
+            @nextAction="nextAction(detail, $event)"
+            @deleteAdmissionQuery="deleteAdmissionQuery"
+          />
+        </div>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
@@ -62,21 +65,36 @@ export default {
     return {
       openModal: false,
       loading: false,
+      admissionDetailList: [],
     };
+  },
+  mounted() {
+    this.admissionDetailList.push({
+      name: 'Sakshi Srivastava',
+      class: 4,
+      dob: '03/10/1999',
+      mPhone: 88928292829,
+      fPhone: 19392029991,
+      address: 'CD 199 Pitampura delhi',
+      status: 0,
+      isPass: true,
+      testScheduledDate: '',
+      _id: '',
+    });
   },
   methods: {
     getTableData() {
       this.loading = true;
-      this.$http
-        .get('/gatepass')
-        .then((res) => {
-          this.loading = false;
-          this.gatepassData = res.data.results;
-        })
-        .catch((e) => {
-          console.log(e);
-          this.loading = false;
-        });
+      // this.$http
+      //   .get("/gatepass")
+      //   .then(res => {
+      //     this.loading = false;
+      //     this.gatepassData = res.data.results;
+      //   })
+      //   .catch(e => {
+      //     console.log(e);
+      //     this.loading = false;
+      //   });
     },
     closeModal() {
       this.openModal = false;
@@ -84,28 +102,35 @@ export default {
     openAdmissionForm() {
       this.openModal = true;
     },
+    nextAction(detail, data) {
+      const index = this.admissionDetailList.findIndex(admission => admission._id === detail._id);
+      if (detail.status === 0) this.admissionDetailList[index].testScheduledDate = data;
+      else this.admissionDetailList[index].isPass = data;
+      this.admissionDetailList[index].status += 1;
+    },
     deleteAdmissionQuery(rowinfo) {
-      const { dialog, snackbar } = this.$buefy;
+      console.log(rowinfo);
+      const { dialog } = this.$buefy;
       dialog.confirm({
-        title: 'Deleting Gatepass Record',
+        title: 'Deleting Admission Record',
         message:
-          'Are you sure you want to <b>delete</b> your gatepass record? This action cannot be undone.',
-        confirmText: 'Delete Gatepass Record',
+          'Are you sure you want to <b>delete</b> your admission record? This action cannot be undone.',
+        confirmText: 'Delete Admission Record',
         type: 'is-danger',
         hasIcon: true,
         onConfirm: () => {
           this.loading = true;
-          this.$http
-            .delete(`/gatepass/${rowinfo._id}`)
-            .then(() => {
-              snackbar.open('Gatepass Record deleted!');
-              this.getTableData();
-              this.loading = false;
-            })
-            .catch((e) => {
-              console.log(e);
-              this.loading = false;
-            });
+          // this.$http
+          //   .delete(`/gatepass/${rowinfo._id}`)
+          //   .then(() => {
+          //     snackbar.open("Gatepass Record deleted!");
+          //     this.getTableData();
+          //     this.loading = false;
+          //   })
+          //   .catch(e => {
+          //     console.log(e);
+          //     this.loading = false;
+          //   });
         },
       });
     },
@@ -140,7 +165,7 @@ export default {
 .main-contianer {
   margin-top: 50px;
 }
-.gatepass-title {
+.admission-title {
   font-size: 2rem;
   font-weight: 600;
 }
