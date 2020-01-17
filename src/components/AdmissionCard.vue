@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card acard">
     <div class="card-content">
       <div class="columns col">
         <div class="column inner-col is-2">
@@ -169,5 +169,8 @@ export default {
 .completed {
   font-size: 14px;
   font-weight: 500;
+}
+.acard {
+  margin: 0 1px;
 }
 </style>

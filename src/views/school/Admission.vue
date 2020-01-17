@@ -1,19 +1,17 @@
 <template>
   <div class="admission-root-container">
-    <div class="card">
+    <div class="card outer-card">
       <div class="info-header">
         <h1 class="admission-title">Admission</h1>
-        <div>
-          <b-button
-            type="is-primary"
-            icon-left="plus"
-            rounded
-            @click="openAdmissionForm"
-          >Addmission Form</b-button>
-        </div>
+        <b-button
+          type="is-primary"
+          icon-left="plus"
+          rounded
+          @click="openAdmissionForm"
+        >Admission Form</b-button>
       </div>
       <div class="card-content">
-        <div class="card">
+        <div class="card acard">
           <div class="card-content">
             <div class="columns">
               <div class="column is-2">
@@ -37,13 +35,27 @@
             </div>
           </div>
         </div>
-        <div v-for="detail in admissionDetailList" :key="detail._id">
-          <AdmissionCard
-            :admissionDetailList="detail"
-            @nextAction="nextAction(detail, $event)"
-            @deleteAdmissionQuery="deleteAdmissionQuery"
-          />
+        <div class="all-admissions">
+          <div v-for="detail in paginatedAdmissionList" :key="detail._id">
+            <AdmissionCard
+              :admissionDetailList="detail"
+              @nextAction="nextAction(detail, $event)"
+              @deleteAdmissionQuery="deleteAdmissionQuery"
+            />
+          </div>
         </div>
+      <div class="add-pagination">
+        <b-pagination
+          :total=admissionDetailList.length
+          :current.sync="current"
+          :simple="true"
+          order="is-right"
+          per-page="10"
+          icon-prev="chevron-left"
+          icon-next="chevron-right"
+          @change="changePage"
+        ></b-pagination>
+      </div>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
@@ -65,22 +77,27 @@ export default {
     return {
       openModal: false,
       loading: false,
+      current: 1,
       admissionDetailList: [],
+      paginatedAdmissionList: [],
     };
   },
   mounted() {
-    this.admissionDetailList.push({
-      name: 'Sakshi Srivastava',
-      class: 4,
-      dob: '03/10/1999',
-      mPhone: 88928292829,
-      fPhone: 19392029991,
-      address: 'CD 199 Pitampura delhi',
-      status: 0,
-      isPass: true,
-      testScheduledDate: '',
-      _id: '',
-    });
+    for (let i = 0; i < 100; i += 1) {
+      this.admissionDetailList.push({
+        name: 'Sakshi Srivastava',
+        class: i + 1,
+        dob: '03/10/1999',
+        mPhone: 88928292829,
+        fPhone: 19392029991,
+        address: 'CD 199 Pitampura delhi',
+        status: 0,
+        isPass: true,
+        testScheduledDate: '',
+        _id: '',
+      });
+    }
+    this.paginatedAdmissionList = this.admissionDetailList.slice(0, 10);
   },
   methods: {
     getTableData() {
@@ -103,10 +120,15 @@ export default {
       this.openModal = true;
     },
     nextAction(detail, data) {
-      const index = this.admissionDetailList.findIndex(admission => admission._id === detail._id);
+      const index = this.admissionDetailList.findIndex(
+        admission => admission._id === detail._id,
+      );
       if (detail.status === 0) this.admissionDetailList[index].testScheduledDate = data;
       else this.admissionDetailList[index].isPass = data;
       this.admissionDetailList[index].status += 1;
+    },
+    changePage() {
+      this.paginatedAdmissionList = this.admissionDetailList.slice(this.current * 10, this.current * 10 + 10);
     },
     deleteAdmissionQuery(rowinfo) {
       console.log(rowinfo);
@@ -144,6 +166,12 @@ export default {
   margin-top: 50px;
   height: 100%;
 }
+.outer-card {
+  height: 90vh;
+}
+.acard {
+  margin: 1px;
+}
 .columns {
   align-items: center !important;
 }
@@ -171,5 +199,12 @@ export default {
 }
 .ml-1 {
   margin-left: 2rem;
+}
+.add-pagination {
+  margin-top: 15px;
+}
+.all-admissions {
+  overflow-y: scroll;
+  height: 65vh;
 }
 </style>
