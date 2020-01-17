@@ -27,23 +27,23 @@
           </p>
         </div>
         <div class="column inner-col is-2">
-          <div class="btn-details" v-if="!verifying && !verified">
+          <div class="btn-details" v-if="!scheduledDate">
             <b-button type="is-primary" size="is-small" @click="scheduleTest()">Schedule Test</b-button>
           </div>
-          <div class="btn-details" v-else-if="verifying && !verified">hello</div>
-          <div class="status" v-if="verified">
-            <b-icon pack="fas" icon="download" size="is-medium" type="is-primary"></b-icon>
-
-            <p class="download" @click="deleteRequest">Download Gatepass</p>
+          <div class="status" v-else-if="!result">
+            <b-button type="is-primary" size="is-small" @click="AddResult()">Add Result</b-button>
           </div>
-          <div class="btn-details" v-else>
+          <div class="right-container" v-else>
+            <b-tag rounded :type="result == 'Pass' ? 'is-success' : 'is-danger'">{{ result }}</b-tag>
+          </div>
+          <div class="btn-details">
             <a class="cancel" @click="deleteRequest">Cancel Admission</a>
           </div>
         </div>
       </div>
     </div>
     <b-modal :active.sync="openScheduleTest" :width="640" scroll="keep">
-      <AdmissionStatusModal :scheduleTest="true" @closeModal="closeModal" @setDate="setDate" />
+      <AdmissionStatusModal :isScheduleTest="isScheduleTest" @closeModal="closeModal" @setDate="setDate" @setResult="setResult" />
     </b-modal>
   </div>
 </template>
@@ -54,10 +54,10 @@ import AdmissionStatusModal from './AdmissionStatusModal.vue';
 export default {
   data() {
     return {
-      loading: false,
-      verifying: false,
-      verified: false,
+      isScheduleTest: true,
       openScheduleTest: false,
+      scheduledDate: null,
+      result: null,
     };
   },
   components: {
@@ -65,13 +65,21 @@ export default {
   },
   methods: {
     scheduleTest() {
+      this.isScheduleTest = true;
       this.openScheduleTest = true;
     },
     closeModal() {
       this.openScheduleTest = false;
     },
+    AddResult() {
+      this.isScheduleTest = false;
+      this.openScheduleTest = true;
+    },
     setDate(date) {
-      console.log(date);
+      this.scheduledDate = new Date(date).toLocaleDateString();
+    },
+    setResult(result) {
+      this.result = result;
     },
     deleteRequest() {
       const { dialog, snackbar } = this.$buefy;
