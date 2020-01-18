@@ -28,9 +28,11 @@
             <MultiSelect
               required
               v-model="classroom.classTeacher"
+              :value="classroom.classTeacher"
               :allOptions="teacherNames"
               :isMultiple="false"
               placeholder="Select Class Teacher"
+              @input="selectedTeacher"
             />
           </b-field>
           <div class="submit">
@@ -80,10 +82,16 @@ export default {
     this.teacherNames = this.teachers.map(val => ({
       name: val.basicInfo.name,
       code: val.basicInfo.name,
+      _id: val._id,
     }));
     if (this.formType === 'edit') {
       this.classroom = this.classData;
-      this.classroom.classTeacher = this.classData.classTeacher.basicInfo.name;
+
+      this.classroom.classTeacher = {
+        name: this.classData && this.classData.classTeacher && this.classData.classTeacher.basicInfo && this.classData.classTeacher.basicInfo.name,
+        code: this.classData && this.classData.classTeacher && this.classData.classTeacher.basicInfo && this.classData.classTeacher.basicInfo.name,
+        _id: this.classData && this.classData.classTeacher && this.classData.classTeacher._id,
+      };
     }
   },
   methods: {
@@ -91,7 +99,7 @@ export default {
       this.$emit('closeModal');
     },
     selectedTeacher(data) {
-      this.classTeacherId = data;
+      this.classTeacherId = data._id;
     },
     addClass() {
       const { snackbar } = this.$buefy;
