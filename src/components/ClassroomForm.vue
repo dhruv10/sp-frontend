@@ -40,7 +40,6 @@
             <b-button
               icon-right="arrow-circle-right"
               type="is-primary"
-              class="submit"
               @click="formType === 'add' ? addClass() : editClass()"
             >{{ formType === 'add' ? 'Add Classroom' : 'Edit Classroom' }}</b-button>
           </div>
@@ -157,7 +156,7 @@ export default {
     }
   }
   .card-area {
-    margin: 0px 8px 50px 8px;
+    margin: 0px 8px 8px 8px;
   }
   .line {
     display: flex;
@@ -167,6 +166,7 @@ export default {
   }
 }
 .submit {
+  margin-top: 30px;
   display: flex;
   justify-content: flex-end;
 }
