@@ -33,7 +33,7 @@
           <!-- <div class="status">
               <b-icon pack="fas" icon="exclamation-triangle" size="is-small" type="is-warning"></b-icon>
           </div>-->
-          <div class="btn-details" v-if="!verifying && !verified">
+          <div class="btn-details" v-if="!verifying && !verified" id="v-step-3">
             <otp-input @value="checkOtp"/>
           </div>
           <div class="btn-details" v-else-if="verifying && !verified">hello</div>
@@ -60,6 +60,12 @@ export default {
       verifying: false,
       verified: false,
     };
+  },
+  props: {
+    steps: {
+      type: Array,
+      default: () => [],
+    },
   },
   components: {
     'otp-input': OtpInput,
@@ -99,7 +105,6 @@ export default {
 
 <style>
 @import '../styles/app.global.scss';
-
 .right-container {
   text-align: center;
 }
@@ -137,5 +142,11 @@ export default {
 }
 .otp-input {
   height: 28px !important;
+}
+</style>
+
+<style scoped>
+.v-tour__target--highlighted {
+  box-shadow: 0 0 0 99999px rgba(0,0,0,.4);
 }
 </style>

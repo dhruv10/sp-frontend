@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Buefy from 'buefy';
+import VueTour from 'vue-tour';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -8,6 +9,10 @@ import './registerServiceWorker';
 import './init-axios';
 import './init-ismobile';
 import './init-file-upload';
+
+require('vue-tour/dist/vue-tour.css');
+
+Vue.use(VueTour);
 
 Vue.use(Buefy, {
   defaultIconPack: 'fas',
