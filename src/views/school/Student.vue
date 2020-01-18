@@ -21,6 +21,7 @@
         @closeModal="closeModal"
         @getTableData="getTableData"
         :classrooms="classrooms"
+        :subject="subjects"
       />
     </b-modal>
   </div>
@@ -42,6 +43,7 @@ export default {
       formData: {},
       loading: false,
       classrooms: [],
+      subjects: [],
       studentDetails: [],
       tableConfig: [
         {
@@ -204,6 +206,7 @@ export default {
   mounted() {
     this.getTableData();
     this.getClassrooms();
+    this.getSubjects();
   },
   methods: {
     getTableData() {
@@ -224,6 +227,16 @@ export default {
         .get('/classroom')
         .then((res) => {
           this.classrooms = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    getSubjects() {
+      this.$http
+        .get('/subject')
+        .then((res) => {
+          this.subjects = res.data.results;
         })
         .catch((e) => {
           console.log(e);
@@ -277,6 +290,6 @@ export default {
   height: 100%;
 }
 .table-card {
-  height: 90vh
+  height: 90vh;
 }
 </style>
