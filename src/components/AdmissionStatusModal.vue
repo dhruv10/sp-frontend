@@ -3,7 +3,7 @@
     <header class="card-header">
       <p
         class="card-header-title header"
-      >{{action === 0 ? "Schedule Test Date" : (action == 1 ? "Add Result" : "Schedule Interview") }}</p>
+      >{{ checkAction }}</p>
     </header>
     <div v-if="action === 0" class="card-area">
       <b-datepicker v-model="testDate" inline :unselectable-days-of-week="[0, 7]" :min-date="new Date()"></b-datepicker>
@@ -68,6 +68,13 @@ export default {
       default: 0,
     },
   },
+  computed: {
+    checkAction() {
+      if (this.action === 0) return 'Schedule Test Date';
+      if (this.action === 1) return 'Add Result';
+      return 'Schedule Interview';
+    },
+  },
   methods: {
     closeModal() {
       this.$emit('closeModal');
@@ -82,7 +89,6 @@ export default {
       this.$emit('closeModal');
     },
     scheduleInterview() {
-      console.log(this.interviewDate);
       this.$emit('closeModal');
     },
   },

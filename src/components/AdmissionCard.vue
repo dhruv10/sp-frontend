@@ -140,7 +140,6 @@ export default {
 </script>
 
 <style>
-@import "../styles/app.global.scss";
 
 .right-container {
   text-align: center;

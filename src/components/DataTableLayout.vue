@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="info-header">
-      <h1 class="title">{{ `${title}` }}</h1>
+      <h1 class="title">{{ title }}</h1>
       <div>
         <b-button
           type="is-primary"
@@ -23,7 +23,7 @@
     <div v-if="loading">
       <b-loading :is-full-page="false" :active.sync="loading"></b-loading>
     </div>
-    <div v-if="!noData && !loading" id="myGrid" style="height: 100%;" class="ag-theme-material">
+    <div v-if="!noData && !loading" class="ag-theme-material table-container">
       <ag-grid-vue
         style="width: 100%; height: 77vh;"
         class="ag-theme-balham"
@@ -100,7 +100,6 @@ export default {
   },
   mounted() {
     if (!this.data.length) {
-      console.log('no data found');
       this.noData = true;
     }
     this.columnsInfo.push({
@@ -162,5 +161,8 @@ export default {
   font-size: 16px;
   font-weight: 300;
   font-family: "Avenir";
+}
+.table-container {
+  height: 100%;
 }
 </style>
