@@ -98,7 +98,9 @@ export default {
       syllabus: {
         documentTitle: '',
         class: '',
-        documentUrl: () => 'https://mock.com',
+        documentUrl: new File(['foo'], 'foo.txt', {
+          type: 'text/plain',
+        }),
       },
       classlist: this.classrooms,
     };
@@ -117,7 +119,7 @@ export default {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/syllabus', { ...this.syllabus, class: this.syllabus.class._id })
+        .post('/syllabus', { ...this.syllabus, class: this.syllabus.class._id, documentUrl: 'soda' })
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');
