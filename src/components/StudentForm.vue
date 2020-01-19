@@ -526,11 +526,10 @@ export default {
     };
   },
   mounted() {
-    console.log(this.classrooms);
     if (this.formType === 'edit') this.student = this.formData;
     this.classlist = this.classrooms.map(val => ({
-      name: `${val.classSection} ${val.classNumber}`,
-      code: `${val.classSection} ${val.classNumber}`,
+      name: `${val.classNumber} - ${val.classSection}`,
+      code: `${val.classNumber} - ${val.classSection}`,
       _id: `${val._id}`,
     }));
     this.genderList = this.genderList.map(val => ({
@@ -641,7 +640,7 @@ export default {
           this.$emit('closeModal');
           snackbar.open('Student Added!');
         })
-        .catch(e => console.log(e));
+        .catch(e => snackbar.open('ERROR:', e));
     },
     editStudent() {
       const { snackbar } = this.$buefy;
@@ -653,7 +652,7 @@ export default {
           this.$emit('closeModal');
           snackbar.open('Student edited!');
         })
-        .catch(e => console.log(e));
+        .catch(e => snackbar.open('ERROR: ', e));
     },
   },
 };
