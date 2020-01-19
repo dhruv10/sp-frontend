@@ -13,7 +13,7 @@
           <div class="column">
             <section>
               <b-field label="Grade Name">
-                <b-input icon-pack="fas" required v-model="salaryGrade.name" icon="credit-card"></b-input>
+                <b-input icon-pack="fas" required v-model="salaryGrade.gradeName" icon="credit-card"></b-input>
               </b-field>
 
               <div class="columns">
@@ -26,7 +26,7 @@
                       <b-input type="number" required v-model="salaryGrade.transportAllowance"></b-input>
                     </b-field>
                     <b-field label="Over Time Hourly Rate">
-                      <b-input type="number" required v-model="salaryGrade.overtimeHourlyRate"></b-input>
+                      <b-input type="number" required v-model="salaryGrade.overTimeHourlyRate"></b-input>
                     </b-field>
                     <b-field label="Hourly Rate">
                       <b-input type="number" required v-model="salaryGrade.hourlyRate"></b-input>
@@ -91,15 +91,18 @@ export default {
       type: String,
       default: 'add',
     },
+    formData: {
+      type: Object,
+    },
   },
   data() {
     return {
       startLoading: false,
       salaryGrade: {
-        name: '',
+        gradeName: '',
         basicSalary: '',
         transportAllowance: '',
-        overtimeHourlyRate: '',
+        overTimeHourlyRate: '',
         hourlyRate: '',
         houseRent: '',
         medicalAllowance: '',
@@ -112,11 +115,15 @@ export default {
       },
     };
   },
+  mounted() {
+    if (this.formType === 'edit') this.salaryGrade = this.formData;
+  },
   methods: {
     closeModal() {
       this.$emit('closeModal');
     },
     addSalaryGrade() {
+      console.log(this.salaryGrade);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
@@ -127,7 +134,7 @@ export default {
           this.$emit('closeModal');
           snackbar.open('Salary Grade added!');
         })
-        .catch(e => console.log(e));
+        .catch(e => snackbar.open('ERROR: ', e));
     },
     editSalaryGrade() {
       const { snackbar } = this.$buefy;
@@ -137,10 +144,11 @@ export default {
         .then((res) => {
           console.log('Edited Response: ', res);
           this.startLoading = false;
+          this.$emit('getTableData');
           this.$emit('closeModal');
           snackbar.open('Salary Grade edited!');
         })
-        .catch(e => console.log(e));
+        .catch(e => snackbar.open('ERROR: ', e));
     },
   },
 };
