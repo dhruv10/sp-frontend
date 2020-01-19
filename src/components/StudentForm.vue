@@ -14,7 +14,12 @@
           <div class="columns">
             <div class="column is-8">
               <b-field label="Student Name">
-                <b-input required v-model="student.name" icon-pack="fas" icon="user-graduate"></b-input>
+                <b-input
+                  required
+                  v-model="student.basicInfo.name"
+                  icon-pack="fas"
+                  icon="user-graduate"
+                ></b-input>
               </b-field>
               <div class="columns">
                 <div class="column">
@@ -24,13 +29,13 @@
                       icon="calendar-today"
                       icon-pack="fas"
                       required
-                      v-model="student.studentDOB"
+                      v-model="student.basicInfo.birthDate"
                     ></b-datepicker>
                   </b-field>
                 </div>
                 <div class="column">
                   <b-field label="Nationality">
-                    <b-input icon-pack="fas" required v-model="student.nationality"></b-input>
+                    <b-input icon-pack="fas" required v-model="student.basicInfo.nationality"></b-input>
                   </b-field>
                 </div>
               </div>
@@ -49,16 +54,15 @@
                 </b-upload>
               </b-field>
 
-              <div v-if="student.photoUploadValue">
-                <b-progress
-                  :value="student.photoUploadValue"
+              <div>
+                <!-- <b-progress
                   type="is-info"
                   show-value
                   format="percent"
-                ></b-progress>
+                ></b-progress>-->
               </div>
 
-              <div class="tags">
+              <!-- <div class="tags">
                 <span v-for="(file, index) in student.photo" :key="index" class="tag is-primary">
                   {{file.name}}
                   <button
@@ -67,23 +71,28 @@
                     @click="deleteDropFile(index, student.photo)"
                   ></button>
                 </span>
-              </div>
+              </div>-->
             </div>
           </div>
           <div class="columns">
             <div class="column">
               <b-field label="Username">
-                <b-input icon-pack="fas" required v-model="student.username"></b-input>
+                <b-input icon-pack="fas" required v-model="student.basicInfo.username"></b-input>
               </b-field>
             </div>
             <div class="column">
               <b-field label="Email ID">
-                <b-input icon-pack="fas" type="email" required v-model="student.personalEmail"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  type="email"
+                  required
+                  v-model="student.basicInfo.personalEmail"
+                ></b-input>
               </b-field>
             </div>
             <div class="column">
               <b-field label="Phone Number">
-                <b-input icon-pack="fas" required v-model="student.phoneNumber"></b-input>
+                <b-input icon-pack="fas" required v-model="student.basicInfo.phoneNumber"></b-input>
               </b-field>
             </div>
           </div>
@@ -93,7 +102,7 @@
                 <b-input
                   class="notearea"
                   required
-                  v-model="student.permanentAddress"
+                  v-model="student.basicInfo.permanentAddress"
                   maxlength="200"
                   type="textarea"
                 ></b-input>
@@ -103,12 +112,12 @@
           <div class="columns">
             <div class="column">
               <b-field label="Roll Number">
-                <b-input type="number" required v-model="student.rollNo"></b-input>
+                <b-input type="number" required v-model="student.studentDetails.rollNo"></b-input>
               </b-field>
             </div>
             <div class="column">
               <b-field label="Enrollment Number">
-                <b-input type="number" required v-model="student.enrollmentNo"></b-input>
+                <b-input type="number" required v-model="student.studentDetails.enrollmentNo"></b-input>
               </b-field>
             </div>
             <div class="column">
@@ -118,7 +127,8 @@
                   icon="calendar-today"
                   icon-pack="fas"
                   required
-                  v-model="student.admissionDate"
+                  student.studentDetails.admissionDate
+                  position="is-bottom-left"
                 ></b-datepicker>
               </b-field>
             </div>
@@ -126,14 +136,13 @@
           <div class="columns">
             <div class="column">
               <b-field label="Admission Number">
-                <b-input type="number" required v-model="student.admissionNo"></b-input>
+                <b-input type="number" required v-model="student.studentDetails.admissionNo"></b-input>
               </b-field>
             </div>
             <div class="column">
               <b-field label="Blood Group">
                 <MultiSelect
                   required
-                  v-model="student.bloodGroup"
                   :isMultiple="false"
                   :allOptions="allBloodGroups"
                   placeholder="Select Blood Group"
@@ -144,7 +153,7 @@
               <b-field label="Gender">
                 <MultiSelect
                   required
-                  v-model="student.gender"
+                  v-model="student.basicInfo.gender"
                   :isMultiple="false"
                   :allOptions="genderList"
                   placeholder="Select the gender"
@@ -157,7 +166,7 @@
               <b-field label="Link Class">
                 <MultiSelect
                   required
-                  v-model="student.class"
+                  v-model="student.studentDetails.class"
                   :isMultiple="false"
                   :allOptions="classlist"
                   placeholder="Select a class"
@@ -168,7 +177,6 @@
               <b-field label="Link Subjects">
                 <MultiSelect
                   required
-                  v-model="student.subjects"
                   :isMultiple="true"
                   :allOptions="subjectsList"
                   placeholder="Select subjects"
@@ -179,17 +187,12 @@
           <div class="columns">
             <div class="column is-8">
               <b-field label="Health Disorder Note (if any)">
-                <b-input
-                  v-model="student.healthDisorderNote"
-                  class="notearea"
-                  maxlength="200"
-                  type="textarea"
-                ></b-input>
+                <b-input class="notearea" maxlength="200" type="textarea"></b-input>
               </b-field>
             </div>
             <div class="column is-4 mt-2">
               <b-field>
-                <b-upload class="dropfile" required v-model="student.healthDocs" multiple drag-drop>
+                <b-upload class="dropfile" required multiple drag-drop>
                   <section class="healthUpload">
                     <div class="content has-text-centered">
                       <p>
@@ -206,13 +209,13 @@
           <div class="columns">
             <div class="column is-8">
               <b-field label="Father's Name">
-                <b-input icon-pack="fas" required v-model="student.fatherInfo.name"></b-input>
+                <b-input icon-pack="fas" required v-model="student.studentDetails.fatherInfo.name"></b-input>
               </b-field>
               <b-field label="Mobile Number">
                 <b-input
                   icon-pack="fas"
                   required
-                  v-model="student.fatherInfo.phoneNumber"
+                  v-model="student.studentDetails.fatherInfo.phoneNumber"
                   type="number"
                 ></b-input>
               </b-field>
@@ -231,17 +234,17 @@
                 </b-upload>
               </b-field>
 
-              <div v-if="student.fatherInfo.photoUploadValue">
+              <!-- <div v-if="student.fatherInfo.photoUploadValue">
                 <b-progress
                   :value="student.fatherInfo.photoUploadValue"
                   type="is-info"
                   show-value
                   format="percent"
                 ></b-progress>
-              </div>
+              </div>-->
 
               <div class="tags">
-                <span
+                <!-- <span
                   v-for="(file, index) in student.fatherInfo.photo"
                   :key="index"
                   class="tag is-primary"
@@ -252,7 +255,7 @@
                     type="button"
                     @click="deleteDropFile(index, student.fatherInfo.photo)"
                   ></button>
-                </span>
+                </span>-->
               </div>
             </div>
           </div>
@@ -264,7 +267,7 @@
                   icon="calendar-today"
                   icon-pack="fas"
                   required
-                  v-model="student.fatherInfo.dob"
+                  v-model="student.studentDetails.fatherInfo.dob"
                 ></b-datepicker>
               </b-field>
             </div>
@@ -272,7 +275,6 @@
               <b-field label="Blood Group">
                 <MultiSelect
                   required
-                  v-model="student.fatherInfo.bloodGroup"
                   :isMultiple="false"
                   :allOptions="allBloodGroups"
                   placeholder="Select Blood Group"
@@ -283,13 +285,25 @@
           <div class="columns samesection">
             <div class="column">
               <b-field label="Father's Education">
-                <b-input icon-pack="fas" required v-model="student.fatherInfo.education"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  required
+                  v-model="student.studentDetails.fatherInfo.education"
+                ></b-input>
               </b-field>
               <b-field label="Father's Profession">
-                <b-input icon-pack="fas" required v-model="student.fatherInfo.profession"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  required
+                  v-model="student.studentDetails.fatherInfo.profession"
+                ></b-input>
               </b-field>
               <b-field label="Father's Designation">
-                <b-input icon-pack="fas" required v-model="student.fatherInfo.designation"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  required
+                  v-model="student.studentDetails.fatherInfo.designation"
+                ></b-input>
               </b-field>
             </div>
           </div>
@@ -297,14 +311,14 @@
           <div class="columns">
             <div class="column is-8">
               <b-field label="Mother's Name">
-                <b-input icon-pack="fas" required v-model="student.motherInfo.name"></b-input>
+                <b-input icon-pack="fas" required v-model="student.studentDetails.motherInfo.name"></b-input>
               </b-field>
               <b-field label="Mobile Number">
                 <b-input
                   icon-pack="fas"
                   type="number"
                   required
-                  v-model="student.motherInfo.phoneNumber"
+                  v-model="student.studentDetails.motherInfo.phoneNumber"
                 ></b-input>
               </b-field>
             </div>
@@ -322,17 +336,17 @@
                 </b-upload>
               </b-field>
 
-              <div v-if="student.motherInfo.photoUploadValue">
+              <!-- <div v-if="student.motherInfo.photoUploadValue">
                 <b-progress
                   :value="student.motherInfo.photoUploadValue"
                   type="is-info"
                   show-value
                   format="percent"
                 ></b-progress>
-              </div>
+              </div>-->
 
               <div class="tags">
-                <span
+                <!-- <span
                   v-for="(file, index) in student.motherInfo.photo"
                   :key="index"
                   class="tag is-primary"
@@ -343,7 +357,7 @@
                     type="button"
                     @click="deleteDropFile(index, student.motherInfo.photo)"
                   ></button>
-                </span>
+                </span>-->
               </div>
             </div>
           </div>
@@ -355,7 +369,7 @@
                   icon="calendar-today"
                   icon-pack="fas"
                   required
-                  v-model="student.motherDOB"
+                  v-model="student.studentDetails.motherInfo.dob"
                 ></b-datepicker>
               </b-field>
             </div>
@@ -363,7 +377,6 @@
               <b-field label="Blood Group">
                 <MultiSelect
                   required
-                  v-model="student.motherInfo.bloodGroup"
                   :isMultiple="false"
                   :allOptions="allBloodGroups"
                   placeholder="Select Blood Group"
@@ -374,13 +387,25 @@
           <div class="columns samesection">
             <div class="column">
               <b-field label="Mother's Education">
-                <b-input icon-pack="fas" required v-model="student.motherInfo.education"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  required
+                  v-model="student.studentDetails.motherInfo.education"
+                ></b-input>
               </b-field>
               <b-field label="Mother's Profession">
-                <b-input icon-pack="fas" required v-model="student.motherInfo.profession"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  required
+                  v-model="student.studentDetails.motherInfo.profession"
+                ></b-input>
               </b-field>
               <b-field label="Mother's Designation">
-                <b-input icon-pack="fas" required v-model="student.motherInfo.designation"></b-input>
+                <b-input
+                  icon-pack="fas"
+                  required
+                  v-model="student.studentDetails.motherInfo.designation"
+                ></b-input>
               </b-field>
             </div>
           </div>
@@ -388,7 +413,7 @@
           <div class="document-container">
             <div class="docs" v-for="i in docs" :key="i">
               <b-field class="upload-field">
-                <b-upload required v-model="student.otherdocuments" multiple drag-drop>
+                <b-upload multiple drag-drop>
                   <section class="uploadsection">
                     <div class="content has-text-centered">
                       <p>
@@ -460,61 +485,53 @@ export default {
     return {
       docs: [1, 2, 3, 4, 5, 6],
       startLoading: false,
-      genderList: ['Male', 'Female'],
+      genderList: ['male', 'female'],
       classlist: [],
       subjectsList: [],
       allBloodGroups: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
       student: {
-        name: '',
-        username: '',
-        personalEmail: '',
-        phoneNumber: '',
-        studentDOB: new Date(),
-        nationality: '',
-        photo: [],
-        photoUploadValue: 0,
-        rollNo: 0,
-        enrollmentNo: 0,
-        admissionDate: new Date(),
-        admissionNo: 0,
-        bloodGroup: '',
-        gender: '',
-        class: '',
-        subjects: ['Maths', 'Science'],
-        healthDisorderNote: '',
-        healthDocs: [],
-        fatherInfo: {
+        basicInfo: {
           name: '',
+          personalEmail: '',
+          username: '',
           phoneNumber: '',
-          designation: '',
-          bloodGroup: '',
-          dob: new Date(),
-          education: '',
-          profession: '',
-          photo: [],
-          photoUploadValue: 0,
+          nationality: '',
+          gender: '',
+          birthDate: new Date(),
+          permanentAddress: '',
         },
-        motherInfo: {
-          name: '',
-          phoneNumber: '',
-          designation: '',
-          bloodGroup: '',
-          dob: new Date(),
-          education: '',
-          profession: '',
-          photo: [],
-          photoUploadValue: 0,
+        studentDetails: {
+          rollNo: 0,
+          admissionDate: new Date(),
+          class: '',
+          motherInfo: {
+            name: '',
+            phoneNumber: '',
+            dob: new Date(),
+            education: '',
+            profession: '',
+          },
+          fatherInfo: {
+            name: '',
+            phoneNumber: '',
+            dob: new Date(),
+            education: '',
+            profession: '',
+          },
+          previousSchoolInfo: {},
+          enrollmentNo: 0,
+          admissionNo: 0,
         },
-        permanentAddress: '',
-        otherdocuments: [],
       },
     };
   },
   mounted() {
+    console.log(this.classrooms);
     if (this.formType === 'edit') this.student = this.formData;
     this.classlist = this.classrooms.map(val => ({
       name: `${val.classSection} ${val.classNumber}`,
       code: `${val.classSection} ${val.classNumber}`,
+      _id: `${val._id}`,
     }));
     this.genderList = this.genderList.map(val => ({
       name: `${val}`,
@@ -570,16 +587,54 @@ export default {
       this.$emit('closeModal');
     },
     addStudent() {
-      console.log(this.student);
+      const studentData = {
+        basicInfo: {
+          name: this.student.basicInfo.name,
+          personalEmail: this.student.basicInfo.personalEmail,
+          username: this.student.basicInfo.username,
+          phoneNumber: this.student.basicInfo.phoneNumber,
+          nationality: this.student.basicInfo.nationality,
+          gender: this.student.basicInfo.gender.name,
+          birthDate: new Date(this.student.basicInfo.birthDate)
+            .getTime()
+            .toString(),
+          permanentAddress: this.student.basicInfo.permanentAddress,
+        },
+        studentDetails: {
+          rollNo: this.student.studentDetails.rollNo,
+          admissionDate: new Date(this.student.studentDetails.admissionDate)
+            .getTime()
+            .toString(),
+          class: this.student.studentDetails.class._id,
+          motherInfo: {
+            name: this.student.studentDetails.motherInfo.name,
+            dob: new Date(this.student.studentDetails.motherInfo.dob)
+              .getTime()
+              .toString(),
+            phoneNumber: this.student.studentDetails.motherInfo.phoneNumber,
+            education: this.student.studentDetails.motherInfo.education,
+            profession: this.student.studentDetails.motherInfo.profession,
+          },
+          fatherInfo: {
+            name: this.student.studentDetails.fatherInfo.name,
+            dob: new Date(this.student.studentDetails.fatherInfo.dob)
+              .getTime()
+              .toString(),
+            phoneNumber: this.student.studentDetails.fatherInfo.phoneNumber,
+            education: this.student.studentDetails.fatherInfo.education,
+            profession: this.student.studentDetails.fatherInfo.profession,
+          },
+          previousSchoolInfo: {},
+          enrollmentNo: this.student.studentDetails.enrollmentNo,
+          admissionNo: this.student.studentDetails.admissionNo,
+        },
+      };
+
+      console.log(studentData);
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/student', {
-          ...this.student,
-          password: this.student.enrollmentNo,
-          birthDate: this.student.studentDOB.getTime().toString(),
-          admissionDate: this.student.admissionDate.getTime().toString(),
-        })
+        .post('/student', studentData)
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');
