@@ -46,7 +46,7 @@ export default {
       tableConfig: [
         {
           label: 'Document Name',
-          field: 'docTitle',
+          field: 'documentTitle',
           sortable: true,
           numeric: true,
           centered: true,
@@ -62,8 +62,8 @@ export default {
     };
   },
   mounted() {
-    this.getTableData();
     this.getClassrooms();
+    this.getTableData();
   },
   methods: {
     getTableData() {
@@ -83,7 +83,11 @@ export default {
       this.$http
         .get('/classroom')
         .then((res) => {
-          this.classrooms = res.data.results;
+          this.classrooms = res.data.results.map(val => ({
+            name: `${val.classNumber} - ${val.classSection}`,
+            code: `${val.classNumber} - ${val.classSection}`,
+            _id: `${val._id}`,
+          }));
         })
         .catch((e) => {
           console.log(e);
@@ -100,6 +104,8 @@ export default {
     editSyllabus(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
+      const cur = this.classrooms.findIndex(c => c._id === rowinfo.class);
+      rowinfo.class = this.classrooms[cur];
       this.formData = rowinfo;
     },
     deleteSyllabus(rowinfo) {

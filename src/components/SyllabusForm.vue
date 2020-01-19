@@ -9,27 +9,29 @@
     </div>
     <div class="card-content">
       <div class="content card-area">
-        <div class="mt-3 mb-2">
+        <div class="mb-2">
           <div class="columns">
             <div class="column is-8">
               <section>
                 <b-field label="Document Title">
-                  <b-input icon-pack="fas" required v-model="syllabus.docTitle" icon="credit-card"></b-input>
+                  <b-input icon-pack="fas" required v-model="syllabus.documentTitle" icon="credit-card"></b-input>
                 </b-field>
                 <b-field label="Link Class">
+                  <div class="custom">
                   <MultiSelect
                     required
-                    v-model="syllabus.selectedClass"
+                    v-model="syllabus.class"
                     :isMultiple="false"
                     :allOptions="classlist"
                     placeholder="Select a class"
                   />
+                  </div>
                 </b-field>
               </section>
             </div>
             <div class="column is-4 mt-2">
               <b-field>
-                <b-upload v-model="syllabus.docFile" multiple drag-drop required>
+                <b-upload v-model="syllabus.documentUrl" multiple drag-drop required>
                   <section class="uploadsection">
                     <div class="content has-text-centered">
                       <p>
@@ -42,14 +44,14 @@
               </b-field>
 
               <div class="tags">
-                <span v-for="(file, index) in syllabus.docFile" :key="index" class="tag is-primary">
+                <!-- <span v-for="(file, index) in syllabus.documentUrl" :key="index" class="tag is-primary">
                   {{file.name}}
                   <button
                     class="delete is-small"
                     type="button"
                     @click="deleteDropFile(index)"
                   ></button>
-                </span>
+                </span> -->
               </div>
             </div>
           </div>
@@ -94,24 +96,20 @@ export default {
       startLoading: false,
       dropFiles: [],
       syllabus: {
-        docTitle: '',
-        class: [],
-        docFile: [],
+        documentTitle: '',
+        class: '',
+        documentUrl: () => 'https://mock.com',
       },
-      classlist: [],
+      classlist: this.classrooms,
     };
   },
   mounted() {
     if (this.formType === 'edit') this.syllabus = this.formData;
-    this.classlist = this.classrooms.map(val => ({
-      name: `${val.classSection} ${val.classNumber}`,
-      code: `${val.classSection} ${val.classNumber}`,
-    }));
   },
   methods: {
-    deleteDropFile(index) {
-      this.syllabus.docFile.splice(index, 1);
-    },
+    // deleteDropFile() {
+    //   // this.syllabus.documentUrl.splice(index, 1);
+    // },
     closeModal() {
       this.$emit('closeModal');
     },
@@ -119,14 +117,14 @@ export default {
       const { snackbar } = this.$buefy;
       this.startLoading = true;
       this.$http
-        .post('/syllabus', { ...this.syllabus })
+        .post('/syllabus', { ...this.syllabus, class: this.syllabus.class._id })
         .then(() => {
           this.startLoading = false;
           this.$emit('getTableData');
           this.$emit('closeModal');
           snackbar.open('Syllabus added!');
         })
-        .catch(e => console.log(e));
+        .catch(e => snackbar.open('Error:', e));
     },
     editSyllabus() {
       const { snackbar } = this.$buefy;
@@ -138,7 +136,7 @@ export default {
           this.$emit('closeModal');
           snackbar.open('Syllabus edited!');
         })
-        .catch(e => console.log(e));
+        .catch(e => snackbar.open('Error:', e));
     },
   },
 };
@@ -149,6 +147,7 @@ export default {
 
 .main-container {
   background: white;
+  overflow: visible !important;
   .card-header {
     background: $primary-color;
     .header {
@@ -159,7 +158,8 @@ export default {
     }
   }
   .card-area {
-    margin: 0px 8px 50px 8px;
+    margin: 0px 8px 8px 8px;
+    overflow: visible !important;
   }
   .line {
     display: flex;
@@ -182,5 +182,13 @@ export default {
 .smalltext {
   font-size: 0.8rem;
   margin: 0.5rem;
+}
+.custom {
+  overflow: visible !important;
+}
+
+.multiselect__content {
+  overflow: visible !important;
+
 }
 </style>
