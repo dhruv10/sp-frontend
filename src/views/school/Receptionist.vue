@@ -1,37 +1,59 @@
 <template>
-  <div class="classroom-root-container">
+  <div class="receptionist-root-container">
     <div class="card">
+      <div class="info-header">
+        <h1 class="gatepass-title">Gate Pass</h1>
+        <div>
+          <b-button type="is-primary" icon-left="plus" rounded @click="openAddModal">Generate gatepass</b-button>
+        </div>
+      </div>
       <div class="card-content">
-        <data-table
-          title="Gatepass Records"
-          :loading="loading"
-          :table-data="gatepassData"
-          :columns-info="tableConfig"
-          @addClick="openAddModal"
-          @bulkUploadClick="bulkUpload"
-          @editClick="editAdmissionQuery"
-          @deleteClick="deleteAdmissionQuery"
-        ></data-table>
+        <div class="card">
+          <div class="card-content">
+            <div class="columns">
+              <div class="column is-3">
+                <p class="title is-6">Student</p>
+              </div>
+              <div class="column is-3">
+                <p class="title is-6">Picked By</p>
+              </div>
+              <div class="column is-2">
+                <p class="title is-6">Reason For leaving</p>
+              </div>
+              <div class="column is-2">
+                <p class="title is-6 align">Checkout Status</p>
+              </div>
+              <div class="column is-2">
+                <p class="title is-6 align">Verification</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <GatePassDetailCard/>
+        <GatePassDetailCard/>
+        <GatePassDetailCard/>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <gatepass-form
+      <GenerateGatepassModal
         :formData="formData"
         :formType="formType"
         @closeModal="closeModal"
-        @getTableData="getTableData" />
+      />
     </b-modal>
   </div>
 </template>
 
 <script>
-import DataTable from '../../components/DataTableLayout';
-import GatepassForm from '../../components/GatepassForm';
+// import DataTable from '../../components/DataTableLayout';
+import GatePassDetailCard from '../../components/GatePassDetailCard';
+import GenerateGatepassModal from '../../components/GenerateGatepassModal';
 
 export default {
   components: {
-    DataTable,
-    GatepassForm,
+    // DataTable,
+    GatePassDetailCard,
+    GenerateGatepassModal,
   },
   data() {
     return {
@@ -50,14 +72,14 @@ export default {
           centered: true,
         },
         {
-          label: 'Guardian\'s Name',
+          label: "Guardian's Name",
           field: 'guardianName',
           sortable: true,
           numeric: true,
           centered: true,
         },
         {
-          label: 'Guardian\'s Phone No',
+          label: "Guardian's Phone No",
           field: 'guardianPhone',
           sortable: true,
           centered: true,
@@ -66,7 +88,7 @@ export default {
     };
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
   },
   methods: {
     getTableData() {
@@ -83,7 +105,6 @@ export default {
         });
     },
     openAddModal() {
-      this.formType = 'add';
       this.openModal = true;
     },
     closeModal() {
@@ -127,8 +148,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.classroom-root-container {
+@import "../../styles/app.global.scss";
+.receptionist-root-container {
   margin-top: 50px;
   height: 100%;
+}
+.columns {
+  align-items: center !important;
+}
+.column {
+  padding: 0px !important;
+}
+.align {
+  text-align: center;
+}
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px 0px 25px;
+}
+.info-header > div > * {
+  margin-left: 20px;
+}
+.main-contianer {
+  margin-top: 50px;
+}
+.gatepass-title {
+  font-size: 2rem;
+  font-weight: 600;
 }
 </style>

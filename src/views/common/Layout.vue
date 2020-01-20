@@ -106,8 +106,8 @@ const SideMenuConfig = {
         },
         {
           icon: '',
-          label: 'Verfiy Gatepass',
-          route: '/verify-gatepass',
+          label: 'Admission',
+          route: '/admission',
         },
       ],
     },
