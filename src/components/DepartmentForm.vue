@@ -9,7 +9,6 @@
     </div>
     <div class="card-content">
       <div class="content card-area">
-        <div class="mt-3">
           <div class="columns">
             <div class="column is-8">
               <section>
@@ -30,7 +29,6 @@
                 <b-input class="notearea" v-model="department.note" maxlength="200" type="textarea"></b-input>
               </b-field>
             </div>
-          </div>
         </div>
         <div class="submit">
           <b-button outlined type="is-primary" class="mr-1" @click="closeModal()">Cancel</b-button>
@@ -95,6 +93,7 @@ export default {
         .put(`/department/${this.formData._id}`, { ...this.department })
         .then(() => {
           this.startLoading = false;
+          this.$emit('getTableData');
           this.$emit('closeModal');
           snackbar.open('Department edited!');
         })
@@ -119,7 +118,7 @@ export default {
     }
   }
   .card-area {
-    margin: 0px 8px 50px 8px;
+    margin: 0px 8px 8px 8px;
   }
   .line {
     display: flex;

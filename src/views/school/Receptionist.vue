@@ -3,7 +3,7 @@
     <div class="card">
       <div class="info-header">
         <h1 class="gatepass-title">Gate Pass</h1>
-        <div>
+        <div id="v-step-0">
           <b-button type="is-primary" icon-left="plus" rounded @click="openAddModal">Generate gatepass</b-button>
         </div>
       </div>
@@ -29,7 +29,9 @@
             </div>
           </div>
         </div>
-        <GatePassDetailCard/>
+        <div id="v-step-1">
+        <GatePassDetailCard :steps="steps"/>
+        </div>
         <GatePassDetailCard/>
         <GatePassDetailCard/>
       </div>
@@ -41,6 +43,7 @@
         @closeModal="closeModal"
       />
     </b-modal>
+    <v-tour name="myTour" :steps="steps" :options="tourOptions"></v-tour>
   </div>
 </template>
 
@@ -57,6 +60,24 @@ export default {
   },
   data() {
     return {
+      steps: [
+        {
+          target: '#v-step-0',
+          content: 'Click here to generate new gate pass',
+        },
+        {
+          target: '#v-step-1',
+          content: 'A card will be generated with the pickup information',
+        },
+        {
+          target: '#v-step-3',
+          content: 'A card will be generated with the pickup information',
+        },
+      ],
+      tourOptions: {
+        useKeyboardNavigation: false,
+        highlight: true,
+      },
       openModal: false,
       formType: 'add',
       formData: {},
@@ -89,6 +110,7 @@ export default {
   },
   mounted() {
     // this.getTableData();
+    this.$tours.myTour.start();
   },
   methods: {
     getTableData() {
@@ -149,6 +171,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/app.global.scss";
+.v-tour__target--highlighted {
+  box-shadow: 0 0 0 99999px rgba(0,0,0,.4);
+}
 .receptionist-root-container {
   margin-top: 50px;
   height: 100%;

@@ -38,18 +38,9 @@ export default {
       loading: false,
       tableConfig: [
         {
-          label: 'ID',
-          field: 'id',
-          width: '46',
-          sortable: true,
-          numeric: true,
-          centered: true,
-        },
-        {
           label: 'Grade Name',
-          field: 'name',
+          field: 'gradeName',
           sortable: true,
-          numeric: true,
           centered: true,
         },
         {
@@ -68,7 +59,7 @@ export default {
         },
         {
           label: 'Over Time Hourly Rate',
-          field: 'overtimeHourlyRate',
+          field: 'overTimeHourlyRate',
           sortable: true,
           numeric: true,
           centered: true,
@@ -167,7 +158,7 @@ export default {
     editSalaryGrade(rowinfo) {
       this.formType = 'edit';
       this.openModal = true;
-      console.log('row info :', rowinfo);
+      this.formData = rowinfo;
     },
     deleteSalaryGrade(rowinfo) {
       const { dialog, snackbar } = this.$buefy;
@@ -181,7 +172,7 @@ export default {
         onConfirm: () => {
           this.loading = true;
           this.$http
-            .delete(`/salary-grade${rowinfo._id}`)
+            .delete(`/salary-grade/${rowinfo._id}`)
             .then(() => {
               snackbar.open('Salary Grade deleted!');
               this.getTableData();
