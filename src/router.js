@@ -8,7 +8,7 @@ import Student from './views/school/Student.vue';
 import Syllabus from './views/school/Syllabus.vue';
 import Subjects from './views/school/Subjects.vue';
 import Teachers from './views/school/Teachers.vue';
-import Receptionist from './views/school/Receptionist.vue';
+import Gatepass from './views/school/GatePass.vue';
 import Admission from './views/school/Admission.vue';
 import FeeDeposit from './views/school/FeeDeposit.vue';
 import Transport from './views/school/Transport.vue';
@@ -112,8 +112,8 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "layout" */ './views/common/Layout.vue'),
       children: [
         {
-          path: '/',
-          component: Receptionist,
+          path: 'gatepass',
+          component: Gatepass,
         },
         {
           path: 'admission',
