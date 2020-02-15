@@ -264,26 +264,31 @@
           <div class="line mt-1">
             <div class="photo">
               <b-field label="Upload Photo">
-                <b-upload required @input="uploadPhoto($event, teacher)" drag-drop>
+                <b-upload
+                  required
+                  drag-drop
+                  :loading="profilePicLoading !== 0"
+                  @input="uploadTeacherPhoto($event)"
+                >
                   <div class="uploadsection">
                     <div class="content has-text-centered">
                       <p>
                         <b-icon icon="upload" size="is-large"></b-icon>
                       </p>
-                      <p>Upload Profile Photo</p>
+                      <p>Upload Teacher's Photo</p>
+                      <div v-if="profilePicLoading">
+                        <b-progress
+                          :value="profilePicLoading"
+                          type="is-info"
+                          show-value
+                          format="percent"
+                        ></b-progress>
+                      </div>
                     </div>
                   </div>
                 </b-upload>
               </b-field>
-              <div v-if="teacher.photoUploadValue">
-                <b-progress
-                  :value="teacher.photoUploadValue"
-                  type="is-info"
-                  show-value
-                  format="percent"
-                ></b-progress>
-              </div>
-              <div class="tags mt-1">
+              <!-- <div class="tags mt-1">
                 <span v-for="(file, index) in teacher.photo" :key="index" class="tag is-primary">
                   {{file.name}}
                   <button
@@ -292,9 +297,9 @@
                     @click="deleteDropFile(index, teacher.photo)"
                   ></button>
                 </span>
-              </div>
+              </div> -->
             </div>
-            <div class="ml-32">
+            <!-- <div class="ml-32">
               <b-field label="Upload Documents">
                 <b-upload required v-model="teacher.docs" multiple drag-drop>
                   <div class="uploadsection">
@@ -307,7 +312,7 @@
                   </div>
                 </b-upload>
               </b-field>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="submit">
@@ -349,11 +354,13 @@ export default {
   components: { MultiSelect },
   data() {
     return {
+      teacherPhoto: null,
       startLoading: false,
       selectedDeptId: '',
       teacher: {
         basicInfo: {
           birthDate: new Date(),
+          photoUrl: null,
         },
         department: [],
         bankAccountInfo: {},
@@ -362,15 +369,21 @@ export default {
           spouseBasicInfo: {},
         },
         joiningDate: new Date(),
-        photo: [],
-        photoUploadValue: 0,
+        photo: null,
       },
+      profilePicLoading: 0,
       selectedSubjectId: [],
       radio: 'mandatory',
       genderList: ['Male', 'Female'],
       allBloodGroups: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
       martialStatus: ['Unmarried', 'Married'],
       paymentOptions: ['Cash', 'Cheque', 'NEFT'],
+      dropzoneOptions: {
+        url: 'http://localhost:3000/api/upload',
+        thumbnailWidth: 150,
+        maxFilesize: 1,
+        headers: { authorization: `Token ${localStorage.getItem('auth_token')}` },
+      },
     };
   },
   mounted() {
@@ -395,6 +408,14 @@ export default {
     }));
   },
   methods: {
+    uploadTeacherPhoto(file) {
+      const fileName = file.name + new Date().getTime();
+      this.$uploadFile('/teachers', fileName, file, (p) => { this.profilePicLoading = p; })
+        .then((url) => {
+          this.teacher.basicInfo.photoUrl = url;
+          this.profilePicLoading = 0;
+        });
+    },
     uploadPhoto(file, instance) {
       this.$uploadFile(
         '/teachers',
@@ -532,7 +553,7 @@ export default {
   width: 40%;
 }
 .uploadsection {
-  padding: 1.53rem;
+  padding: 1.55rem;
   width: 16.5rem;
 }
 .sub-heading {
