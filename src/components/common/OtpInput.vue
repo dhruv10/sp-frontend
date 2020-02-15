@@ -31,6 +31,9 @@ export default {
         this.$emit('value', otp);
       }
     },
+    clearFields() {
+      this.userToken = '';
+    },
   },
 };
 </script>

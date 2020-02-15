@@ -25,6 +25,7 @@
               placeholder="Select student"
               :disable="!studentList.length"
               :loading="studentLoading"
+              v-model="selectedStudent"
             />
           </b-field>
         </section>
@@ -40,6 +41,7 @@ export default {
   data() {
     return {
       selectedClass: null,
+      selectedStudent: null,
       classRes: [],
       classlist: [],
       studentList: [],
@@ -69,22 +71,19 @@ export default {
         this.studentList = [];
         if (val) {
           this.studentLoading = true;
-
-          setTimeout(() => {
-            const studentList = [
-              { name: 'Sakshi Srivastava', rollNo: 41, id: 'siafsagf' },
-              { name: 'Akshat Srivastava', rollNo: 42, id: 'siafsagf' },
-              { name: 'Dhruv Srivastava', rollNo: 43, id: 'siafsagf' },
-            ];
-
-            this.studentList = studentList.map(student => ({
-              name: `${student.name} (${student.rollNo})`,
-              code: student.id,
+          this.$http.get(`/classroom/${val.code}/students`).then((res) => {
+            this.studentList = res.data.students.map(student => ({
+              name: `${student.basicInfo.name} (${student.rollNo})`,
+              code: student._id,
             }));
-
             this.studentLoading = false;
-          }, 3000);
+          }).catch(e => console.log(e));
         }
+      },
+    },
+    selectedStudent: {
+      handler(val) {
+        if (val) this.$emit('getStudent', val.code);
       },
     },
     classRes: {

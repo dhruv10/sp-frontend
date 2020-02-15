@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@8bu/vue-otp-input": "^1.1.8",
+    "@chenfengyuan/vue-qrcode": "^1.0.2",
     "ag-grid": "^18.1.2",
     "ag-grid-community": "^21.2.1",
     "ag-grid-vue": "^21.2.1",
@@ -20,7 +21,7 @@
     "insomnia-plugin-default-headers": "^2.1.4",
     "localforage": "^1.7.3",
     "register-service-worker": "^1.6.2",
-    "vue": "^2.6.10",
+    "vue": "^2.6.11",
     "vue-axios": "^2.1.4",
     "vue-multiselect": "^2.1.6",
     "vue-property-decorator": "^8.2.2",
@@ -40,7 +41,7 @@
     "lint-staged": "^8.1.5",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.11"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

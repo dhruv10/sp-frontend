@@ -45,17 +45,9 @@
             @click="openAddModal"
           >Generate gatepass</b-button>
         </div>
-        <!-- <div id="v-step-0">
-          <b-button
-            type="is-primary"
-            icon-left="plus"
-            rounded
-            @click="openAddModal"
-          >Generate gatepass</b-button>
-        </div>-->
       </div>
-      <div class="card-content" ref="element">
-        <div class="card" v-if="gatepassList.length">
+      <div class="card-content">
+        <div class="card">
           <div class="card-content">
             <div class="columns">
               <div class="column is-3">
@@ -72,13 +64,17 @@
                 </p>
               </div>
               <div class="column is-3">
-                <p class="title is-6">Picked By</p>
+                <p class="title is-6">
+                  <span class="sortTitle">Picked By</span>
+                </p>
               </div>
               <div class="column is-2">
                 <p class="title is-6">Reason For leaving</p>
               </div>
               <div class="column is-2">
-                <p class="title is-6 align">Checkout Status</p>
+                <p class="title is-6 align">
+                  Checkout Status
+                </p>
               </div>
               <div class="column is-2">
                 <p class="title is-6 align">Verification</p>
@@ -86,18 +82,11 @@
             </div>
           </div>
         </div>
-        <div v-if="gatepassList.length">
-          <div v-for="(gatepass, i) in gatepassList" :key="{i}">
-            <GatePassDetailCard
-              :steps="steps"
-              :gatepassData="gatepass"
-              @getTableData="getTableData"
-            />
-          </div>
+        <div>
+          <GatePassDetailCard :steps="steps" />
         </div>
-        <div v-else>
-          <h3>No GatePass Found</h3>
-        </div>
+        <GatePassDetailCard />
+        <GatePassDetailCard />
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
@@ -105,35 +94,49 @@
         :formData="formData"
         :formType="formType"
         @closeModal="closeModal"
-        @getTableData="getTableData"
+        :steps="steps"
       />
     </b-modal>
-    <v-tour name="myTour" :steps="steps" :options="tourOptions"></v-tour>
+    <v-tour name="myTour" :steps="steps" :options="tourOptions" :callbacks="callbacks"></v-tour>
   </div>
 </template>
 
 <script>
+// import DataTable from '../../components/DataTableLayout';
 import GatePassDetailCard from '../../components/GatePassDetailCard';
 import GenerateGatepassModal from '../../components/GenerateGatepassModal';
 
 export default {
   components: {
+    // DataTable,
     GatePassDetailCard,
     GenerateGatepassModal,
   },
   data() {
     return {
+      callbacks: {
+        onNextStep: this.myCustomNextStepCallback,
+      },
+      openSearch: false,
       steps: [
         {
           target: '#v-step-0',
           content: 'Click here to generate new gate pass',
         },
         {
-          target: '#v-step-1',
+          target: '[data-v-step="1"]',
+          content: 'A card will be generated with the pickup information',
+        },
+        {
+          target: '#v-step-2',
           content: 'A card will be generated with the pickup information',
         },
         {
           target: '#v-step-3',
+          content: 'A card will be generated with the pickup information',
+        },
+        {
+          target: '#v-step-4',
           content: 'A card will be generated with the pickup information',
         },
       ],
@@ -146,63 +149,33 @@ export default {
       formData: {},
       loading: false,
       post: null,
-      gatepassList: [],
-      tableConfig: [
-        {
-          label: 'Student Name',
-          field: 'student',
-          sortable: true,
-          numeric: true,
-          centered: true,
-        },
-        {
-          label: "Guardian's Name",
-          field: 'guardianName',
-          sortable: true,
-          numeric: true,
-          centered: true,
-        },
-        {
-          label: "Guardian's Phone No",
-          field: 'guardianPhone',
-          sortable: true,
-          centered: true,
-        },
-      ],
+      gatepassData: [],
       searchLoading: false,
       searchText: '',
       sortUp: false,
       sortDown: false,
-      openSearch: false,
     };
   },
   mounted() {
-    this.getTableData();
+    // this.getTableData();
     // this.$tours.myTour.start();
   },
   methods: {
-    getTableData() {
-      const loadingComponent = this.$buefy.loading.open({
-        container: this.$refs.element.$el,
-      });
-      this.$http
-        .get('/gatepass')
-        .then((res) => {
-          const gatepassList = res.data.gatepasses;
-          const sortedList = [
-            ...gatepassList.filter(g => !g.otpVerified && !g.closed),
-            ...gatepassList.filter(g => g.otpVerified),
-            ...gatepassList.filter(g => g.closed),
-          ];
-          this.gatepassList = sortedList;
-          loadingComponent.close();
-        })
-        .catch((e) => {
-          console.log(e);
-          loadingComponent.close();
-        });
+    myCustomNextStepCallback(curStep) {
+      if (curStep === 0) {
+        this.openModal = true;
+      }
+      if (curStep === 1) {
+        this.formData = {
+          guardianName: 'sakshi',
+          guardianPhone: '201921',
+        };
+        if (curStep === 2) {
+          console.log('hello');
+        }
+      }
     },
-    earch(e) {
+    search(e) {
       this.searchText = e.target.value;
       if (!this.searchText) return;
       this.searchLoading = true;
@@ -231,6 +204,19 @@ export default {
         this.sortUp = false;
         this.sortDown = false;
       }
+    },
+    getTableData() {
+      this.loading = true;
+      this.$http
+        .get('/gatepass')
+        .then((res) => {
+          this.loading = false;
+          this.gatepassData = res.data.results;
+        })
+        .catch((e) => {
+          console.log(e);
+          this.loading = false;
+        });
     },
     openAddModal() {
       this.openModal = true;
@@ -280,6 +266,11 @@ export default {
 .v-tour__target--highlighted {
   box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.4);
 }
+.dflex {
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
+}
 .receptionist-root-container {
   margin-top: 50px;
   height: 100%;
@@ -309,10 +300,11 @@ export default {
   font-size: 2rem;
   font-weight: 600;
 }
-.dflex {
-  display: flex;
-  justify-content: end;
-  flex-wrap: wrap;
+.gatepass-search {
+  cursor: pointer;
+}
+.clearInput {
+  cursor: pointer !important;
 }
 .searchInputBox {
   width: calc(100vw - 50rem);
@@ -330,14 +322,5 @@ export default {
 }
 .sortTitle {
   cursor: pointer;
-}
-.gatepass-search {
-  cursor: pointer;
-}
-.clearInput {
-  cursor: pointer !important;
-}
-.searchInputBox {
-  width: calc(100vw - 50rem);
 }
 </style>
