@@ -15,7 +15,17 @@
           <div class="card-content">
             <div class="columns">
               <div class="column is-2">
-                <p class="title is-6">Student</p>
+                <p class="title is-6">
+                  <span @click="sortList" class="sortTitle">
+                    Student
+                    <span class="icon is-small" v-if="sortUp && !sortDown">
+                      <i class="fas fa-arrow-up"></i>
+                    </span>
+                    <span class="icon is-small" v-if="!sortUp && sortDown">
+                      <i class="fas fa-arrow-down"></i>
+                    </span>
+                  </span>
+                </p>
               </div>
               <div class="column is-1 align">
                 <p class="title is-6">Class</p>
@@ -44,22 +54,22 @@
             />
           </div>
         </div>
-      <div class="add-pagination">
-        <b-pagination
-          :total=admissionDetailList.length
-          :current.sync="current"
-          :simple="true"
-          order="is-right"
-          per-page="10"
-          icon-prev="chevron-left"
-          icon-next="chevron-right"
-          @change="changePage"
-        ></b-pagination>
-      </div>
+        <div class="add-pagination">
+          <b-pagination
+            :total="admissionDetailList.length"
+            :current.sync="current"
+            :simple="true"
+            order="is-right"
+            per-page="10"
+            icon-prev="chevron-left"
+            icon-next="chevron-right"
+            @change="changePage"
+          ></b-pagination>
+        </div>
       </div>
     </div>
     <b-modal :active.sync="openModal" :width="640" scroll="keep">
-      <AdmissionForm @closeModal="closeModal"/>
+      <AdmissionForm @closeModal="closeModal" />
     </b-modal>
   </div>
 </template>
@@ -80,12 +90,15 @@ export default {
       current: 1,
       admissionDetailList: [],
       paginatedAdmissionList: [],
+      originalAdmissionList: [],
+      sortUp: false,
+      sortDown: false,
     };
   },
   mounted() {
-    for (let i = 0; i < 100; i += 1) {
+    for (let i = 0, j = 65; i < 30; i += 1, j += 1) {
       this.admissionDetailList.push({
-        name: 'Sakshi Srivastava',
+        name: `Sakshi Srivastava${String.fromCharCode(j)}`,
         class: i + 1,
         dob: '03/10/1999',
         mPhone: 88928292829,
@@ -97,6 +110,19 @@ export default {
         _id: '',
       });
     }
+    this.admissionDetailList.push({
+      name: 'Akshat',
+      class: 100,
+      dob: '03/10/1999',
+      mPhone: 88928292829,
+      fPhone: 19392029991,
+      address: 'CD 199 Pitampura delhi',
+      status: 0,
+      isPass: true,
+      testScheduledDate: '',
+      _id: '',
+    });
+    this.originalAdmissionList = [...this.admissionDetailList];
     this.paginatedAdmissionList = this.admissionDetailList.slice(0, 10);
   },
   methods: {
@@ -128,7 +154,26 @@ export default {
       this.admissionDetailList[index].status += 1;
     },
     changePage() {
-      this.paginatedAdmissionList = this.admissionDetailList.slice(this.current * 10, this.current * 10 + 10);
+      this.paginatedAdmissionList = this.admissionDetailList.slice(
+        this.current * 10,
+        this.current * 10 + 10,
+      );
+    },
+    sortList() {
+      if (!this.sortUp && !this.sortDown) {
+        this.sortUp = true;
+        this.sortDown = false;
+        this.paginatedAdmissionList = this.admissionDetailList.sort((a, b) => ((a.name > b.name) ? 1 : -1));
+        console.log(this.admissionDetailList);
+      } else if (this.sortUp && !this.sortDown) {
+        this.sortUp = false;
+        this.sortDown = true;
+        this.paginatedAdmissionList = this.admissionDetailList.sort((a, b) => ((a.name < b.name) ? 1 : -1));
+      } else if (!this.sortUp && this.sortDown) {
+        this.paginatedAdmissionList = this.originalAdmissionList;
+        this.sortUp = false;
+        this.sortDown = false;
+      }
     },
     deleteAdmissionQuery(rowinfo) {
       console.log(rowinfo);
@@ -206,5 +251,8 @@ export default {
 .all-admissions {
   overflow-y: scroll;
   height: 65vh;
+}
+.sortTitle {
+  cursor: pointer;
 }
 </style>

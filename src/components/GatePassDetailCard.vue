@@ -1,57 +1,75 @@
 <template>
-  <div class="card">
-    <div class="card-content">
-      <div class="columns col">
-        <div class="column inner-col is-3">
-          <p class="title is-5">Sakshi Srivastava</p>
-          <p class="subtitle is-6">VI - A, 45</p>
-        </div>
-
-        <div class="column inner-col is-3">
-          <p class="picked-title title is-5 m-0">Rekha Srivastava</p>
-          <p class="is-6">Niece, 8585858593</p>
-          <!-- <p class="subtitle is-6 is-inline">Verified By:</p>
-          <p class="title is-6 is-inline">Father</p>-->
-        </div>
-
-        <div class="column inner-col is-2">
-          <!-- <p class="picked-title title is-6 m-0">Reason for picking:</p> -->
-          <p class="is-6">Family function at nani's home</p>
-        </div>
-
-        <div class="column inner-col is-2">
-          <div class="right-container">
-            <!-- <div>Fri, 26 Jan, 2019 (10:45)</div> -->
-            <!-- <div class="mt-1"></div> -->
-            <p class="title is-6">
-              <b-tag rounded type="is-warning">Awaiting</b-tag>
-            </p>
+  <div>
+    <div class="card">
+      <div :class="{
+        'card-content': true,
+        'closed-card-background': gatepassData && gatepassData.closed
+      }">
+        <div class="columns col">
+          <div class="column inner-col is-3">
+            <p class="title is-5">{{ gatepassData.student.basicInfo.name }}</p>
+            <p
+              class="subtitle is-6"
+            >{{ gatepassData.student.class.classNumber }} - {{ gatepassData.student.class.classSection }}, {{ gatepassData.student.rollNo }}</p>
           </div>
-        </div>
 
-        <div class="column inner-col is-2">
-          <!-- <div class="status">
+          <div class="column inner-col is-3">
+            <p class="picked-title title is-5 m-0">{{ gatepassData.guardianName }}</p>
+            <p class="is-6">{{ gatepassData.guardianRelation }}, {{ gatepassData.guardianPhone }}</p>
+            <!-- <p class="subtitle is-6 is-inline">Verified By:</p>
+            <p class="title is-6 is-inline">Father</p>-->
+          </div>
+
+          <div class="column inner-col is-2">
+            <!-- <p class="picked-title title is-6 m-0">Reason for picking:</p> -->
+            <p class="is-6">{{ gatepassData.reason }}</p>
+          </div>
+
+          <div class="column inner-col is-2">
+            <div class="right-container">
+              <!-- <div>Fri, 26 Jan, 2019 (10:45)</div> -->
+              <!-- <div class="mt-1"></div> -->
+              <p class="title is-6">
+                <b-tag rounded :type="verficationStatus.color">{{ verficationStatus.text }}</b-tag>
+              </p>
+            </div>
+          </div>
+
+          <div class="column inner-col is-2">
+            <!-- <div class="status">
               <b-icon pack="fas" icon="exclamation-triangle" size="is-small" type="is-warning"></b-icon>
-          </div>-->
-          <div class="btn-details" v-if="!verifying && !verified" id="v-step-3">
-            <otp-input @value="checkOtp"/>
-          </div>
-          <div class="btn-details" v-else-if="verifying && !verified">hello</div>
-          <div class="status" v-if="verified">
+            </div>-->
+            <div
+              class="btn-details"
+              v-if="!gatepassData.otpVerified && !gatepassData.checkoutAt && !gatepassData.closed && !otpLoading"
+              id="v-step-3"
+            >
+              <otp-input @value="checkOtp" ref="otp" />
+            </div>
+            <div class="btn-details" v-else-if="otpLoading">
+              <b-loading :is-full-page="false" :active.sync="otpLoading"></b-loading>
+            </div>
+            <div class="status" v-if="gatepassData.otpVerified && !gatepassData.closed">
               <b-icon pack="fas" icon="download" size="is-medium" type="is-primary"></b-icon>
-              <p class="download" @click="deleteRequest">Download Gatepass</p>
-          </div>
-          <div class="btn-details" v-else>
-            <a class="cancel" @click="deleteRequest">Cancel Request</a>
+              <p class="download" @click="downloadGatepass">Download Gatepass</p>
+            </div>
+            <div v-if="gatepassData.closed" class="closed">---</div>
+            <div class="btn-details" v-if="!gatepassData.otpVerified && !gatepassData.closed">
+              <a class="cancel" @click="deleteRequest">Cancel Request</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <b-modal :active.sync="openQRCodeModal" :width="640" scroll="keep">
+      <QRCodeModal :gatePassId="gatepassData._id" :checkoutAt="gatepassData.checkoutAt" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import OtpInput from './common/OtpInput.vue';
+import QRCodeModal from './QRCodeModal';
 
 export default {
   data() {
@@ -59,6 +77,8 @@ export default {
       loading: false,
       verifying: false,
       verified: false,
+      otpLoading: false,
+      openQRCodeModal: false,
     };
   },
   props: {
@@ -66,9 +86,43 @@ export default {
       type: Array,
       default: () => [],
     },
+    gatepassData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   components: {
     'otp-input': OtpInput,
+    QRCodeModal,
+  },
+  mounted() {
+    console.log('sdkjgbdjs');
+    console.log(this.gatepassData);
+  },
+  computed: {
+    verficationStatus() {
+      const { closed, otpVerified, checkoutAt } = this.gatepassData;
+      let res = { text: '', color: '' };
+      if (!checkoutAt) {
+        res = {
+          text: 'Awaiting',
+          color: 'is-warning',
+        };
+      } else if (otpVerified && checkoutAt) {
+        res = {
+          text: 'Completed',
+          color: 'is-success',
+        };
+      }
+      if (closed) {
+        res = {
+          text: 'Cancelled',
+          color: 'is-danger',
+        };
+      }
+
+      return res;
+    },
   },
   methods: {
     deleteRequest() {
@@ -82,29 +136,53 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.loading = true;
-          setTimeout(() => {
-            snackbar.open('Request deleted!');
-            this.loading = false;
-          }, 2000);
+          this.$http
+            .patch(`/gatepass/${this.gatepassData._id}/close`)
+            .then(() => {
+              snackbar.open('Request deleted!');
+              this.loading = false;
+              this.$emit('getTableData');
+            })
+            .catch((e) => {
+              snackbar.open('Error', e.message);
+              this.loading = false;
+            });
         },
       });
     },
     checkOtp(otp) {
-      this.verifying = true;
+      this.otpLoading = true;
       console.log(otp);
-      setTimeout(() => {
-        const { snackbar } = this.$buefy;
-        snackbar.open('OTP Verfied!');
-        this.verifying = false;
-        this.verified = true;
-      }, 3000);
+      const { snackbar } = this.$buefy;
+      this.$http
+        .post('/gatepass/verify', { id: this.gatepassData._id, otp })
+        .then((res) => {
+          this.$emit('getTableData');
+          console.log(res);
+          this.otpLoading = false;
+          snackbar.open('OTP verified successfully!');
+        })
+        .catch((e) => {
+          snackbar.open(e.message);
+          this.otpLoading = false;
+          this.$refs.otp.clearFields();
+          snackbar.open('OTP verification failed!');
+        });
+    },
+    downloadGatepass() {
+      this.openQRCodeModal = true;
     },
   },
 };
 </script>
 
 <style>
-@import '../styles/app.global.scss';
+@import "../styles/app.global.scss";
+.closed-card-background {
+  background: #F1F1F1 !important;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 .right-container {
   text-align: center;
 }
@@ -143,10 +221,14 @@ export default {
 .otp-input {
   height: 28px !important;
 }
+.closed {
+  text-align: center;
+  font-size: 22px;
+}
 </style>
 
 <style scoped>
 .v-tour__target--highlighted {
-  box-shadow: 0 0 0 99999px rgba(0,0,0,.4);
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.4);
 }
 </style>

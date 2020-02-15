@@ -37,6 +37,11 @@ const SideMenuConfig = {
       children: [
         {
           icon: 'chalkboard-teacher',
+          label: 'Dashboard',
+          route: '/dashboard',
+        },
+        {
+          icon: 'chalkboard-teacher',
           label: 'Classrooms',
           route: '/classrooms',
         },
@@ -59,6 +64,16 @@ const SideMenuConfig = {
           icon: 'chess-rook',
           label: 'Teachers',
           route: '/teachers',
+        },
+        {
+          icon: 'chess-rook',
+          label: 'Teacher Attendance',
+          route: '/teacher-attendance',
+        },
+        {
+          icon: 'chess-rook',
+          label: 'Student Attendance',
+          route: '/student-attendance',
         },
         {
           icon: 'user-graduate',
