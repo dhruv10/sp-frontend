@@ -87,7 +87,7 @@ export default {
   cursor: pointer;
 }
 .message-header {
-  /* justify-content: start; */
+  /* justify-content: flex-start; */
   align-items: center;
 }
 .d-flex {

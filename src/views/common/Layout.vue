@@ -4,7 +4,7 @@
       <div>
         <div
           class="side-menu-container"
-          v-show="menuOpen"
+          ref="menuContainer"
         >
           <side-menu :config="sideMenuConfig"></side-menu>
         </div>
@@ -117,7 +117,7 @@ const SideMenuConfig = {
         {
           icon: '',
           label: 'Gatepass Records',
-          route: '/',
+          route: '/gatepass',
         },
         {
           icon: '',
@@ -160,6 +160,18 @@ export default {
       this.menuOpen = !this.menuOpen;
     },
   },
+  watch: {
+    menuOpen: {
+      handler(menuOpen) {
+        const { menuContainer } = this.$refs;
+        if (menuOpen) {
+          menuContainer.style.width = null;
+        } else {
+          menuContainer.style.width = 0;
+        }
+      },
+    },
+  },
 };
 </script>
 
@@ -174,10 +186,11 @@ export default {
 .side-menu-container {
   width: 250px;
   position: relative;
-  transition: width 1s;
+  transition: width 0.4s;
   box-shadow: black 1px 1px 12px -5px;
   padding-right: 0px;
   height: 100vh;
+  overflow-y: scroll;
 }
 .body {
   width: calc(100% - 250px);

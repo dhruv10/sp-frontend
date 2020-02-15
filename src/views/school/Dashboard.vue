@@ -258,7 +258,7 @@ export default {
 .hero-body {
   padding: 1rem;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 .main-chart {

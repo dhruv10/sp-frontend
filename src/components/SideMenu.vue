@@ -25,8 +25,7 @@
           v-for="option in config.options"
           :key="option.title"
           :icon="option.icon"
-          :expanded="parentRoute === option.route"
-          :active="parentRoute === option.route"
+          :expanded="true"
           animation="null"
         >
           <template
@@ -82,7 +81,7 @@ export default {
 <style lang="scss">
 .side-menu-root {
   width: 234px;
-  position: fixed;
+  position: relative;
   margin-top: 20px;
   margin-left: 2px;
 }

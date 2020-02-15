@@ -326,7 +326,7 @@ export default {
 
 .dflex {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   /* overflow-x: scroll; */
 }
 
