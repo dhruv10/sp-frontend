@@ -61,6 +61,16 @@ const SideMenuConfig = {
           route: '/teachers',
         },
         {
+          icon: 'chess-rook',
+          label: 'Teacher Attendance',
+          route: '/teacher-attendance',
+        },
+        {
+          icon: 'chess-rook',
+          label: 'Student Attendance',
+          route: '/student-attendance',
+        },
+        {
           icon: 'user-graduate',
           label: 'Syllabus',
           route: '/syllabus',

@@ -13,6 +13,8 @@ import Admission from './views/school/Admission.vue';
 import FeeDeposit from './views/school/FeeDeposit.vue';
 import Transport from './views/school/Transport.vue';
 import EasyInvoicing from './views/school/EasyInvoicing.vue';
+import TeacherAttendance from './views/school/TeacherAttendance.vue';
+import StudentAttendance from './views/school/StudentAttendance.vue';
 
 Vue.use(Router);
 
@@ -71,6 +73,14 @@ const router = new Router({
         {
           path: 'teachers',
           component: Teachers,
+        },
+        {
+          path: 'teacher-attendance',
+          component: TeacherAttendance,
+        },
+        {
+          path: 'student-attendance',
+          component: StudentAttendance,
         },
         {
           path: 'easy-invoicing',
