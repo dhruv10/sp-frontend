@@ -37,6 +37,11 @@ const SideMenuConfig = {
       children: [
         {
           icon: 'chalkboard-teacher',
+          label: 'Dashboard',
+          route: '/dashboard',
+        },
+        {
+          icon: 'chalkboard-teacher',
           label: 'Classrooms',
           route: '/classrooms',
         },

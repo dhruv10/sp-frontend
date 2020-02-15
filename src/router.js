@@ -13,6 +13,7 @@ import Admission from './views/school/Admission.vue';
 import FeeDeposit from './views/school/FeeDeposit.vue';
 import Transport from './views/school/Transport.vue';
 import EasyInvoicing from './views/school/EasyInvoicing.vue';
+import Dashboard from './views/school/Dashboard.vue';
 import TeacherAttendance from './views/school/TeacherAttendance.vue';
 import StudentAttendance from './views/school/StudentAttendance.vue';
 
@@ -44,7 +45,11 @@ const router = new Router({
       children: [
         {
           path: '/',
-          redirect: 'classrooms',
+          redirect: 'dashboard',
+        },
+        {
+          path: 'dashboard',
+          component: Dashboard,
         },
         {
           path: 'classrooms',
