@@ -1,17 +1,24 @@
 <template>
   <div class="dashboard-root-container">
-    <p class="title m-1"><span style="color: #B8B8B8;">Principal /</span> Dashboard</p>
+    <div class="m-1">
+      <span style="color: #B8B8B8;">
+        Principal /
+      </span>
+      <span class="title m-1">
+        Dashboard
+      </span>
+    </div>
     <section class="hero is-main-hero">
       <div class="hero-body">
-        <img
+        <!-- <img
           alt="avatar"
           class="avatar"
           src="https://admin-one-vue-cli.justboil.me/data-sources/avatars/annie-spratt-121576-unsplash.jpg"
-        />
+        /> -->
         <div>
-          <p class="is-size-3 has-text-black has-text-weight-medium">Hogwart's School of Magic</p>
+          <p class="is-size-3 has-text-black has-text-weight-medium">{{ schoolDetails.name }}</p>
           <p class="adjustment-address is-size-6 has-text-weight-bold">
-            Rohini, Sector -15, New Delhi
+            {{ schoolDetails.address }}
           </p>
           <p class="tasks-left">
             You have
@@ -188,6 +195,7 @@ export default {
   },
   data() {
     return {
+      schoolDetails: {},
       totalStudents: 0,
       totalTeachers: 0,
       totalClassrooms: 0,
@@ -221,8 +229,8 @@ export default {
     };
   },
   mounted() {
-    console.clear();
     this.getStatsFromAPI();
+    this.schoolDetails = JSON.parse(localStorage.getItem('schoolDetails'));
   },
   methods: {
     getStatsFromAPI() {
@@ -251,7 +259,7 @@ export default {
   background-size: cover;
 }
 .hero {
-  height: 220px;
+  height: 160px;
   background-color: #fff;
   border-bottom: 1px solid rgba(24, 28, 33, 0.06);
 }

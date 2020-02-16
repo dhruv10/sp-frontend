@@ -109,7 +109,7 @@ export default {
         this.startLoading = false;
         localStorage.setItem('auth_token', res.data.token);
         localStorage.setItem('userEmail', res.data.user.basicInfo.personalEmail);
-        localStorage.setItem('schoolName', res.data.user.basicInfo.schoolId);
+        localStorage.setItem('schoolId', res.data.user.basicInfo.schoolId);
         snackbar.open('Logged in succesfully!');
         this.$router.push('/school');
       })

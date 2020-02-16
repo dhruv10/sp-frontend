@@ -9,7 +9,7 @@
           class="navbar-item"
           @click="toggleMenu"
         >
-          <b-icon icon="bars"></b-icon>
+          <b-icon icon="bars" type="is-light"></b-icon>
         </a>
         <p class="is-primary school-name">
           <b>{{ schoolName }}</b>
@@ -29,10 +29,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    schoolName: String,
   },
   data() {
     return {
-      schoolName: '',
       userEmail: '',
     };
   },
@@ -42,7 +42,6 @@ export default {
     },
   },
   mounted() {
-    this.schoolName = localStorage.getItem('schoolName');
     this.userEmail = localStorage.getItem('userEmail');
   },
 };
@@ -50,7 +49,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "../styles/app.global.scss";
-
+.navbar {
+  color: white;
+  background: $primary-color;
+}
 .header-root {
   box-shadow: 1px 1px 8px -5px;
   position: fixed;

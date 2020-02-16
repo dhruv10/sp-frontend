@@ -6,16 +6,20 @@
           <div style="padding: 20px">
             <div class="columns">
               <div class="column is-4">
-                <b-icon
+                <img
+                  src="../assets/logo-2.jpeg"
+                  alt="StudentPress logo"
+                />
+                <!-- <b-icon
                   :icon="config.icon"
                   size="is-large"
                   type="is-primary"
-                ></b-icon>
+                ></b-icon> -->
               </div>
-              <div class="column">
+              <div class="column" style="padding: 0; padding-top: 14px;">
                 <p
-                  class="title"
-                  style="margin-top: 10px"
+                  class="heading"
+                  style="margin-top: 10px; font-size: 18px"
                 >{{ config.title }}</p>
               </div>
             </div>
@@ -30,15 +34,14 @@
         >
           <template
             slot="label"
-            slot-scope="props"
           >
             {{ option.title }}
-            <b-icon
+            <!-- <b-icon
               class="is-pulled-right"
               size="is-small"
               :icon="props.expanded ? '' : 'chevron-right'"
             >
-            </b-icon>
+            </b-icon> -->
           </template>
           <b-menu-item
             v-for="child in option.children"
@@ -62,7 +65,7 @@ export default {
   },
   computed: {
     fullRoute() {
-      return this.$router.currentRoute.path;
+      return this.$route.fullPath;
     },
     parentRoute() {
       const routes = this.fullRoute.split('/');

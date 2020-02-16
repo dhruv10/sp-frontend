@@ -11,6 +11,7 @@
       </div>
       <div class="body" :style="{ width: menuOpen ? 'calc(100% - 250px)' : '100%' }">
         <app-header
+          :schoolName="schoolDetails.name"
           :expanded="!menuOpen"
           @toggleMenu="toggleMenu"
         />
@@ -27,7 +28,7 @@ import SideMenu from '@/components/SideMenu';
 import AppHeader from '@/components/Header';
 
 const SideMenuConfig = {
-  title: 'MENU',
+  title: 'StudentPress',
   icon: 'school',
   options: [
     {
@@ -153,7 +154,14 @@ export default {
     return {
       menuOpen: true,
       sideMenuConfig: SideMenuConfig,
+      schoolDetails: {},
     };
+  },
+  async mounted() {
+    const schoolId = localStorage.getItem('schoolId');
+    const { data: { school } } = await this.$http.get(`/school/${schoolId}`);
+    localStorage.setItem('schoolDetails', JSON.stringify(school));
+    this.schoolDetails = school;
   },
   methods: {
     toggleMenu() {
