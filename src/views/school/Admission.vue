@@ -48,7 +48,8 @@
         <div class="all-admissions">
           <div v-for="detail in paginatedAdmissionList" :key="detail._id">
             <AdmissionCard
-              :admissionDetailList="detail"
+              :admissionDetail="detail"
+              @scheduleTest="scheduleTest(detail._id, $event)"
               @nextAction="nextAction(detail, $event)"
               @deleteAdmissionQuery="deleteAdmissionQuery"
             />
@@ -96,48 +97,33 @@ export default {
     };
   },
   mounted() {
-    for (let i = 0, j = 65; i < 30; i += 1, j += 1) {
-      this.admissionDetailList.push({
-        name: `Sakshi Srivastava${String.fromCharCode(j)}`,
-        class: i + 1,
-        dob: '03/10/1999',
-        mPhone: 88928292829,
-        fPhone: 19392029991,
-        address: 'CD 199 Pitampura delhi',
-        status: 0,
-        isPass: true,
-        testScheduledDate: '',
-        _id: '',
-      });
-    }
-    this.admissionDetailList.push({
-      name: 'Akshat',
-      class: 100,
-      dob: '03/10/1999',
-      mPhone: 88928292829,
-      fPhone: 19392029991,
-      address: 'CD 199 Pitampura delhi',
-      status: 0,
-      isPass: true,
-      testScheduledDate: '',
-      _id: '',
-    });
-    this.originalAdmissionList = [...this.admissionDetailList];
-    this.paginatedAdmissionList = this.admissionDetailList.slice(0, 10);
+    this.initData();
   },
   methods: {
-    getTableData() {
+    initData() {
       this.loading = true;
-      // this.$http
-      //   .get("/gatepass")
-      //   .then(res => {
-      //     this.loading = false;
-      //     this.gatepassData = res.data.results;
-      //   })
-      //   .catch(e => {
-      //     console.log(e);
-      //     this.loading = false;
-      //   });
+      this.$http.get('/admission').then(({ data: { results: admissions } }) => {
+        this.admissionDetailList = admissions.map(({
+          studentDetails,
+          fatherDetails,
+          motherDetails,
+          ...admissionDetails
+        }) => ({
+          name: studentDetails.name,
+          class: studentDetails.classNumber,
+          dob: new Date(Number(studentDetails.dateOfBirth)).toLocaleDateString(),
+          mPhone: motherDetails.phoneNumber,
+          fPhone: fatherDetails.phoneNumber,
+          address: studentDetails.residentialAddress,
+          _id: admissionDetails._id,
+          testScheduledDate: admissionDetails.testDate,
+          status: admissionDetails.testDateScheduled ? 1 : 0,
+        }));
+        console.log(this.admissionDetailList);
+        this.originalAdmissionList = [...this.admissionDetailList];
+        this.paginatedAdmissionList = this.admissionDetailList.slice(0, 10);
+        this.loading = false;
+      });
     },
     closeModal() {
       this.openModal = false;
@@ -152,6 +138,11 @@ export default {
       if (detail.status === 0) this.admissionDetailList[index].testScheduledDate = data;
       else this.admissionDetailList[index].isPass = data;
       this.admissionDetailList[index].status += 1;
+    },
+    async scheduleTest(admissionId, date) {
+      this.$http.patch(`/admission/${admissionId}/schedule-test?date=${date}`).then(() => {
+        this.initData();
+      });
     },
     changePage() {
       this.paginatedAdmissionList = this.admissionDetailList.slice(
