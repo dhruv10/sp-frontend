@@ -26,11 +26,13 @@
           </p>
         </div>
         <div class="column inner-col is-2">
-          <div class="btn-details" v-if="admissionDetail.status === 0">
-            <b-button type="is-primary" size="is-small" @click="openModal()">Schedule Test</b-button>
+          <div class="btn-details" v-if="!admissionDetail.testScheduledDate">
+            <b-button type="is-primary" size="is-small" @click="openModal()">
+              Schedule Test
+            </b-button>
           </div>
-          <div class="status" v-else-if="admissionDetail.status === 1">
-            <p class="heading is-6" v-if="testDateLeft">
+          <div class="status" v-else-if="admissionDetail.testResult === 0 && admissionDetail.testScheduledDate">
+            <p class="heading is-6" v-if="testDateLeft && false">
               Test on <br/><b>{{ new Date(Number(admissionDetail.testScheduledDate)).toLocaleDateString() }}</b>
             </p>
             <b-button v-else type="is-primary" size="is-small" @click="openModal()">Add Result</b-button>
@@ -40,11 +42,11 @@
               type="is-primary"
               size="is-small"
               @click="openModal()"
-              v-if="admissionDetail.isPass"
+              v-if="admissionDetail.testResult === 1"
             >Schedule Interview</b-button>
             <p v-else class="completed">Application Closed</p>
           </div>
-          <div class="btn-details" v-if="admissionDetail.isPass">
+          <div class="btn-details" v-if="admissionDetail.testResult === 1">
             <a class="cancel" @click="deleteRequest">Cancel Admission</a>
           </div>
         </div>
@@ -64,12 +66,6 @@
 <script>
 import AdmissionStatusModal from './AdmissionStatusModal.vue';
 
-const STATUSES = {
-  NOT_SCHEDULED_YET: 0,
-  RESULT_AWAITING: 1,
-  RESULT_DECLARED: 2,
-};
-
 export default {
   data() {
     return {
@@ -88,28 +84,33 @@ export default {
   },
   mounted() {
     // TODO: fix action overflowing layout
-    console.log(new Date(Number(this.admissionDetail.testScheduledDate)));
     if (this.admissionDetail.testScheduledDate < new Date()) this.testDateLeft = false;
     else this.testDateLeft = true;
   },
   computed: {
     testStatus() {
-      const { status } = this.admissionDetail;
+      const { testResult, testScheduledDate } = this.admissionDetail;
       let res = { text: '', color: '' };
-      if (status === STATUSES.NOT_SCHEDULED_YET) {
+      console.log('something', testScheduledDate);
+      if (!testScheduledDate) {
         res = {
           text: 'Not Scheduled',
           color: 'is-info',
         };
-      } else if (status === STATUSES.RESULT_AWAITING) {
+      } else if (testResult === 1) {
+        res = {
+          text: 'Pass',
+          color: 'is-success',
+        };
+      } else if (testResult === -1) {
+        res = {
+          text: 'Fail',
+          color: 'is-danger',
+        };
+      } else if (testScheduledDate) {
         res = {
           text: 'Awaiting',
           color: 'is-warning',
-        };
-      } else {
-        res = {
-          text: this.admissionDetail.isPass ? 'Pass' : 'Fail',
-          color: this.admissionDetail.isPass ? 'is-success' : 'is-danger',
         };
       }
 
@@ -124,10 +125,11 @@ export default {
       this.openActionModal = true;
     },
     scheduleTest(date) {
-      this.$emit('scheduleTest', { date: new Date(date).getTime() });
+      this.$emit('scheduleTest', new Date(date).getTime());
     },
     setResult(result) {
-      this.$emit('nextAction', result);
+      console.log(result);
+      this.$emit('updateTestResult', result ? 1 : -1);
     },
     deleteRequest() {
       this.$emit('deleteAdmissionQuery', this.admissionDetail);

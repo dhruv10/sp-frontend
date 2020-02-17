@@ -50,7 +50,7 @@
             <AdmissionCard
               :admissionDetail="detail"
               @scheduleTest="scheduleTest(detail._id, $event)"
-              @nextAction="nextAction(detail, $event)"
+              @updateTestResult="updateTestResult(detail._id, $event)"
               @deleteAdmissionQuery="deleteAdmissionQuery"
             />
           </div>
@@ -117,7 +117,7 @@ export default {
           address: studentDetails.residentialAddress,
           _id: admissionDetails._id,
           testScheduledDate: admissionDetails.testDate,
-          status: admissionDetails.testDateScheduled ? 1 : 0,
+          testResult: admissionDetails.testResult,
         }));
         console.log(this.admissionDetailList);
         this.originalAdmissionList = [...this.admissionDetailList];
@@ -131,13 +131,10 @@ export default {
     openAdmissionForm() {
       this.openModal = true;
     },
-    nextAction(detail, data) {
-      const index = this.admissionDetailList.findIndex(
-        admission => admission._id === detail._id,
-      );
-      if (detail.status === 0) this.admissionDetailList[index].testScheduledDate = data;
-      else this.admissionDetailList[index].isPass = data;
-      this.admissionDetailList[index].status += 1;
+    async updateTestResult(admissionId, result) {
+      this.$http.patch(`/admission/${admissionId}/test?result=${result}`).then(() => {
+        this.initData();
+      });
     },
     async scheduleTest(admissionId, date) {
       this.$http.patch(`/admission/${admissionId}/schedule-test?date=${date}`).then(() => {
