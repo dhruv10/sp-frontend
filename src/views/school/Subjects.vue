@@ -38,24 +38,19 @@ export default {
       loading: false,
       tableConfig: [
         {
-          label: 'Subject Code',
+          headerName: 'Subject Code',
           field: 'code',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Subject Name',
+          headerName: 'Subject Name',
           field: 'name',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Type',
+          headerName: 'Type',
           field: 'optional',
           sortable: true,
-          centered: true,
         },
       ],
     };

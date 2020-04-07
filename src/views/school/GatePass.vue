@@ -149,24 +149,19 @@ export default {
       gatepassList: [],
       tableConfig: [
         {
-          label: 'Student Name',
+          headerName: 'Student Name',
           field: 'student',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: "Guardian's Name",
+          headerName: "Guardian's Name",
           field: 'guardianName',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: "Guardian's Phone No",
+          headerName: "Guardian's Phone No",
           field: 'guardianPhone',
           sortable: true,
-          centered: true,
         },
       ],
       searchLoading: false,

@@ -45,18 +45,14 @@ export default {
       loading: false,
       tableConfig: [
         {
-          label: 'Document Name',
+          headerName: 'Document Name',
           field: 'documentTitle',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Class',
+          headerName: 'Class',
           field: 'class',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
       ],
     };

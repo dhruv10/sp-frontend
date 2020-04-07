@@ -43,24 +43,19 @@ export default {
       loading: false,
       tableConfig: [
         {
-          label: 'Department Name',
+          headerName: 'Department Name',
           field: 'name',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Code',
+          headerName: 'Code',
           field: 'code',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Note',
+          headerName: 'Note',
           field: 'note',
           sortable: true,
-          centered: true,
         },
       ],
     };

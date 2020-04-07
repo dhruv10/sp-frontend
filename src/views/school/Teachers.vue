@@ -145,7 +145,6 @@ export default {
     },
     bulkUpload() {},
     editTeacher(data) {
-      console.log(123);
       this.formType = 'edit';
       this.teacherData = data;
       this.openModal = true;

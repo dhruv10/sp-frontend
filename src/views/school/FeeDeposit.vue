@@ -43,24 +43,19 @@ export default {
       loading: false,
       tableConfig: [
         {
-          label: 'Admission Number',
+          headerName: 'Admission Number',
           field: 'admissionNo',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Amount',
+          headerName: 'Amount',
           field: 'amount',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Payment Mode',
+          headerName: 'Payment Mode',
           field: 'paymentMode',
           sortable: true,
-          centered: true,
         },
       ],
     };

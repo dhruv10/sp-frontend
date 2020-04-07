@@ -43,24 +43,19 @@ export default {
       loading: false,
       tableConfig: [
         {
-          label: 'invoice Name',
+          headerName: 'invoice Name',
           field: 'name',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Code',
+          headerName: 'Code',
           field: 'code',
           sortable: true,
-          numeric: true,
-          centered: true,
         },
         {
-          label: 'Note',
+          headerName: 'Note',
           field: 'note',
           sortable: true,
-          centered: true,
         },
       ],
     };

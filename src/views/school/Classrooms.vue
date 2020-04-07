@@ -90,7 +90,7 @@ export default {
     getTeachers() {
       this.$http.get('/teacher').then((res) => {
         this.teachers = res.data.results;
-        console.log('this.teachers', this.teachers);
+        // console.log('this.teachers', this.teachers);
       }).catch(e => console.log(e));
     },
     bulkUpload() {
@@ -104,7 +104,7 @@ export default {
       this.loading = true;
       this.$http.get('/classroom').then((res) => {
         this.classDetails = res.data.results;
-        console.log(res);
+        // console.log(res);
         this.loading = false;
       }).catch((e) => {
         console.log(e);

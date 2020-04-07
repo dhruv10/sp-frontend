@@ -152,7 +152,7 @@ export default {
         this.sortUp = true;
         this.sortDown = false;
         this.paginatedAdmissionList = this.admissionDetailList.sort((a, b) => ((a.name > b.name) ? 1 : -1));
-        console.log(this.admissionDetailList);
+        // console.log(this.admissionDetailList);
       } else if (this.sortUp && !this.sortDown) {
         this.sortUp = false;
         this.sortDown = true;
@@ -163,8 +163,8 @@ export default {
         this.sortDown = false;
       }
     },
-    deleteAdmissionQuery(rowinfo) {
-      console.log(rowinfo);
+    deleteAdmissionQuery() {
+      // console.log(rowinfo);
       const { dialog } = this.$buefy;
       dialog.confirm({
         title: 'Deleting Admission Record',
