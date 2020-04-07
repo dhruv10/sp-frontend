@@ -173,9 +173,9 @@ export default {
       handler(menuOpen) {
         const { menuContainer } = this.$refs;
         if (menuOpen) {
-          menuContainer.style.width = null;
+          menuContainer.style.marginLeft = 0;
         } else {
-          menuContainer.style.width = 0;
+          menuContainer.style.marginLeft = '-250px';
         }
       },
     },
@@ -194,14 +194,14 @@ export default {
 .side-menu-container {
   width: 250px;
   position: relative;
-  transition: width 0.4s;
+  transition: margin-left 0.4s;
   box-shadow: black 1px 1px 12px -5px;
-  padding-right: 0px;
   height: 100vh;
-  overflow-y: scroll;
 }
 .body {
   width: calc(100% - 250px);
   padding-left: 0px;
+  height: 100vh;
+  overflow-y: scroll;
 }
 </style>

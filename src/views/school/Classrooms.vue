@@ -139,10 +139,9 @@ export default {
 
 <style lang="scss" scoped>
 .classroom-root-container {
-  margin-top: 50px;
-  height: 100%;
+  margin-top: 2.75rem;
 }
 .table-card {
-  height: 90vh;
+  min-height: 86vh;
 }
 </style>

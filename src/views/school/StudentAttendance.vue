@@ -299,9 +299,13 @@ export default {
 
 <style scoped>
 .main-container-student-attendance {
-  height: 100vh;
-  margin-top: 3rem;
+  margin-top: 3.25rem;
 }
+
+.table-card {
+  min-height: 88vh;
+}
+
 /*
 .dflex {
   display: flex;

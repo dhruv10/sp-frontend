@@ -183,6 +183,6 @@ export default {
   margin-top: 50px;
 }
 .table-card {
-  height: 90vh;
+  min-height: 88vh;
 }
 </style>

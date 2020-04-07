@@ -26,7 +26,7 @@
                   <b-field label="Date of birth">
                     <b-datepicker
                       placeholder="Click to select..."
-                      icon="calendar-today"
+                      icon="calendar"
                       icon-pack="fas"
                       required
                       v-model="student.basicInfo.birthDate"
@@ -92,7 +92,7 @@
             </div>
             <div class="column">
               <b-field label="Phone Number">
-                <b-input icon-pack="fas" required v-model="student.basicInfo.phoneNumber"></b-input>
+                <b-input maxlength="12" type="number" icon-pack="fas" required v-model="student.basicInfo.phoneNumber"></b-input>
               </b-field>
             </div>
           </div>
@@ -124,10 +124,10 @@
               <b-field label="Admission Date">
                 <b-datepicker
                   placeholder="Click to select..."
-                  icon="calendar-today"
+                  icon="calendar"
                   icon-pack="fas"
                   required
-                  student.studentDetails.admissionDate
+                  v-model="student.studentDetails.admissionDate"
                   position="is-bottom-left"
                 ></b-datepicker>
               </b-field>
@@ -264,7 +264,7 @@
               <b-field label="Date of birth">
                 <b-datepicker
                   placeholder="Click to select..."
-                  icon="calendar-today"
+                  icon="calendar"
                   icon-pack="fas"
                   required
                   v-model="student.studentDetails.fatherInfo.dob"
@@ -366,7 +366,7 @@
               <b-field label="Date of birth">
                 <b-datepicker
                   placeholder="Click to select..."
-                  icon="calendar-today"
+                  icon="calendar"
                   icon-pack="fas"
                   required
                   v-model="student.studentDetails.motherInfo.dob"
@@ -494,7 +494,7 @@ export default {
           name: '',
           personalEmail: '',
           username: '',
-          phoneNumber: '',
+          phoneNumber: 0,
           nationality: '',
           gender: '',
           birthDate: new Date(),
@@ -506,14 +506,14 @@ export default {
           class: '',
           motherInfo: {
             name: '',
-            phoneNumber: '',
+            phoneNumber: 0,
             dob: new Date(),
             education: '',
             profession: '',
           },
           fatherInfo: {
             name: '',
-            phoneNumber: '',
+            phoneNumber: 0,
             dob: new Date(),
             education: '',
             profession: '',

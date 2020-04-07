@@ -252,7 +252,6 @@ export default {
 <style scoped>
 .dashboard-root-container {
   margin-top: 50px;
-  height: 100%;
 }
 .is-main-hero {
   background-image: url("https://admin-one-vue-cli.justboil.me/img/trianglify-bw-50@2x.37c358f2.png");

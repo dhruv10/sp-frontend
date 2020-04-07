@@ -47,7 +47,8 @@
                     </div>
                     <div v-else>N.A.</div>
                   </div>
-                  <b-tag
+                  <div class="tag-container scroll">
+                    <b-tag
                     v-for="k in teacherObj.subjects"
                     :key="teacherObj.subjects[k]"
                     type="is-primary"
@@ -55,6 +56,7 @@
                     class="mr-1"
                     >{{ k }}</b-tag
                   >
+                  </div>
                   <b-datepicker
                     class="mt-1"
                     inline
@@ -159,7 +161,7 @@ export default {
         {
           _id: 1000,
           teacherName: 'Ms. Shweta Tiwari',
-          subjects: [],
+          subjects: ['Magic', 'english', 'maths', 'Magic', 'english', 'maths', 'Magic', 'english', 'maths'],
           attendance: 94,
           events: [
             {
@@ -320,8 +322,11 @@ export default {
 
 <style scoped>
 .main-container-teacher-attendance {
-  height: 100vh;
   margin-top: 3rem;
+}
+
+.table-card {
+  min-height: 88vh;
 }
 
 .dflex {
@@ -364,6 +369,8 @@ export default {
 
 .teacher-card-wrapper {
   box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+  overflow-x: scroll;
+  width: 100%;
 }
 
 .mr-1 {
@@ -399,5 +406,10 @@ export default {
 
 .scroll {
   overflow-x: scroll;
+}
+
+.tag-container {
+  max-width: 300px;
+    display: flex;
 }
 </style>

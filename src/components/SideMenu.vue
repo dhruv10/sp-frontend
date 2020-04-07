@@ -40,8 +40,7 @@
               class="is-pulled-right"
               size="is-small"
               :icon="props.expanded ? '' : 'chevron-right'"
-            >
-            </b-icon> -->
+            ></b-icon> -->
           </template>
           <b-menu-item
             v-for="child in option.children"
@@ -50,8 +49,7 @@
             :label="child.label"
             :active="fullRoute === option.route + child.route"
             @click="navigateTo(option.route, child.route, child.handler)"
-          >
-          </b-menu-item>
+          ></b-menu-item>
         </b-menu-item>
       </b-menu-list>
     </b-menu>
@@ -84,9 +82,10 @@ export default {
 <style lang="scss">
 .side-menu-root {
   width: 234px;
+  // margin-top: 20px;
+  // margin-left: 2px;
   position: relative;
-  margin-top: 20px;
-  margin-left: 2px;
+  // padding-right: 10px;
 }
 
 /* to add margin in side-menu child options */
@@ -118,5 +117,11 @@ div.column.is-2.side-menu-container
   margin: 0.75em 0px 0.75em 0.75em;
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.menu-list {
+  overflow-y: scroll;
+  height: 700px;
+  padding-right: 10px;
 }
 </style>

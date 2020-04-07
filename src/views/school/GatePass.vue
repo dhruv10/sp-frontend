@@ -1,6 +1,6 @@
 <template>
   <div class="receptionist-root-container">
-    <div class="card">
+    <div class="card table-card">
       <div class="info-header">
         <h1 class="gatepass-title">Gate Pass</h1>
         <div class="dflex">
@@ -274,6 +274,9 @@ export default {
 }
 .receptionist-root-container {
   margin-top: 50px;
+}
+.table-card {
+  min-height: 88vh;
   height: 100%;
 }
 .columns {

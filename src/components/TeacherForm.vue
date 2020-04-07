@@ -2,9 +2,9 @@
   <div class="main-container">
     <div class="card">
       <header class="card-header">
-        <p
-          class="card-header-title header"
-        >{{ formType === 'add' ? 'Add Teacher' : 'Edit Teacher' }}</p>
+        <p class="card-header-title header">
+          {{ formType === "add" ? "Add Teacher" : "Edit Teacher" }}
+        </p>
       </header>
     </div>
     <div class="card-content">
@@ -50,9 +50,11 @@
           <div class="columns">
             <div class="column is-6">
               <b-field label="Contact Number">
-                <b-input v-model="teacher.basicInfo.phoneNumber" type="number"
-                min="10"
-                max="12" required></b-input>
+                <b-input
+                  v-model="teacher.basicInfo.phoneNumber"
+                  type="number"
+                  required
+                ></b-input>
               </b-field>
             </div>
             <div class="column is-6">
@@ -234,7 +236,11 @@
           <div class="columns">
             <div class="column is-6">
               <b-field label="Account No">
-                <b-input required v-model="teacher.bankAccountInfo.accountNo" type="number"></b-input>
+                <b-input
+                  required
+                  v-model="teacher.bankAccountInfo.accountNo"
+                  type="number"
+                ></b-input>
               </b-field>
             </div>
             <div class="column is-6">
@@ -321,7 +327,8 @@
             @click="formType === 'add' ? addTeacher() : editTeacher()"
             icon-right="arrow-circle-right"
             :type="startLoading ? 'is-loading is-primary' : 'is-primary'"
-          >{{ formType === 'add' ? 'Add Teacher' : 'Apply Changes' }}</b-button>
+            >{{ formType === "add" ? "Add Teacher" : "Apply Changes" }}</b-button
+          >
         </div>
       </div>
     </div>
@@ -410,21 +417,17 @@ export default {
   methods: {
     uploadTeacherPhoto(file) {
       const fileName = file.name + new Date().getTime();
-      this.$uploadFile('/teachers', fileName, file, (p) => { this.profilePicLoading = p; })
-        .then((url) => {
-          this.teacher.basicInfo.photoUrl = url;
-          this.profilePicLoading = 0;
-        });
+      this.$uploadFile('/teachers', fileName, file, (p) => {
+        this.profilePicLoading = p;
+      }).then((url) => {
+        this.teacher.basicInfo.photoUrl = url;
+        this.profilePicLoading = 0;
+      });
     },
     uploadPhoto(file, instance) {
-      this.$uploadFile(
-        '/teachers',
-        file.name + new Date().getTime(),
-        file,
-        (p) => {
-          instance.photoUploadValue = p;
-        },
-      )
+      this.$uploadFile('/teachers', file.name + new Date().getTime(), file, (p) => {
+        instance.photoUploadValue = p;
+      })
         .then((url) => {
           instance.photo.push({ name: file.name, url });
           instance.photoUploadValue = 0;

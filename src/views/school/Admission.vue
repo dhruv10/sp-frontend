@@ -196,11 +196,10 @@ export default {
 <style lang="scss" scoped>
 @import "../../styles/app.global.scss";
 .admission-root-container {
-  margin-top: 50px;
-  height: 100%;
+  margin-top: 3rem;
 }
 .outer-card {
-  height: 90vh;
+  height: 89vh;
 }
 .acard {
   margin: 1px;

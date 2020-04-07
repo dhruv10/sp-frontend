@@ -166,10 +166,10 @@ export default {
 
 <style lang="scss" scoped>
 .root-container {
-  margin-top: 50px;
-  height: 100%;
+  margin-top: 42px;
 }
 .table-card {
-  height: 90vh;
+  min-height: 90vh;
+  height: 100%;
 }
 </style>
