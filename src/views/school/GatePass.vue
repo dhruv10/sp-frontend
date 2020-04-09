@@ -15,7 +15,7 @@
               @click="openSearchInput"
             />
             <div
-              :class="!searchLoading ? 'control has-icons-left has-icons-right searchInputBox' : 'control has-icons-left has-icons-right searchInputBox is-loading'"
+              class="control has-icons-left has-icons-right searchInputBox"
               v-else
             >
               <input
@@ -28,13 +28,6 @@
               />
               <span class="icon is-small is-left">
                 <i class="fas fa-search"></i>
-              </span>
-              <span
-                class="icon is-small is-right clearInput"
-                v-if="!searchLoading"
-                @click="clearSearchInput"
-              >
-                <i class="fas fa-times"></i>
               </span>
             </div>
           </div>
@@ -55,7 +48,7 @@
         </div>-->
       </div>
       <div class="card-content" ref="element">
-        <div class="card" v-if="gatepassList.length">
+        <div class="card" v-if="filteredGatepassList.length">
           <div class="card-content">
             <div class="columns">
               <div class="column is-3">
@@ -86,8 +79,8 @@
             </div>
           </div>
         </div>
-        <div v-if="gatepassList.length">
-          <div v-for="(gatepass, i) in gatepassList" :key="{i}">
+        <div v-if="filteredGatepassList.length">
+          <div v-for="(gatepass, i) in filteredGatepassList" :key="i">
             <GatePassDetailCard
               :steps="steps"
               :gatepassData="gatepass"
@@ -95,8 +88,9 @@
             />
           </div>
         </div>
-        <div v-else>
-          <h3>No GatePass Found</h3>
+        <div v-else class="dflex">
+          <img :src="blankCanvas" class="not-found-img" />
+          <p class="not-found-txt">No gatepasses found...</p>
         </div>
       </div>
     </div>
@@ -113,6 +107,7 @@
 </template>
 
 <script>
+import blankCanvas from '@/assets/blank_canvas.svg';
 import GatePassDetailCard from '../../components/GatePassDetailCard';
 import GenerateGatepassModal from '../../components/GenerateGatepassModal';
 
@@ -123,6 +118,7 @@ export default {
   },
   data() {
     return {
+      blankCanvas,
       steps: [
         {
           target: '#v-step-0',
@@ -164,11 +160,11 @@ export default {
           sortable: true,
         },
       ],
-      searchLoading: false,
       searchText: '',
       sortUp: false,
       sortDown: false,
       openSearch: false,
+      filteredGatepassList: [],
     };
   },
   mounted() {
@@ -190,6 +186,7 @@ export default {
             ...gatepassList.filter(g => g.closed),
           ];
           this.gatepassList = sortedList;
+          this.filteredGatepassList = sortedList;
           loadingComponent.close();
         })
         .catch((e) => {
@@ -197,13 +194,20 @@ export default {
           loadingComponent.close();
         });
     },
-    earch(e) {
+    search(e) {
       this.searchText = e.target.value;
-      if (!this.searchText) return;
-      this.searchLoading = true;
-      setTimeout(() => {
-        this.searchLoading = false;
-      }, 2000);
+      if (!this.searchText) {
+        this.filteredGatepassList = this.gatepassList;
+        return;
+      }
+
+      const filteredList = this.gatepassList.filter(gatepass => (
+        gatepass.student.basicInfo.name.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1
+          || gatepass.reason.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1
+          || gatepass.guardianName.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1
+          || gatepass.guardianPhone.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1
+      ));
+      this.filteredGatepassList = filteredList;
     },
     openSearchInput() {
       this.openSearch = true;
@@ -269,6 +273,16 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/app.global.scss";
+.not-found-img {
+  width: 50%;
+}
+.not-found-txt {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #7957d5;
+  margin: auto;
+  width: 45%;
+}
 .v-tour__target--highlighted {
   box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.4);
 }

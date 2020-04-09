@@ -7,10 +7,12 @@
       }">
         <div class="columns col">
           <div class="column inner-col is-3">
-            <p class="title is-5">{{ gatepassData.student.basicInfo.name }}</p>
+            <p class="title is-5">
+              {{ gatepassData.student && gatepassData.student.basicInfo.name }}
+            </p>
             <p
               class="subtitle is-6"
-            >{{ gatepassData.student.class.classNumber }} - {{ gatepassData.student.class.classSection }}, {{ gatepassData.student.rollNo }}</p>
+            >{{ gatepassData.student && gatepassData.student.class.classNumber }} - {{ gatepassData.student && gatepassData.student.class.classSection }}, {{ gatepassData.student && gatepassData.student.rollNo }}</p>
           </div>
 
           <div class="column inner-col is-3">
@@ -95,10 +97,6 @@ export default {
     'otp-input': OtpInput,
     QRCodeModal,
   },
-  mounted() {
-    console.log('sdkjgbdjs');
-    console.log(this.gatepassData);
-  },
   computed: {
     verficationStatus() {
       const { closed, otpVerified, checkoutAt } = this.gatepassData;
@@ -152,13 +150,11 @@ export default {
     },
     checkOtp(otp) {
       this.otpLoading = true;
-      console.log(otp);
       const { snackbar } = this.$buefy;
       this.$http
         .post('/gatepass/verify', { id: this.gatepassData._id, otp })
-        .then((res) => {
+        .then(() => {
           this.$emit('getTableData');
-          console.log(res);
           this.otpLoading = false;
           snackbar.open('OTP verified successfully!');
         })
