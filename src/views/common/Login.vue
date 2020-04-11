@@ -1,6 +1,8 @@
 <template>
   <div class="columns main-container">
-    <div class="column side-col-1"></div>
+    <div class="column side-col-1" style="display:flex; align-items: center; justify-content: center;">
+      <img src="/icons/login-icon.svg" alt="login-graphic" width="90%" />
+    </div>
     <div class="column">
       <div class="side-col-2 ml-3 mr-3">
         <div class="header">StudentPress</div>
