@@ -119,8 +119,8 @@ export default {
       this.$http
         .get('/teacher')
         .then((res) => {
-          // console.log('teacher', res.data.results);
-          this.teacherDetail = res.data.results.map(teacher => ({
+          if (!res.data.teachers) return;
+          this.teacherDetail = res.data.teachers.map(teacher => ({
             ...teacher,
             basicInfo: {
               name: teacher.basicInfo.name,

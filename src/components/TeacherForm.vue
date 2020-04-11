@@ -395,7 +395,7 @@ export default {
   },
   mounted() {
     if (this.formType === 'edit') {
-      this.teacher = this.teacherData;
+      this.teacher = { ...this.teacherData };
     }
     this.genderList = this.genderList.map(val => ({
       name: `${val}`,

@@ -70,7 +70,7 @@ export default {
   watch: {
     value: {
       handler(newVal) {
-        this.selectedValues = newVal;
+        this.selectedValues = this.allOptions.find(option => option.code === newVal);
       },
     },
   },
