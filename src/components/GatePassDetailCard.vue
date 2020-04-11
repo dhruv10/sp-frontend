@@ -51,9 +51,9 @@
             <div class="btn-details" v-else-if="otpLoading">
               <b-loading :is-full-page="false" :active.sync="otpLoading"></b-loading>
             </div>
-            <div class="status" v-if="gatepassData.otpVerified && !gatepassData.closed">
+            <div class="status" v-if="gatepassData.otpVerified && !gatepassData.closed" @click="downloadGatepass">
               <b-icon pack="fas" icon="download" size="is-medium" type="is-primary"></b-icon>
-              <p class="download" @click="downloadGatepass">Download Gatepass</p>
+              <p class="download">Download Gatepass</p>
             </div>
             <div v-if="gatepassData.closed" class="closed">---</div>
             <div class="btn-details" v-if="!gatepassData.otpVerified && !gatepassData.closed">
